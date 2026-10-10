@@ -11,6 +11,7 @@ language = "de"
 extensions = [
     "myst_parser",
     "sphinxcontrib.mermaid",
+    "sphinx_copybutton",
 ]
 
 # MyST-Erweiterungen: Doppelpunkt-Fences (```{note}), Definitionslisten
@@ -29,5 +30,11 @@ exclude_patterns = [
     "legacy",
 ]
 
-html_theme = "furo"
+html_theme = "sphinx_rtd_theme"
 html_title = "IAM-Doku"
+# Tiefere Navigation im linken Menue (Standard des Themes ist maxdepth 2) -- passend zu den
+# verschachtelten toctree-Captions in index.md (Handbuch/Technik/Entwicklungsverlauf).
+html_theme_options = {
+    "navigation_depth": 4,
+    "collapse_navigation": False,
+}
