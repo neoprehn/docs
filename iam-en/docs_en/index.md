@@ -32,6 +32,7 @@ handbuch/funktionen
 
 technik/architektur
 technik/windows-native
+technik/ergebnisuebergabe
 datamodel
 extraktionsleitfaden
 ```
