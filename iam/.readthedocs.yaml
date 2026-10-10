@@ -8,8 +8,8 @@ build:
     python: "3.12"
 
 sphinx:
-  configuration: docs/conf.py
+  configuration: iam/docs/conf.py
 
 python:
   install:
-    - requirements: docs/requirements.txt
+    - requirements: iam/docs/requirements.txt
