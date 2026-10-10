@@ -1,0 +1,5 @@
+/* sphinx_rtd_theme begrenzt den Lesebereich standardmaessig recht schmal (~800px) --
+   Nutzer-Wunsch: breiter, passend zu grossen Bildschirmen. */
+.wy-nav-content {
+  max-width: 1400px;
+}
