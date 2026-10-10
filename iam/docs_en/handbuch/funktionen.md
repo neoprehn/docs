@@ -1,0 +1,646 @@
+# Function Reference
+
+What each command in the ribbon bar does — and what the selection options mean.
+
+## Banner
+
+At the top left, the wordmark; at the top right, the **light/dark toggle** (remembers the choice
+in the browser), the **anonymization toggle** (see below), the chip showing the **actively
+applied ruleset** of the currently displayed run, and two further **status chips**: the database
+connection and the context **"N datasets · M runs"** (refreshes after every action).
+
+**Anonymization.** A single, global toggle (chip "names visible"/"names anonymized") replaces
+real user names (from USR02/ADRP) everywhere with a stable pseudonym ("Anonymous-XXXXXX", always
+the same for a given user ID) — the technical user ID itself remains unchanged, and
+filters/drill-downs/exports continue to work unchanged. It takes effect **server-side and
+globally** (unlike language/theme, which are only remembered in the browser): once toggled, all
+views **and** all exports (CSV/Excel, including the detailed user breakdown) show pseudonyms
+until the next toggle — intended for screenshots/demos/handoffs where the structure of the
+analysis should remain visible, but not real names. This affects every place where a user name is
+displayed: the individual filter results list (column "Name"), the full tree view, the user detail
+page, the role detail page (assigned users as well as the role's creator/last changer), and the
+corresponding exports. The findings table (SoD results) only ever shows the user ID, never a
+name — there is nothing to anonymize there.
+
+## 1 · Data
+
+| Command | Effect |
+| --- | --- |
+| **Import** | Opens the import dialog: **upload ZIP** (`.txt`/`.csv` inside the ZIP) or **existing folder**. Starts the import job (convert → schema → load → verify). |
+
+Options in the dialog: **languages** (for language-dependent text tables, default `DE,DEU,D`),
+**skip schema** (if constraints/indexes already exist), **skip conversion** (if `.csv` files are
+already present).
+
+## 2 · Analysis
+
+| Command | Effect |
+| --- | --- |
+| **New run** | Opens the parameter form and starts materialization + SoD analysis. |
+
+### User-Type Profile
+
+Which users are included in the analysis:
+
+| Profile | Meaning |
+| --- | --- |
+| **all** | all user types, including locked ones. |
+| **dialog-service** | dialog + service (A/S), including locked ones. |
+| **dialog-active** | dialog + service **and not locked** — the audit-relevant view. |
+| **dialog-only** | dialog only (A). |
+
+> User type and "locked" are two separate axes: A/S says nothing about active/locked status.
+> `dialog-active` combines both.
+
+### Org Profile
+
+Whether the analysis is restricted to organizational levels (e.g., company code):
+
+| Mode | Meaning |
+| --- | --- |
+| **Default** | no org restriction — *"can the user perform the function at all?"* |
+| **Cross-org** | only counts if the authorization carries the full range (`*`). |
+| **Filtered** | one condition per org field (AND/OR/range) — preconfigured via profiles. |
+
+> Org filtering applies across **all** org levels (company code `BUKRS`, plant `WERKS`, purchasing
+> org `EKORG`, sales org `VKORG`, …, from USORG) **and combinations** (e.g., company code *and*
+> purchasing org). What is evaluated are the users' **actual authorization values** (from the
+> role/profile auths), not SU24 suggestions. The chosen mode/filter is logged on the run.
+
+### Individual Filter Scope
+
+Which queries of the ruleset materialization even considers (`(:User)-[:MATCHES]->(:Query)` — the
+basis for both the SoD analysis and the individual filter view/overview):
+
+| Mode | Meaning |
+| --- | --- |
+| **All individual filters + SoD** (default) | materializes **every** query of the ruleset, including those that are not used as a clause in any SoD rule. |
+| **Only SoD-relevant individual filters** | restricts materialization to exactly the queries that the SoD rules of this ruleset actually need — faster, but the individual filter results/overview then only show this (ruleset-dependent) subset. |
+
+> "All" computes noticeably more queries than "only SoD-relevant" and therefore takes
+> correspondingly longer — for a catalog with significantly more individual filters than SoD
+> clauses, by a multiple. The extra effort only occurs on the **first** run for a given reference
+> date: "skip materialization" (see below) reuses the already-computed intermediate result on
+> repeat runs. Which queries count as "SoD-relevant" depends on the respective ruleset (e.g., a
+> different count for a different filter set) and is stored on the run (`queryScope`) — a run's
+> individual filter selection/overview always shows exactly the queries that were actually
+> materialized in **this** run.
+
+### Preset (instead of "Individual Filter Scope"/User-Type Profile/Sleeping)
+
+Besides the coarse "all/only SoD-relevant" scope above, the next run can also be restricted to a
+**deliberately chosen subset** of individual filters and/or SoD rules — **and**, at the same time,
+determine the **user-type profile** and **sleeping (days)** — via the **"saved scope"** field in
+the form. Two sources feed this preset, with a fixed priority:
+
+1. **A saved scope** (selected in the dropdown) — created via the admin page **"Scope"** (see
+   below), reusable across any number of runs/datasets of the same ruleset.
+2. **An ad hoc selection from the guided analysis** (wizard, step "Scoping", stage "SoD rules") —
+   applies only to the current session and disappears when the wizard is restarted.
+3. If both are empty, "individual filter scope", user-type profile, and sleeping remain their own,
+   freely editable fields as usual (today's default behavior).
+
+If one of the two sources is active, a summary line replaces the "individual filter scope" toggle
+**and** hides the dedicated fields for user-type profile/sleeping — the preset determines all
+three. Two kinds of analysis result automatically from the individual filter/SoD selection:
+**individual filters only** (no SoD rule included) materializes exclusively these individual
+filters and skips the SoD analysis entirely ("can-do"); if **SoD rules are also** selected, the
+run materializes only their clause queries (instead of all SoD-relevant queries of the ruleset)
+and evaluates only these rules.
+
+### Further Parameters
+
+- **Reference date** — evaluation date (role validity + sleeping). **No longer an input field**,
+  but a property of the selected dataset (= download date of the SAP extracts): it is
+  automatically determined from the extracts' file timestamps on first import and only displayed;
+  a deliberate correction runs via "change…" next to the display and takes effect **globally** on
+  all future runs/checks of this dataset, not just the next one.
+- **Sleeping (days)** — threshold "no logon for X days" (default 180), freely selectable.
+- **Minimum criticality** — `all` · `medium` and above · `high` and above · `critical` and above ·
+  `very-critical` only.
+- **Skip materialization/ruleset loading** — accelerator for repeat runs.
+
+## 3 · Results
+
+Groups with several commands (here and under "Admin") expand as a **menu** — clicking the group
+opens a list of commands, clicking elsewhere or on a command closes it again (behaves like a
+familiar application menu rather than buttons placed side by side).
+
+| Command | Effect |
+| --- | --- |
+| **Refresh** | reloads runs, datasets, backups. |
+| **Evidence** | recomputes VIA_ROLE/VIA_PROFILE + intra/inter for the active run — since the evidence performance improvement, this is a standard part of every new run; this command is now only needed for older runs without evidence, or after "skip evidence" was used in the run form. |
+| **Export CSV/PDF/…** | Exports **exactly the currently visible view** — the label and format switch automatically: findings, matches, and user list (each a genuine table) are exported as **CSV**, with the same active filters/sorting as on screen; without active filters, the complete run. Role detail and root cause (not a flat table) are exported as **PDF** via the browser's print dialog ("save as PDF"). The findings export also includes the rule's **label** (not just the ID). In the **individual authorizations/SoD overview**, the command instead opens a dialog with three formats: **CSV**, **Excel** (native `.xlsx`, subtly colored table headers), and **detailed Excel** — the latter unfolds, below each row (query or SoD rule), the affected users (ID/name/type/status) via Excel's outline/grouping feature (collapsed, expandable by clicking the "+" on the left edge), and for each user in turn a second, nested level with the role(s)/profile(s) carrying the match — for individual filters, additionally with the covered authorization object or the transaction-code check. For very large numbers of hits (>200 users per query), this role/object breakdown is skipped for performance reasons (a notice line instead of data; the user list itself remains complete) — for these cases, the interactive root cause for each individual user remains the source. |
+| **Individual authorizations** | Overview: **every** query with at least one hit in this run (within the individual filter scope chosen for the run, see "New run"), with criticality and the number of matching users. The tile at the top shows the **distinct** total number of affected users across all rows (the individual rows are not summed, since a user usually matches several queries). Clicking a row jumps to the normal individual filter view, filtered to exactly this query. |
+| **SoD rules** | The same overview for SoD rules (number of violating users instead of matching ones, tile accordingly). Clicking jumps to the normal findings view, filtered to this rule. |
+
+In the main area: **KPI tiles** (see below), **run list** (click = load run; each card shows
+label, reference date, and creation date/time), and the **results table** (findings or matches,
+depending on result type — see below).
+
+### Filter
+
+On the left in the sidebar: **user type** (checkbox dropdown — A/B/S/C/L =
+dialog/system/service/communication/reference), **user**, **individual authorization**, and
+**SoD** — the latter two show **ID + label** (short label if maintained, otherwise the long
+label); the ID comes **first** so that it is not cut off by the fixed dropdown width when labels
+are long. The selection is applied via "filter" or immediately when clicking a user cell in the
+findings table. If a **user** is selected, the **individual authorization** and **SoD** dropdowns
+automatically narrow to what was actually found for them (cascading filter) instead of always
+showing the full catalog/all of the run's rules. **Individual authorization**/**SoD** also show,
+on their own, only what was actually in scope for **this run**: if the run was run with a catalog
+selection/preset (see "preset" above), only the individual filters or SoD rules chosen there are
+available for selection — not the entire ruleset catalog.
+
+Above the results table, in its own row: **criticality** (very-critical…low) always, **result
+type** (`all` / `individual filter` / `SoD`) **only outside the entry table** (see below), and —
+only when the result type is "all" — **sleeping** (`all` / `only sleeping` / `not sleeping` /
+`unknown`) as well as **locked** (`all` / `locked` / `not locked`) as colored clickable buttons
+(pills), taking effect immediately. For "only sleeping"/"not sleeping", a **days quick-select**
+additionally appears (`run default` / `90` / `180` / `360`) — if it deviates from the `sleepDays`
+window set on the run, the filter calculates live against the logon date instead of against the
+value materialized on the run (only works if TRDAT is present in the extract). For "locked", the
+**lock reason** additionally appears (`all` / `failed logons` / `admin (local)` / `admin
+(global)`, from the UFLAG bit field) — this only applies to runs that did not already exclude
+locked users during materialization (user-type profile without "not locked", see above), otherwise
+their findings are missing from the start. Right-aligned in the same row: the **table/bar/tree
+toggle** — independent of the sidebar filters, following only `result type` (SoD/individual
+filter):
+
+- **Bar**: one row per SoD rule or individual filter, bar length = number of affected users, color
+  = criticality. Clicking jumps to the filtered table view.
+- **Tree**: the same rows, but expandable/collapsible (accordion, with only one sibling branch
+  open per level at a time) — clicking expands the affected users, clicking a user expands the
+  role(s) carrying the authorization or the directly assigned profile. Clicking a user or role
+  chip opens an overlay with its master data. There is additionally a **full view** (Cytoscape
+  graph for exactly the expanded path, with a color legend and zoom slider/full screen, like the
+  root cause page).
+
+"Individual filter" shows the **matches table** ("who matches which query") even **without**
+first selecting a specific individual authorization in the sidebar — in that case for all queries,
+otherwise only for the one selected.
+
+**Entry table.** If **no** filter is active (freshly loaded run or "reset"), the last column shows
+**sleeping** instead of **root cause** — with (potentially hundreds of) unfiltered findings,
+jumping to root cause per row is not yet worthwhile. As soon as any filter applies (user, rule,
+criticality, user type), the last column switches to **root cause**. "SoD"/"all" show the
+**findings table**. An active filter additionally appears as a chip with "reset".
+
+The **result-type pill row** ("all"/"individual filter"/"SoD") is always visible, even in the
+entry table — clicking "individual filter" then shows **all** individual filter hits of the run
+across all queries (matches table), capped at the first 500 (analogous to the "TOP 500" for
+findings — for several thousand hits, an uncapped query would otherwise be noticeably slow). For a
+complete, uncapped overview without a root-cause jump per row, use the **bar** or **tree** view
+(uses `/queries/summary` or `/sodrules/summary`, independent of the table view's 500 limit).
+
+### User-centric Selection: KPI Tiles, Causing Roles
+
+As soon as a **user** is filtered, a **master data tile** (user ID · name · type · status, via
+`GET /users/{id}`) replaces the KPI tile in the slot where otherwise nothing third would stand. If
+a **rule** is additionally selected (e.g., via the root-cause access point, see below), the user
+filter is retained and a chip **"rule: …"** appears above the KPI tiles (additive drill-down:
+first user, then user **and** rule — not exclusive).
+
+If **user and rule are set together** (exactly one finding), a dedicated field **"causing
+roles/profiles"** appears below the KPI tiles — the roles/profiles that, according to the evidence
+(`VIA_ROLE`/`VIA_PROFILE`), trigger this conflict, plus a dedicated **root cause** button (see
+below). Without computed evidence (ribbon "evidence" not run), a notice appears there instead of
+the list.
+
+### Root Cause
+
+Both the **findings table** (SoD) and the **matches table** ("who matches", individual filter)
+have a **"root cause"** button per row. It switches (no dialog/overlay, unlike the
+findings/consistency-check view) to a **dedicated page** with "← back" — at the top, the **query
+or SoD rule** in question along with its short/long label (from the already-loaded query/SoD
+cache, no new request), below it the general explanatory text, grouped **per authorization
+object** of the query (heading with the parenthetical "(authorization object check)", analogous
+to "S_TCODE (transaction code check)") — for an SoD rule, additionally **per clause** (for the
+query of that clause actually matched by the user; the block heading additionally shows its
+label): for each object, first the **requirement** — `FIELD (AND/OR): value1, value2, …` —
+followed by the **role(s)/profile(s)** that satisfy exactly this object with which specific
+authorization; the value that actually applies in each case (or `*`/a covering range) is
+highlighted in green within it — making it visible at a glance **why** a row matches, without
+manually comparing requirement and values. Unlike the evidence (which only shows "which role"),
+this makes visible when **different objects/clauses are covered by different roles** — the actual
+root cause, not just the carrier of the conflict.
+
+A toggle **"without technical" / "all (incl. technically generated)" / "only generated roles"**
+above the results list controls which actors are shown. **"without technical"** (default) hides
+SAP-generated profiles: a directly assigned profile counts as "technical" if any role in the data
+generates this profile (role `HAS_PROFILE`, regardless of the user in question) **or** the name
+starts with `T-` (a name-based fallback for "orphaned" generated profiles whose generating role no
+longer exists in the extract — the authorization still remains active according to `UST04`, so it
+is deliberately **not** hidden but marked with a notice). **"all"** additionally shows these
+technical profiles. **"only generated roles"** shows the **runtime view**: only roles that are
+actually active via their **generated profile** (what actually feeds into `UST04`) — pure design
+rows without profile coverage (D4 divergence) are dropped —, **plus** directly assigned profiles
+(e.g., `SAP_ALL`), so that no critical direct access falls out of the picture. A counter or notice
+shows how many rows are currently hidden.
+
+The graph views also have a **full-screen** button and a **zoom slider** on the right edge for
+quickly zooming in/out.
+
+**View: table · path graph · radial.** Above the results list, a second toggle switches between
+the **table** (default, with all annotations below) and two **graph representations of the same
+data**. The **path graph** shows the path **user → rule → clause → query → authorization object →
+role/profile** as a tree from top to bottom; the **radial** view places the user at the center and
+arranges the causes outward in rings. Each actor (role/profile) is shown **only once, independent
+of the profile filter**, even if it carries several objects/transaction-code checks of a query —
+this turns the graph into a DAG (several object nodes point to the same actor node), instead of
+repeating a role per object and thereby suggesting more parties responsible than actually exist.
+Authorization objects and the transaction-code check appear as their own, color-distinguished
+boxes, still **with** the object/transaction-code label and the specific requirement values in the
+label (e.g., `TCD=SU01,SU10,…`) — colors distinguish rule/clause/query/transaction-code
+check/authorization object/role/profile (role and transaction-code check deliberately clearly
+different, magenta vs. blue); **technical/generated** profiles are dashed and paler, **orphaned**
+ones outlined in red; **AND/OR** are shown on the edges (does the user need *all* or *one* of the
+prerequisites). The "without technical" filter also applies here. All object→role/profile edges
+("CONTAINS") look **uniform** — whether a role satisfies the object via its own definition or via
+its generated profile (or a contained collective role) is shown **only** in the hover tooltip of
+the respective edge, no longer as a separate edge style: an earlier red dashed extra edge for this
+looked, with roles that matched multiple times (deduplicated), like a confusing tangle of edges,
+without the difference being self-explanatory (user finding). Hovering shows details on both nodes
+and edges (technical/own definition/via profile/via role/specific field values). The graph view
+complements the table for the overview — for gapless value-by-value comparison (green-highlighted
+matches, D4 divergence link), the table remains the detail view.
+
+**Clicking a node** leads — depending on its type — directly to the matching view instead of
+merely highlighting the path: **user** → results list filtered to this user, **query** → "who
+matches" results list for this query, **role** → role detail page; for all other node types (rule,
+clause, object/transaction-code box) it remains at path highlighting (the rest grayed out).
+**Right-clicking** a node with more than one meaningful action instead opens a context menu — for
+a query and an SoD rule, for example, both "show result" and "details (master data)"; the latter
+opens Query Management in a new tab with the ruleset and entry already selected. For the **user**
+node, the context menu offers, in addition to "show user analysis" (filtered results list), the
+entry **"user detail"** — opens the user detail page (see below). "Fit" centers the view and is
+also clickable while full screen is active (the fit/full-screen buttons are placed inside the
+graph canvas for this reason, not in the toolbar above it — otherwise they would be unreachable in
+full screen).
+
+**User detail page.** A standalone view (not an overlay) with master record (name, type, user
+group, status/lock reason, last login, sleeping, validity period, password history/initial-
+password notice), below it a **criticality score**: the highest occurring level as a badge, plus
+the full distribution below it (e.g., "N× very critical · M× critical · …", counted across
+individual filter hits **and** SoD findings together — deliberately no single weighted value, so
+the derivation always remains traceable). Two tabs below list this user's **individual
+authorization** and **SoD** hits, with a criticality badge and a "root cause" button each, which
+jumps directly to the matching query or rule root cause. "Back" returns to the root-cause graph
+(cleanly closing an active full-screen view first, if open).
+
+**Legend + custom colors.** Below the graph, a legend shows all occurring node types together with
+their border modifiers (technical/orphaned). Clicking a color dot opens the native system color
+picker; the chosen color takes effect immediately on all open graphs (path/radial/full tree view)
+and is stored locally in the browser (no server config, purely a personal setting per
+device/browser).
+
+**Source marking.** The same actor can reach a match via **several sources** — this is indicated
+per row as a short annotation. Pairs with identical values from the own definition and the
+generated profile are merged into **one** row (in that case the profile is only the compiled form
+of the definition); only when the values **differ** do both rows remain — that is the meaningful
+divergence case (→ D4). Several rows for the same role with **different** values are therefore not
+a display error, but genuinely different authorization instances, or a design-≠-generated
+divergence:
+
+| Annotation | Meaning |
+| --- | --- |
+| **(own definition)** | The role carries the authorization directly itself (`AGR_1251` → role `HAS_AUTH`) — appears only if there is additionally a second source for the same actor. |
+| **(own definition = generated profile X)** | The own definition **and** the generated profile X carry **exactly the same** values for this object — the profile here is only the compiled form of the definition. Both are then merged into **one** row (instead of two rows with identical values). |
+| **(via generated profile X)** | Comes via the profile X generated by the role (role `HAS_PROFILE` → profile `HAS_AUTH`) — what is actually written to `UST04` during the user comparison and checked at runtime. Appears on its own only if it **differs** from the own definition (otherwise merged, see above). |
+| **(via contained role X)** | The displayed role is a **collective role** that bundles role X as a single role (`CONTAINS`); X itself carries the authorization. |
+
+If "own definition" and "generated profile" **diverge** for the **same** authorization object, a
+red link additionally appears that jumps directly to the detail view of consistency check **D4**
+("outdated/non-generated profiles") — in two variants: **"deviates from the generated profile ·
+D4"** (a profile exists for this object, but has different values per field) and **"no matching
+generated profile found · D4"** (the generated profile has **no** hit at all for this object — the
+more serious case, with no value comparison). Background: in SAP, a role only becomes effective at
+runtime after the profile has been generated — if the maintained definition deviates from the
+generated profile, or the profile hit is missing entirely, the "own definition" row shows
+something that may **no longer** be active. This assumption (role definition ≈ generated profile)
+is not a root-cause peculiarity, but applies to the app's entire can-do/SoD analysis
+(`materialize_matches_*.cypher`); D4 is the consistency check designated for this. In the **graph
+views**, the same check appears (without a clickable link, since the hover tooltip is not
+interactive) as an additional red line in the edge tooltip of the affected role.
+
+**Follow-up profiles.** For large roles, PFCG creates several generated profiles (base name plus
+running number, e.g., `T-F0100831`, `T-F01008319`), but in the data only the first one is attached
+to the role. Profiles with a role's base name plus digits (at most 12 characters) therefore count
+as generated by that role: they are shown as "via generated profile" of the role, do not appear as
+"orphaned", and do not trigger the D4 link.
+
+**Grouping + value filter.** A role with **several authorization instances** for the same object
+(permitted in SAP; the instances must **not** be aggregated, see AE-03) appears **once** as a
+header, with its matching instances indented below it — instead of many rows with the same role
+name. A second toggle **"all" / "matches only"** (default **"matches only"**) shows either all
+field values (matches highlighted green) or **only** the values matching the requirement (without
+highlighting) — helpful for roles with very many transaction codes/values. This applies equally in
+the table and in the **graph views** (node label + hover tooltip show the same reduction); if the
+reduction yields no hit for a field (e.g., because the hit only comes about via a different
+field), the display falls back to the full values instead of staying empty.
+
+**Role clickable → detail page.** Role names (table) or role nodes (graph) open a **role detail
+page** on click (the left filter/runs sidebar remains visible). At the top, always visible, are
+the **master data** (description, subtype, parent role, generated profile + generation status
+including the meaning of the profile status, creator/last changer as "name (initials)" + date,
+validity of the viewed user's assignment, number of assigned users) — analogous to the
+always-visible metadata in the query editor. Creator/changer **and** the assignment validity show
+the user name, provided the respective user is (still) present in the dataset — otherwise only the
+SAP initials (basis team accounts without dialog access, for example, are not necessarily present
+as their own user in the extract). The **number of assigned users** is clickable and opens a
+dedicated **user list** (ID · name · user type · user group · last login · sleeping) — the same
+list page as in the consistency-check drill-down (see below). Below that, as tabs: **transaction
+codes** (effective, from `S_TCODE` + role menu), **authorization objects** (with instance count),
+**individual authorizations** (which individual filters the role satisfies **on its own**), and
+**SoD rules** (which rules the role can trigger **on its own** — intra-role conflict); the latter
+two are **role-centric** (freshly computed, independent of the run). A separate **generation
+date** is not contained in the SAP extract and is therefore not shown.
+
+For this, the matches table shows **user · name · query · label (query's short label) ·
+criticality · root cause** — user type/status are deliberately omitted here (they may appear in
+the master data tile); instead, it is visible at a glance **which** query matched with **which**
+criticality. The findings table no longer shows a sleeping column (instead the root-cause button,
+see above). The **rule cell** of the findings table is clickable — it filters (analogous to the
+clickable user cell and the rule/query column of the results overview) the same view to this rule,
+instead of switching to the root-cause page (which always needs a specific user).
+
+## 4 · Consistency Checks
+
+A menu with three items — all of them switch the main area (in place of filter/results) to the
+check catalog of the respective area; "← back to results" switches back.
+
+| Command | Effect |
+| --- | --- |
+| **User-specific** | Check catalog categories A/B/C/D/E (critical authorizations, user-master hygiene, assignment consistency, validity/time reference, referential integrity). |
+| **Role-specific** | Check catalog category R (role design/quality — structure/generation, assignment/scope, risk/SoD, maintainability). |
+| **Import** | Check catalog category I — import evidence (I1): completeness proof against the source SAP extract, matching source rows against the graph result per source table (audit evidence trail). Dataset-wide, no user/role reference. |
+
+**Import evidence (I1) in detail.** Uses the reconciliation record automatically recorded with
+every import (no separate run needed — provided the dataset was (server-)imported since this
+check was introduced; otherwise a notice appears instead of figures). Per source table: source
+rows, any filtered rows (e.g., `DELETED='X'`), discarded sensitive columns, the resulting graph
+result (node/edge count), and a status — **OK** (genuine 1:1 expectation met), **notice** (the
+table deliberately bundles/deduplicates, e.g., authorization field values per AE-03, or an edge
+type is shared by several source tables), **deviation** (genuine 1:1 expectation not met), or
+**not in the extract** (an optional table was missing). On the check detail page, there is
+additionally a dedicated **report block** (PDF/CSV) with the **complete** table-by-table
+reconciliation, including a cover sheet (company/system/occasion/author/reference date) — the
+general "download report" (see below) shows I1 only as a single catalog entry with a hit count;
+this dedicated report is intended for the gapless audit evidence trail.
+
+Addresses the **quality and general risks of the loaded authorization concept itself** —
+independent of any specific SoD rule. **Each grid box has its own, framed table** — in the user
+area, laid out by category: a 2×2 layout (A·B / C·D) plus **E centered below it**, with
+**category pills A–E** (+ "all") above; in the role area, laid out by topic (structure &
+generation, assignment & scope, risk & SoD, maintainability & design), likewise 2×2 with topic
+pills above — instead of a single long table. Per row, the **check appears bold, with the
+rationale in small text below it** — understandable even without specialist knowledge, not just
+the short title. The last column, **"results"**, shows the hit count last seen for each check in
+this session, otherwise **"not yet run"**, as long as no check logic exists.
+
+Clicking a row **switches** (no pop-up/dialog, the same principle as the catalog itself) to a
+**dedicated result view**: the check title on the left, **ID/category/priority chips + "← back to
+catalog"** right-aligned at the level of the heading; below it, **two columns, like the findings
+view**. **Left:** rationale (always visible, even for checks not yet implemented), below it — as
+soon as the check logic exists — a narrow form with **dataset selection** and the display of the
+**reference date** (= download date of the SAP extracts, a property of the dataset, no longer a
+run filter — correctable globally via "change…", which then applies to all future runs/checks of
+this dataset) with **"run"** (shows a spinner during the request), below that a **quick selection
+"more checks · …"** with all checks of the same box (category or topic, analogous to the run list,
+also works from a check not yet implemented) — clicking switches directly to the next check
+without having to go back to the catalog; the dataset selection is retained, so that an entire box
+can be clicked through with the same dataset. **Right** the result: some checks show a **pill
+filter row** above the table (e.g., lock reason for "locked users with critical roles", status
+active/locked, sleeping days 90/180/360) — clicking a pill immediately starts a new run while a
+result is already visible, without having to click "run" again — next to it a **table/graph
+pill**: live for **A1–A3** (SAP_ALL/SAP_NEW/critical standard profiles) — shows the
+user→(role→)profile path as a graph (Cytoscape.js, user node blue, profile node green); for all
+other checks it remains disabled ("coming later", analogous to the SoD results). If the check has
+both a summary **and** a detail list (e.g., "who has SAP_ALL"), the table view shows **summary
+tiles** at the top (human-readable values, e.g., "active"/"locked" instead of raw column names),
+with the **detail table** below (columns vary per check, headings likewise translated to be
+human-readable instead of the raw Cypher column names) — **column headers are clickable and sort
+the table** (numerically or alphabetically depending on content), a small triangle (▲/▼) shows the
+column and direction; clicking again reverses it. For some checks (currently A4), a **"root
+cause" button** additionally appears per row, which switches to the same **root cause page** as
+the SoD/individual-filter root cause (see above) and shows which specific role(s)/profile(s), with
+which authorization values, trigger the hit; its "← back" leads back to this consistency check
+result (not to the catalog). Checks without a summary show only the detail table. If the summary
+consists of **exactly one** tile and the detail table is a user list (e.g., "active dialog users
+without a logon" B1), the large metric is **clickable** and opens — freshly enriched from the
+database (ID · name · user type · user group · last login · sleeping) — the same user list page as
+for "assigned users" on the role detail page. "← back to catalog" (its own button on the check
+result itself) switches back to the catalog. Checks not yet implemented show only a notice on the
+right instead of a result.
+
+**No persistence (deliberately):** a check run does not create a `(:Run)` node and is not stored
+anywhere — the result lives only in the browser for the duration of the session. The last-seen
+**hit count** is cached client-side and then replaces the "not yet run" placeholder in the catalog
+table — this is a pure UI cache, not server state, and is lost when the page reloads. The complete
+catalog with rationale is in [`KONSISTENZCHECKS.md`](../../KONSISTENZCHECKS.md), the technical
+framework in [`ROADMAP.md`](../../ROADMAP.md), Phase 7.
+
+## 5 · Save
+
+| Command | Effect |
+| --- | --- |
+| **Backup / Restore** | Opens the dialog: **create backup** (source-data ZIP), the option **then clear** (backup & clear), and the **backup list** with **↻ restore** and **↓ download**. |
+
+Backups contain only the **cleaned source data** — no findings (these are re-analyzed after
+restoring). Backups stay local.
+
+In the same dialog, separately below: **run backups** — backs up a single **analysis run** (run +
+findings, without evidence; that can be recomputed at any time via "evidence" in the ribbon) as
+its own ZIP. For this, every dataset carries a **dataset UID**, which is compared on restore with
+the UID stored in the run backup: if it deviates (the dataset has since been repopulated), the app
+explicitly asks before the restore.
+
+## 6 · Manage
+
+| Command | Effect |
+| --- | --- |
+| **Clean up** | Dialog: **delete this dataset** or **reset everything** (the ruleset & schema are preserved in both cases), as well as, separately, **delete a single analysis run** (run + findings; the dataset and other runs remain unaffected). |
+
+Both actions ask for confirmation before executing.
+
+## 7 · Admin
+
+| Command | Effect |
+| --- | --- |
+| **Query Management** | Link directly to its own page `/admin.html` (no intermediate dialog). |
+| **Masterdata** | Link directly to its own page `/admin-masterdata.html` (no intermediate dialog). |
+| **Scope** | Link directly to its own page `/admin-scopes.html` (no intermediate dialog). |
+| **Error log** | Dialog with failed jobs (import/run/backup/restore/clean-up) — **persistent**, survives a container restart (file `data/logs/job_errors.jsonl`). Newest first. |
+
+### Query Management (own page, own ribbon bar)
+
+Reachable via the menu "Admin" (group "7 · Admin") → "Query Management". Its own ribbon groups:
+**view** (refresh), **edit** (change/save/cancel; save/cancel become active as soon as something
+has been changed), **PFCG suggestion** (only in individual-filter mode, see below), **backup**
+(download the overlay file of the selected ruleset), and **back** (to the analysis).
+
+The previously embedded Masterdata panel has been removed from Query Management; catalog
+maintenance now happens centrally on the dedicated **Masterdata** page (`/admin-masterdata.html`).
+
+Left: select a **filter set** (currently 3 rulesets), below it the **mode toggle "individual
+filter"/"SoD"** — switches the list, filter, and detail area, without discarding the selection in
+the other mode. Below that, **search** (supports `*` as a wildcard, e.g., "BC-SEC*", applies in
+both modes) and, per mode, its own filters: **individual filter** by **module/criticality/query
+type**, **SoD** only by **criticality**. The list shows ID + label, with own/derived or edited
+entries marked.
+
+**Individual filter mode** — on the right, after selecting a query: at the top, permanently
+visible, the **master data** (short/long label, criticality, module, query type, "ignore
+transaction code" — it is the **short label** that appears as the name in the analysis's sidebar
+filters), below it three **tabs**:
+
+- **Structure** — the query's transactions and authorization objects, **view only** (editing
+  follows later).
+- **Risk** — risk type/level/status (dropdowns), free text on the potential risk of this
+  authorization, a **threat walkthrough** (step-by-step attack path for the threat analysis), as
+  well as **sources** (internet sources/references, one URL per line).
+- **Controls** — free text: mitigating measures.
+
+Bottom left: derive a **new query from the selected one** (authorizations/transaction codes
+carried over 1:1; adjust master data/risk/controls above beforehand) — only in individual filter
+mode.
+
+**PFCG suggestion** (ribbon button "derive from transaction code", individual filter mode only) —
+builds a completely **new** query, instead of copying an existing one: select a dataset and a
+transaction (TCode); "load suggestion" shows, for each authorization object checked by the
+transaction, the fields with the **SU24 suggestion** (from USOBT_C) **and** the **real, most
+frequently observed values** from the already-imported roles of this dataset (with a hit share,
+e.g., "01 (32%)") — clicking a real value chip carries it over into the row's value field. Org
+fields are marked with an **"org"** badge and preset to `*` by default (the actual org restriction
+runs via org profiles, not via the query itself). Each object can be deselected (checkbox), and
+each field's **AND**/OR for multiple values can be toggled. Assign a new query ID + label; "save &
+apply" creates the query in the same overlay (`queries.custom.json`) as "derive" — fields without
+a value are not carried over.
+
+**SoD mode** — on the right, after selecting a rule: master data (short/long label, criticality,
+reason code), below it three **tabs**:
+
+- **Structure** — the CNF clause structure: for each clause, the queries it contains (ID + label);
+  all clauses together are AND-combined, within a clause one matched query suffices. If a ruleset
+  does not yet have `clauses` stored (currently CSI/CSI_BI, see ROADMAP), the tab instead shows the
+  raw expression (`expression`) and the variable mapping.
+- **Risk** / **Controls** — as with the individual filter, with their own free-text fields per SoD
+  rule.
+
+At the bottom left, a **new SoD rule can be derived from the selected rule**. The app carries over
+the master data, risk, and clauses from the area on the right, creates the new rule under the
+given SoD ID, and saves it in the overlay. Save/cancel (ribbon **or** detail area) as well as
+"save overlay" (ribbon **backup**) act, in whichever mode is active, on the matching overlay
+(`queries.custom.json` or `sod_rules.custom.json`).
+
+**One-pager (PDF)** (ribbon group "export", in both modes) — exports the query or SoD rule
+selected on the left as a single-page PDF (A4 portrait) with all available information: master
+data, criticality badge (color as in the frontend), risk (type/level/status, risk description,
+threat walkthrough, sources), controls, and the structure — for a query, the transaction(s) and the
+authorization-objects table; for an SoD rule, the resolved clause structure (or expression +
+variable mapping, if no `clauses` are stored), including the short labels of the referenced
+queries. Empty sections (e.g., no risk recorded) are omitted rather than shown empty. The layout is
+designed for a single sheet and fits reliably for the usual data volumes; an unusually large number
+of authorization rows overflows onto a second page rather than cutting off content.
+
+Changes are **never** written to the vendor file (`queries.json`), but to a separate overlay
+(`queries.custom.json`) per ruleset — vendor updates therefore do not overwrite custom
+adjustments. Save/derive takes effect **immediately** (no extra reload step needed).
+
+### Masterdata (own page, own ribbon bar)
+
+Reachable via the menu "Admin" (group "7 · Admin") → "Masterdata".
+
+The page bundles the maintenance of the central catalogs:
+
+- **Criticalities** (ID computed internally; label/rank/color/KRI editable)
+- **Reason codes (SoD)**
+- **Modules** (ID technical, derived from the label)
+- **Query types** (ID technical, derived from the label, with description)
+- **Company logo and name in the product name** — the logo replaces the default badge in the
+  header. The field **"name in the product name"** sets the first word of KARMA's expansion
+  ("… Access Risk & Monitoring Assistant") in the header and footer; left empty, the default
+  remains "Key". Both are stored only **locally** in `config/branding.json` and are never
+  committed to the repository.
+
+These catalogs are used in Query Management as **dropdowns instead of free text**
+(criticality/data-protection/risk level as well as module/query type/reason code).
+
+The section "criticality shown prominently on individual filter/SoD" describes the UI use of the
+catalog values (badges/colors/filters) and is **not** a separate master-data catalog.
+
+### Scope (own page, own ribbon bar)
+
+Reachable via the menu "Admin" (group "7 · Admin") → "Scope". Manages **persistent, named scope
+profiles** — the same catalog selection (individual filters/SoD rules, filterable by name pattern
+**on the label**/module/criticality/query type, multiple selection via checkbox) as in the wizard
+step "scoping", but **permanently saved** and reusable across any number of runs/datasets of the
+same ruleset (see "saved scope" above).
+
+Left: select a **ruleset**, below it the list of scopes saved for this ruleset (with a count "N
+individual filters, M SoD rule(s)"), "+ new scope". On the right, a freely clickable mini-stepper
+**① individual filters · ② SoD rules · ③ save**:
+
+- **① Individual filters** — catalog table (about 20 rows visible, the rest scrolls), filter by
+  name pattern (matches the label)/module/query type/criticality, "select all (filtered)"/"clear
+  selection". Optional — can proceed to ② even with no selection at all.
+- **② SoD rules** — the same table logic for SoD rules, with an additional toggle **"all" / "only
+  possible"**: "only possible" shows only rules whose clauses are all covered by the individual
+  filters selected under ① (bidirectional linking via the ruleset's CNF clause structure —
+  currently only present for the SAP R/3 ruleset; without this structure, a notice appears instead
+  of the toggle, and all rules remain visible).
+- **③ Save** — name (editable only on initial creation), description, **user-type profile**, and
+  **sleeping (days)** (the same axes as in the "new run" form), and a summary. If an SoD rule is
+  selected whose clause queries are not already checked under ①, the app **automatically** adds
+  them on save (never removing anything) — the summary states this ("of which N automatically
+  added"), so that the rule can actually be analyzed later as well. Saving requires at least one
+  individual filter **or** one SoD rule.
+
+A **new** scope starts guided at ①; an **existing** scope opens directly at ③ (summary) — via the
+stepper, you can go back to ①/② at any time to adjust it, then save again or delete it.
+
+Scope profiles refer to query/SoD-rule **IDs** of a ruleset — purely catalog vocabulary, not client
+data — and therefore live, like the individual-filter/SoD-rule overlays, in the ruleset folder
+(`rules/<Ruleset>/scope_profiles.custom.json`), tracked by git.
+
+**Planned** in this area:
+
+- **Authorizations/transaction codes editable in the structure tab** — currently only a view or a
+  1:1 copy when deriving.
+- **USOBT-based query builder** — new queries via selecting transaction → authorization objects,
+  instead of free-text entry.
+- **Master-data sheet: query → system type** (SAP R/3, S/4HANA, more planned in the future).
+- **Import a new filter set** — additional systems as their own ruleset, prospectively **SAP
+  S/4HANA, Azure AD / Entra, Microsoft Dynamics, Salesforce** (the data model stays the same).
+
+> The app **deliberately has no user/authorization concept of its own**: it runs locally or is
+> distributed as a container; access is secured via the environment.
+
+## SAP Security: Attack Paths (Prototype)
+
+Ribbon **8 · Security → Attack Paths**. The idea is similar to BloodHound: accounts are nodes,
+"can do X" are edges, and the shortest paths to **tier-zero accounts** are sought (SAP_ALL/SAP_NEW
+directly or via a role, plus configurable role patterns/accounts). The edges are derived
+**statically from the authorization values** — the result is *potential* paths for audit and
+security, not proven exploits; nothing is executed.
+
+| Type | Authorization | Meaning |
+|---|---|---|
+| lateral | `S_USER_GRP` ACTVT 02 (CLASS pattern) | Change the password/master data of accounts in this user group |
+| lateral | `S_BTCH_NAM` (BTCUNAME pattern) | Schedule a background job under the name of the target account |
+| direct | `S_DEVELOP` 02 + DEBUG | Debug/Replace |
+| direct | `S_TABU_NAM`/`S_TABU_DIS` change | Change authorization/user tables |
+| direct | `S_LOG_COM` COMMAND `*` | arbitrary OS commands |
+| direct | `S_USER_AGR` 02 on own role; 02 + 22 with `S_USER_GRP` | grant oneself rights |
+| direct | `S_RFC` ACTVT 16 on critical modules | Remote call of critical function modules |
+| remote marker | `S_RFC` ACTVT 16 on `*` or critical function groups/modules | the step is possible remotely (RFC) |
+
+The analysis is evaluated as of the **dataset's reference date**; locked, expired, and reference
+accounts do not count. The view shows KPI tiles (accounts with a path, direct/lateral,
+remote-capable), filters, a table with a path graph per account, and **bottlenecks**
+(roles/profiles through which most accounts gain their first escalation capability, and
+intermediate accounts). The catalog (objects, activities, critical RFC modules, table list,
+tier-zero definition) is in `config/security_catalog.json` and is a **sample catalog** that must be
+reviewed and extended by subject-matter experts before production use. Limitations: a static view
+(locks/validity are taken into account, runtime checks are not), one system per dataset; RFC trust
+relationships (SM59/RFCDES) are not yet part of the extraction.
