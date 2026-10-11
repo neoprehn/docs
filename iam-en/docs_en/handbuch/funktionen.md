@@ -4,18 +4,23 @@ What each command in the ribbon bar does — and what the selection options mean
 
 ## Start page
 
-Entry point before the actual analysis, grouped **company → SAP client → run**. Each run gets a
-card with its as-of date (or the dataset ID, if no as-of date is on record), the **findings**/
-**rules**/optional **sleeping** badges, and the last-applied ruleset; the most recent run per
-client is marked "Current". Datasets without any run yet (freshly imported, not evaluated) show
-up as a separate hint card without a compare option. **Open** jumps straight into the analysis
-(`analysis.html`) for that run.
+Entry point before the actual analysis, grouped **company → SAP client → dataset (time slice)**.
+Each dataset gets exactly **one** card with its as-of date (or the dataset ID, if no as-of date is
+on record); the most recent dataset per client is marked "Current". If a dataset has **multiple
+runs** (e.g. re-evaluated with a different scope), the card shows a dropdown to pick the run
+(default: latest) — the **findings**/**rules**/optional **sleeping** badges and the ruleset always
+reflect whichever run is currently selected in the dropdown. Datasets without any run yet (freshly
+imported, not evaluated) show a hint instead of the badges. **Open** jumps straight into the
+analysis (`analysis.html`) for the selected run.
 
-**Compare (preview).** A checkbox on each run card selects up to two runs **within the same
-client group** for the planned concept comparison (ROADMAP-V2, phase 3). In this first stage,
-only runs with the **same ruleset** can be combined — runs with a different ruleset get disabled
-as soon as one run is selected. The "Compare concepts" button is currently still a preview note;
-the actual comparison (new/removed conflicts, delta per rule/user/query) is planned next.
+**Compare (preview).** A checkbox on each dataset card selects up to two datasets **within the
+same client group** for the planned concept comparison (ROADMAP-V2, phase 3) — one card means one
+checkbox, so comparing a dataset against itself is structurally impossible (and wouldn't make
+sense anyway, since no differences would be expected). In this first stage, only datasets whose
+currently selected run shares the **same ruleset** can be combined — datasets with a different
+ruleset get disabled as soon as one is selected (switching the dropdown re-evaluates the lock).
+The "Compare concepts" button is currently still a preview note; the actual comparison (new/removed
+conflicts, delta per rule/user/query) is planned next.
 
 ## Banner
 

@@ -4,19 +4,24 @@ Was macht welcher Befehl in der Ribbon-Bar — und was bedeuten die Auswahlmögl
 
 ## Startseite
 
-Einstiegspunkt vor der eigentlichen Auswertung, gegliedert **Firma → Mandant → Lauf**. Je Lauf
-eine Karte mit Stichtag (bzw. Dataset-ID, wenn kein Stichtag hinterlegt ist), den Badges
-**Findings**/**Regeln**/optional **Sleeping** sowie dem zuletzt angewendeten Ruleset; der jeweils
-neueste Lauf je Mandant trägt die Markierung „Aktuell". Datasets ohne jeden Lauf (frischer Import,
-noch nicht ausgewertet) erscheinen als eigene Hinweiskarte ohne Vergleichsoption. **Öffnen** springt
-direkt in die Auswertung (`analysis.html`) zu diesem Lauf.
+Einstiegspunkt vor der eigentlichen Auswertung, gegliedert **Firma → Mandant → Dataset
+(Zeitscheibe)**. Je Dataset genau **eine** Karte mit Stichtag (bzw. Dataset-ID, wenn kein Stichtag
+hinterlegt ist); das jeweils neueste Dataset je Mandant trägt die Markierung „Aktuell". Hat ein
+Dataset **mehrere Läufe** (z. B. erneute Auswertung mit anderem Scope), zeigt die Karte ein
+Dropdown zur Lauf-Auswahl (Standard: neuester Lauf) — Badges **Findings**/**Regeln**/optional
+**Sleeping** sowie das Ruleset beziehen sich immer auf den gerade im Dropdown gewählten Lauf.
+Datasets ganz ohne Lauf (frischer Import, noch nicht ausgewertet) zeigen nur einen Hinweis statt
+der Badges. **Öffnen** springt direkt in die Auswertung (`analysis.html`) zum gewählten Lauf.
 
-**Vergleichen (Vorschau).** Checkbox je Lauf-Karte wählt bis zu zwei Läufe **innerhalb derselben
-Mandant-Gruppe** für den geplanten Konzeptvergleich aus (ROADMAP-V2, Phase 3). In der ersten
-Ausbaustufe nur innerhalb **desselben Rulesets** möglich — Läufe mit abweichendem Ruleset werden
-gesperrt, sobald ein Lauf gewählt ist. Der „Konzepte vergleichen"-Button ist aktuell noch ein
-Vorschau-Hinweis; die eigentliche Vergleichsauswertung (neue/entfallene Konflikte, Delta je
-Regel/User/Query) ist als Nächstes geplant.
+**Vergleichen (Vorschau).** Checkbox je Dataset-Karte wählt bis zu zwei Datasets **innerhalb
+derselben Mandant-Gruppe** für den geplanten Konzeptvergleich aus (ROADMAP-V2, Phase 3) — eine
+Karte = eine Checkbox, ein Vergleich eines Datasets gegen sich selbst ist damit strukturell
+ausgeschlossen (ergäbe auch fachlich keinen Sinn, da keine Unterschiede zu erwarten sind). In der
+ersten Ausbaustufe nur innerhalb **desselben Rulesets** möglich — Datasets, deren aktuell gewählter
+Lauf ein abweichendes Ruleset hat, werden gesperrt, sobald ein Dataset gewählt ist (Dropdown-Wechsel
+wertet die Sperre neu aus). Der „Konzepte vergleichen"-Button ist aktuell noch ein Vorschau-Hinweis;
+die eigentliche Vergleichsauswertung (neue/entfallene Konflikte, Delta je Regel/User/Query) ist als
+Nächstes geplant.
 
 ## Banner
 
