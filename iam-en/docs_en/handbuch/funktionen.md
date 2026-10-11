@@ -494,16 +494,20 @@ visible, the **master data** (short/long label, criticality, module, query type,
 transaction code" — it is the **short label** that appears as the name in the analysis's sidebar
 filters), below it three **tabs**:
 
-- **Structure** — the query's transactions and authorization objects, **view only** (editing
-  follows later).
+- **Structure** — the query's transactions and authorization objects. Editable as a **text
+  editor** in edit mode (one entry per line — transactions: one TCode per line; authorization
+  objects: `Object | Field | AND/OR | Value1,Value2`), analogous to the clause text editor for SoD
+  rules. Rare `audit`/`stad` flags on lines that were not touched are preserved on save, even
+  though the plain text format does not surface them.
 - **Risk** — risk type/level/status (dropdowns), free text on the potential risk of this
   authorization, a **threat walkthrough** (step-by-step attack path for the threat analysis), as
   well as **sources** (internet sources/references, one URL per line).
 - **Controls** — free text: mitigating measures.
 
-Bottom left: derive a **new query from the selected one** (authorizations/transaction codes
-carried over 1:1; adjust master data/risk/controls above beforehand) — only in individual filter
-mode.
+**Save as&hellip;** (button next to "Save", edit mode only) creates a fully **independent copy**
+of the currently open query under a new ID — carrying over the **current form state, including
+unsaved changes** (also to the structure). Before creating it, a warning explains that the copy
+will be independent and later changes to either query will not affect the other.
 
 **PFCG suggestion** (ribbon button "derive from transaction code", individual filter mode only) —
 builds a completely **new** query, instead of copying an existing one: select a dataset and a
@@ -527,11 +531,11 @@ reason code), below it three **tabs**:
 - **Risk** / **Controls** — as with the individual filter, with their own free-text fields per SoD
   rule.
 
-At the bottom left, a **new SoD rule can be derived from the selected rule**. The app carries over
-the master data, risk, and clauses from the area on the right, creates the new rule under the
-given SoD ID, and saves it in the overlay. Save/cancel (ribbon **or** detail area) as well as
-"save overlay" (ribbon **backup**) act, in whichever mode is active, on the matching overlay
-(`queries.custom.json` or `sod_rules.custom.json`).
+**Save as&hellip;** (same as for individual filters, see above) creates a new, independent SoD rule
+under a new ID — carrying over master data, risk, and the clauses currently in the form (including
+unsaved changes). Save/cancel (ribbon **or** detail area) as well as "save overlay" (ribbon
+**backup**) act, in whichever mode is active, on the matching overlay (`queries.custom.json` or
+`sod_rules.custom.json`).
 
 **One-pager (PDF)** (ribbon group "export", in both modes) — exports the query or SoD rule
 selected on the left as a single-page PDF (A4 portrait) with all available information: master
@@ -605,10 +609,6 @@ data — and therefore live, like the individual-filter/SoD-rule overlays, in th
 
 **Planned** in this area:
 
-- **Authorizations/transaction codes editable in the structure tab** — currently only a view or a
-  1:1 copy when deriving.
-- **USOBT-based query builder** — new queries via selecting transaction → authorization objects,
-  instead of free-text entry.
 - **Master-data sheet: query → system type** (SAP R/3, S/4HANA, more planned in the future).
 - **Import a new filter set** — additional systems as their own ruleset, prospectively **SAP
   S/4HANA, Azure AD / Entra, Microsoft Dynamics, Salesforce** (the data model stays the same).

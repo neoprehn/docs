@@ -497,15 +497,21 @@ ID + Bezeichnung, eigene/abgeleitete bzw. bearbeitete Eintr&auml;ge markiert.
 die **Kurzbezeichnung** ist es, was in den Sidebar-Filtern der Auswertung als Name erscheint),
 darunter drei **Tabs**:
 
-- **Aufbau** — Transaktionen und Berechtigungsobjekte der Query, **nur Anzeige** (Bearbeitung
-  folgt sp&auml;ter).
+- **Aufbau** — Transaktionen und Berechtigungsobjekte der Query. Im Bearbeiten-Modus als
+  **Texteditor** editierbar (ein Eintrag je Zeile — Transaktionen: ein TCode je Zeile;
+  Berechtigungsobjekte: `Objekt | Feld | UND/ODER | Wert1,Wert2`), analog zum Klausel-Texteditor
+  bei SoD-Regeln. Seltene `audit`/`stad`-Sonderflags unver&auml;ndert gebliebener Zeilen bleiben
+  beim Speichern erhalten, auch wenn die Zeile selbst nicht angefasst wurde.
 - **Risiko** — Risikoart/-stufe/-status (Dropdowns), Freitext zum potenziellen Risiko dieser
   Berechtigung, **Threat-Walkthrough** (Schritt-für-Schritt-Angriffspfad für die Threat-Analyse)
   sowie **Quellen** (Internetquellen/Referenzen, eine URL je Zeile).
 - **Controls** — Freitext: mitigierende Ma&szlig;nahmen.
 
-Unten links: eine **neue Query aus der gew&auml;hlten ableiten** (Berechtigungen/TCodes 1:1
-&uuml;bernommen, Stammdaten/Risiko/Controls oben vorher anpassen) — nur im Modus Einzelfilter.
+**Speichern unter&hellip;** (Button neben „Speichern", nur im Bearbeiten-Modus) legt eine
+komplett **unabh&auml;ngige Kopie** der aktuell ge&ouml;ffneten Query unter einer neuen ID an —
+&uuml;bernimmt dabei den **aktuellen Formularzustand inkl. noch ungespeicherter &Auml;nderungen**
+(auch am Aufbau). Vor dem Anlegen erscheint eine Warnung, dass die Kopie unabh&auml;ngig wird und
+sp&auml;tere &Auml;nderungen an einer der beiden Queries sich nicht auf die andere auswirken.
 
 **PFCG-Vorschlag** (Ribbon-Button „Aus TCode ableiten", nur Modus Einzelfilter) — baut eine
 komplett **neue** Query, statt eine bestehende zu kopieren: Dataset und Transaktion (TCode)
@@ -528,9 +534,9 @@ Kritikalit&auml;t, Reason-Code), darunter drei **Tabs**:
   der Tab ersatzweise den rohen Ausdruck (`expression`) und die Variablen-Zuordnung.
 - **Risiko** / **Controls** — wie beim Einzelfilter, eigene Freitext-Felder je SoD-Regel.
 
-Unten links kann eine **neue SoD-Regel aus der gew&auml;hlten Regel abgeleitet** werden. Die App
-&uuml;bernimmt Stammdaten, Risiko und Klauseln aus dem rechten Bereich, legt die neue Regel unter der
-angegebenen SoD-ID an und speichert sie im Overlay. Speichern/Abbrechen (Ribbon **oder**
+**Speichern unter&hellip;** (wie beim Einzelfilter, s. o.) legt eine neue, unabh&auml;ngige SoD-Regel
+unter einer neuen ID an — &uuml;bernimmt Stammdaten, Risiko und die aktuell im Formular stehenden
+Klauseln (auch noch ungespeicherte &Auml;nderungen). Speichern/Abbrechen (Ribbon **oder**
 Detailbereich) sowie „Overlay sichern" (Ribbon **Backup**) wirken im jeweils aktiven Modus auf den
 passenden Overlay (`queries.custom.json` bzw. `sod_rules.custom.json`).
 
@@ -607,9 +613,6 @@ Overlays im Ruleset-Ordner (`rules/<Ruleset>/scope_profiles.custom.json`), git-g
 
 **Geplant** in diesem Bereich:
 
-- **Authorizations/TCodes im Aufbau-Tab bearbeitbar** — bisher nur Anzeige bzw. 1:1-Kopie beim Ableiten.
-- **USOBT-gest&uuml;tzter Query-Builder** — neue Queries per Auswahl Transaktion&nbsp;&rarr;
-  Berechtigungsobjekte statt freier Eingabe.
 - **Stammdaten-Blatt: Query &rarr; System-Typ** (SAP R/3, S/4HANA, k&uuml;nftig weitere).
 - **Neues Filterset importieren** — weitere Systeme als eigenes Ruleset, perspektivisch
   **SAP S/4HANA, Azure AD / Entra, Microsoft Dynamics, Salesforce** (das Datenmodell bleibt gleich).
