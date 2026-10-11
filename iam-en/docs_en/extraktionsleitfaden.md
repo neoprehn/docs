@@ -249,7 +249,7 @@ The edge `(:Transaction)-[:CHECKS]->(:AuthObject)` is built from the unique (`NA
 pairs (`load/10_su24_checks.cypher`). Additionally (since 2026-09-08,
 `load/11_su24_proposals.cypher`) a `(:Transaction)-[:PROPOSES {field, low, high}]->(:AuthObject)`
 edge per (`NAME`,`OBJECT`,`FIELD`) row — the basis for the USOBT-based query builder
-([ROADMAP-V2.md](ROADMAP-V2.md#phase-1--admin-editor-v2-und-regelpflege)). `FIELD`/`LOW`/`HIGH`
+([ROADMAP-V2.md](https://github.com/neoprehn/iam/blob/main/ROADMAP-V2.md#phase-1--admin-editor-v2-und-regelpflege)). `FIELD`/`LOW`/`HIGH`
 are **already included in the extraction scope so far** (confirmed on 2026-09-08 against a real
 dataset, 100% field population) — no additional SAP-side extraction needed, just unused until
 now. `LOW`/`HIGH` can contain SAP parameter-ID placeholders (`$EKORG`, `$WERKS`, … instead of a
@@ -275,7 +275,7 @@ explicitly anywhere; `load/25_dataset_meta.cypher` therefore determines it via `
 (SE16 extractions always run in exactly one client context, so every USR02 row carries the same
 value) and writes only the matching T000 row onto the already-existing `:Dataset` node (runs after
 `00_dataset.cypher`). Basis for the company/client/time-slice grouping on the start page
-([ROADMAP-V2.md](ROADMAP-V2.md#phase-3--vergleich-interview-ergebnisse-und-erweiterte-exporte)).
+([ROADMAP-V2.md](https://github.com/neoprehn/iam/blob/main/ROADMAP-V2.md#phase-3--vergleich-interview-ergebnisse-und-erweiterte-exporte)).
 The remaining columns (`ADRNR`, `CC*` system-changeability indicators, `CHANGEUSER`/`CHANGEDATE`)
 are documented within the extraction scope, but (so far) unused, with no recognizable benefit for
 can-do.

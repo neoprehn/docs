@@ -132,8 +132,10 @@ aus Phase 6 vollständig ab (Lib-Entscheidung am Konsistenzcheck-Graph-Pilot A1�
 — NVL verworfen, Lizenz nur für Aura/kommerzielle Neo4j-Subscription, nicht für die hier genutzte
 Community Edition). NeoDash-Service/-Dashboard seit 2026-07-16 entfernt (s. ROADMAP 9.2).
 
-**Offen:** Mandanten-**Vergleich** (zwei `dataset`, Delta), **Ruleset-Editor** (Vendor-Basis vs.
-Custom, Round-Trip auf die JSON). Details/vollständige Liste: [ROADMAP.md](../../ROADMAP.md).
+**Offen (Stand v1):** Mandanten-**Vergleich** (zwei `dataset`, Delta) — läuft jetzt als
+[ROADMAP-V2.md, Phase 3](https://github.com/neoprehn/iam/blob/main/ROADMAP-V2.md#phase-3--vergleich-interview-ergebnisse-und-erweiterte-exporte);
+**Ruleset-Editor** (Vendor-Basis vs. Custom, Round-Trip auf die JSON) bleibt offener Backlog, s.
+[ROADMAP-V2.md](https://github.com/neoprehn/iam/blob/main/ROADMAP-V2.md).
 
 **DoD (Phase 9):** Eine transportable App, in der Import, parametrierte Auswertung, Vergleich,
 Anzeige, Export und Backup/Restore ohne JSON-Pflege bedienbar sind — lokal, ohne dass Mandantendaten

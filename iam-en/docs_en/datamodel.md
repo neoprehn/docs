@@ -80,7 +80,7 @@ whose field values sit as **properties**. Identity arises via the edges (`HAS_AU
 | `HAS_AUTH` | `Role`/`Profile` → `Authorization` | AGR_1251 | — |
 | `FOR_OBJECT` | `Authorization` → `AuthObject` | AGR_1251 | — |
 | `CHECKS` | `Transaction` → `AuthObject` | USOBT_C/USOBX_C (SU24) | — |
-| `PROPOSES` | `Transaction` → `AuthObject` | USOBT_C (SU24, `FIELD`/`LOW`/`HIGH`) | `field`, `low`, `high` — one edge per (TCode, object, field) row; several edges between the same two nodes are the normal case (several fields per object, or differing suggested values per TCode). The basis for the USOBT-based query builder, see [ROADMAP-V2.md](../ROADMAP-V2.md#phase-1--admin-editor-v2-und-regelpflege). |
+| `PROPOSES` | `Transaction` → `AuthObject` | USOBT_C (SU24, `FIELD`/`LOW`/`HIGH`) | `field`, `low`, `high` — one edge per (TCode, object, field) row; several edges between the same two nodes are the normal case (several fields per object, or differing suggested values per TCode). The basis for the USOBT-based query builder, see [ROADMAP-V2.md](https://github.com/neoprehn/iam/blob/main/ROADMAP-V2.md#phase-1--admin-editor-v2-und-regelpflege). |
 | `CONTAINS` | `Profile`(Collective) → `Profile`(Single) | UST10C | — |
 | `HAS_REFERENCE` | `User` → `User` (reference user) | USREFUS | — |
 | `HAS_MENU` | `Role` → `Transaction` (role menu, informational) | AGR_TCODES | — |
@@ -97,7 +97,7 @@ once per dataset on import (not per ruleset/run) and regenerates on every (re-)i
 ### Import Evidence (Derived Metadata Layer)
 
 Likewise not raw data, but written by the backend after every import (completeness proof against
-the source SAP extract, see [consistency check I1](handbuch/funktionen.md#4-konsistenzchecks)):
+the source SAP extract, see {ref}`consistency-checks`, consistency check I1):
 
 ```
 (:Dataset)-[:HAS_IMPORT]->(:Import {dataset, importedAt, lang})

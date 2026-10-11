@@ -134,8 +134,10 @@ A1–A3, see phase 7 — NVL was ruled out, its license is only for Aura/a comme
 subscription, not for the Community Edition used here). The NeoDash service/dashboard has been
 removed since 2026-07-16 (see ROADMAP 9.2).
 
-**Open:** client **comparison** (two `dataset`s, delta), a **ruleset editor** (vendor base vs.
-custom, round-trip to the JSON). Details/complete list: [ROADMAP.md](../../ROADMAP.md).
+**Open (as of v1):** client **comparison** (two `dataset`s, delta) — now tracked as
+[ROADMAP-V2.md, phase 3](https://github.com/neoprehn/iam/blob/main/ROADMAP-V2.md#phase-3--vergleich-interview-ergebnisse-und-erweiterte-exporte);
+a **ruleset editor** (vendor base vs. custom, round-trip to the JSON) remains open backlog, see
+[ROADMAP-V2.md](https://github.com/neoprehn/iam/blob/main/ROADMAP-V2.md).
 
 **DoD (phase 9):** A portable app in which import, parameterized analysis, comparison, display,
 export, and backup/restore can be operated without any JSON maintenance — locally, without

@@ -82,7 +82,7 @@ Knoten, dessen Feldwerte als **Properties** anliegen. Identität entsteht über 
 | `HAS_AUTH` | `Role`/`Profile` → `Authorization` | AGR_1251 | — |
 | `FOR_OBJECT` | `Authorization` → `AuthObject` | AGR_1251 | — |
 | `CHECKS` | `Transaction` → `AuthObject` | USOBT_C/USOBX_C (SU24) | — |
-| `PROPOSES` | `Transaction` → `AuthObject` | USOBT_C (SU24, `FIELD`/`LOW`/`HIGH`) | `field`, `low`, `high` — eine Kante pro (TCode,Objekt,Feld)-Zeile, mehrere Kanten zwischen denselben zwei Knoten sind der Normalfall (mehrere Felder je Objekt bzw. abweichende Vorschlagswerte je TCode). Grundlage für den USOBT-gestützten Query-Builder, s. [ROADMAP-V2.md](../ROADMAP-V2.md#phase-1--admin-editor-v2-und-regelpflege). |
+| `PROPOSES` | `Transaction` → `AuthObject` | USOBT_C (SU24, `FIELD`/`LOW`/`HIGH`) | `field`, `low`, `high` — eine Kante pro (TCode,Objekt,Feld)-Zeile, mehrere Kanten zwischen denselben zwei Knoten sind der Normalfall (mehrere Felder je Objekt bzw. abweichende Vorschlagswerte je TCode). Grundlage für den USOBT-gestützten Query-Builder, s. [ROADMAP-V2.md](https://github.com/neoprehn/iam/blob/main/ROADMAP-V2.md#phase-1--admin-editor-v2-und-regelpflege). |
 | `CONTAINS` | `Profile`(Collective) → `Profile`(Single) | UST10C | — |
 | `HAS_REFERENCE` | `User` → `User` (Referenzbenutzer) | USREFUS | — |
 | `HAS_MENU` | `Role` → `Transaction` (Rollenmenü, informativ) | AGR_TCODES | — |
@@ -99,7 +99,7 @@ materialisiert (nicht je Ruleset/Lauf), regeneriert sich bei jedem (Re-)Import.
 ### Import-Evidenz (abgeleitete Metadaten-Schicht)
 
 Ebenfalls keine Rohdaten, sondern vom Backend nach jedem Import geschrieben (Vollständigkeits-
-nachweis gegen den Quell-SAP-Extrakt, s. [Konsistenzcheck I1](handbuch/funktionen.md#4-konsistenzchecks)):
+nachweis gegen den Quell-SAP-Extrakt, s. {ref}`konsistenzchecks`, Konsistenzcheck I1):
 
 ```
 (:Dataset)-[:HAS_IMPORT]->(:Import {dataset, importedAt, lang})

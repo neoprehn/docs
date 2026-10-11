@@ -396,6 +396,7 @@ see above). The **rule cell** of the findings table is clickable — it filters 
 clickable user cell and the rule/query column of the results overview) the same view to this rule,
 instead of switching to the root-cause page (which always needs a specific user).
 
+(consistency-checks)=
 ## 4 · Consistency Checks
 
 A menu with three items — all of them switch the main area (in place of filter/results) to the
@@ -469,8 +470,9 @@ right instead of a result.
 anywhere — the result lives only in the browser for the duration of the session. The last-seen
 **hit count** is cached client-side and then replaces the "not yet run" placeholder in the catalog
 table — this is a pure UI cache, not server state, and is lost when the page reloads. The complete
-catalog with rationale is in [`KONSISTENZCHECKS.md`](../../KONSISTENZCHECKS.md), the technical
-framework in [`ROADMAP.md`](../../ROADMAP.md), Phase 7.
+catalog with rationale is in [`KONSISTENZCHECKS.md`](https://github.com/neoprehn/iam/blob/main/KONSISTENZCHECKS.md),
+the technical framework in [`ROADMAP-ARCHIV.md`](https://github.com/neoprehn/iam/blob/main/ROADMAP-ARCHIV.md),
+phase 7.
 
 ## 5 · Save
 

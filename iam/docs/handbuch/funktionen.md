@@ -397,6 +397,7 @@ Root-Cause-Button, s. o.). Die **Regel-Zelle** der Findings-Tabelle ist klickbar
 zur klickbaren User-Zelle sowie zur Regel-/Query-Spalte der Ergebnisse-Übersicht) dieselbe Ansicht
 auf diese Regel, statt zur Root-Cause-Seite zu wechseln (die braucht immer einen konkreten User).
 
+(konsistenzchecks)=
 ## 4 · Konsistenzchecks
 
 Menü mit drei Punkten — alle wechseln im Hauptbereich (anstelle von Filter/Ergebnisse) auf den
@@ -473,8 +474,9 @@ gespeichert — das Ergebnis lebt nur im Browser für die Dauer der Session. Die
 den Platzhalter „noch nicht ausgeführt" — das ist ein reiner UI-Cache, kein Server-Zustand, und
 geht beim Neuladen der Seite verloren. Der vollständige Katalog mit
 Begründung steht in
-[`KONSISTENZCHECKS.md`](../../KONSISTENZCHECKS.md), der technische Rahmen in
-[`ROADMAP.md`](../../ROADMAP.md), Phase 7.
+[`KONSISTENZCHECKS.md`](https://github.com/neoprehn/iam/blob/main/KONSISTENZCHECKS.md), der
+technische Rahmen in [`ROADMAP-ARCHIV.md`](https://github.com/neoprehn/iam/blob/main/ROADMAP-ARCHIV.md),
+Phase 7.
 
 ## 5 · Sichern
 

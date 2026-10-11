@@ -250,7 +250,7 @@ Kante `(:Transaction)-[:CHECKS]->(:AuthObject)` aus den eindeutigen (`NAME`, `OB
 (`load/10_su24_checks.cypher`). Zusätzlich (seit 2026-09-08, `load/11_su24_proposals.cypher`) eine
 `(:Transaction)-[:PROPOSES {field, low, high}]->(:AuthObject)`-Kante pro (`NAME`,`OBJECT`,`FIELD`)-
 Zeile — Grundlage für den USOBT-gestützten Query-Builder
-([ROADMAP-V2.md](ROADMAP-V2.md#phase-1--admin-editor-v2-und-regelpflege)). `FIELD`/`LOW`/`HIGH`
+([ROADMAP-V2.md](https://github.com/neoprehn/iam/blob/main/ROADMAP-V2.md#phase-1--admin-editor-v2-und-regelpflege)). `FIELD`/`LOW`/`HIGH`
 sind **bereits im bisherigen Extraktumfang enthalten** (2026-09-08 gegen einen echten Datensatz
 bestätigt, 100% Feldbelegung) — keine zusätzliche SAP-seitige Extraktion nötig, nur bisher
 ungenutzt. `LOW`/`HIGH` können SAP-Parameter-ID-Platzhalter enthalten (`$EKORG`, `$WERKS`, …statt
@@ -277,7 +277,7 @@ steht nirgends explizit; `load/25_dataset_meta.cypher` ermittelt es daher über 
 denselben Wert) und schreibt nur die dazu passende T000-Zeile auf den bereits existierenden
 `:Dataset`-Knoten (läuft nach `00_dataset.cypher`). Grundlage der Firma-/Mandant-/Zeitscheiben-
 Gliederung auf der Startseite
-([ROADMAP-V2.md](ROADMAP-V2.md#phase-3--vergleich-interview-ergebnisse-und-erweiterte-exporte)).
+([ROADMAP-V2.md](https://github.com/neoprehn/iam/blob/main/ROADMAP-V2.md#phase-3--vergleich-interview-ergebnisse-und-erweiterte-exporte)).
 Die übrigen Spalten (`ADRNR`, `CC*`-Systemänderbarkeits-Kennzeichen, `CHANGEUSER`/`CHANGEDATE`) sind
 im Extraktumfang dokumentiert, aber ohne erkennbaren Nutzen für Can-Do (noch) ungenutzt.
 
