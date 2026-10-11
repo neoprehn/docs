@@ -52,5 +52,6 @@ phasen/phase-10
 
 ## Further Reading
 
-- Full roadmap & architecture decisions: `ROADMAP.md` in the repo root.
+- Architecture decisions & trust boundary: `ROADMAP.md` in the repo root.
+- Current roadmap (v1 complete, active development): `ROADMAP-V2.md` in the repo root.
 - Source code & environment: <https://github.com/neoprehn/iam>
