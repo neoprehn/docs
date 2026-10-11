@@ -13,6 +13,12 @@ reflect whichever run is currently selected in the dropdown. Datasets without an
 imported, not evaluated) show a hint instead of the badges. **Open** jumps straight into the
 analysis (`analysis.html`) for the selected run.
 
+**Two ways to start a new import:** the plain "+ Import new authorization concept" link jumps
+straight to the analysis page (manual access via the ribbon required); "✨ Guided import
+(assistant)" immediately starts the 7-step assistant there at step ① Import — which shows an
+overview of existing datasets before the actual upload, to avoid exactly the mix-up described in
+the user finding below.
+
 **Compare (preview).** A checkbox on each dataset card selects up to two datasets **within the
 same client group** for the planned concept comparison (ROADMAP-V2, phase 3) — one card means one
 checkbox, so comparing a dataset against itself is structurally impossible (and wouldn't make
@@ -51,6 +57,12 @@ name — there is nothing to anonymize there.
 Options in the dialog: **languages** (for language-dependent text tables, default `DE,DEU,D`),
 **skip schema** (if constraints/indexes already exist), **skip conversion** (if `.csv` files are
 already present).
+
+**Dataset name for ZIP/folder upload is now required** and must be **unique** — it is no longer
+silently derived from the file name (live finding 2026-10-11: a field left empty landed unnoticed
+in an existing dataset instead of a new one). If the entered name matches an existing dataset and
+"clear first" is unchecked, the app explicitly asks for confirmation before sending whether the
+new data should really be merged into that existing dataset.
 
 ## 2 · Analysis
 

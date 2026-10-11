@@ -13,6 +13,12 @@ Dropdown zur Lauf-Auswahl (Standard: neuester Lauf) — Badges **Findings**/**Re
 Datasets ganz ohne Lauf (frischer Import, noch nicht ausgewertet) zeigen nur einen Hinweis statt
 der Badges. **Öffnen** springt direkt in die Auswertung (`analysis.html`) zum gewählten Lauf.
 
+**Zwei Wege für einen neuen Import:** der schlichte Link „+ Neues Berechtigungskonzept
+importieren" springt direkt zur Auswertungsseite (manueller Zugriff über die Ribbon nötig); „✨
+Geführter Import (Assistent)" startet dort sofort den 7-Schritte-Assistenten bei Schritt ①
+Import — der zeigt vor dem eigentlichen Hochladen eine Übersicht vorhandener Datasets, um genau
+die Verwechslung aus dem Nutzer-Fund unten zu vermeiden.
+
 **Vergleichen (Vorschau).** Checkbox je Dataset-Karte wählt bis zu zwei Datasets **innerhalb
 derselben Mandant-Gruppe** für den geplanten Konzeptvergleich aus (ROADMAP-V2, Phase 3) — eine
 Karte = eine Checkbox, ein Vergleich eines Datasets gegen sich selbst ist damit strukturell
@@ -52,6 +58,13 @@ Namen — dort gibt es nichts zu anonymisieren.
 Optionen im Dialog: **Sprachen** (für sprachabhängige Texttabellen, Standard `DE,DEU,D`),
 **Schema überspringen** (wenn Constraints/Indizes schon da sind), **Konvertierung überspringen**
 (wenn bereits `.csv` vorliegen).
+
+**Dataset-Name beim ZIP-/Ordner-Upload ist Pflicht** und muss **eindeutig** sein — wird nichts mehr
+stillschweigend aus dem Dateinamen abgeleitet (Live-Fund 2026-10-11: ein leer gelassenes Feld
+landete unbemerkt im bestehenden Dataset statt in einem neuen). Stimmt der eingegebene Name mit
+einem bereits vorhandenen Dataset überein und ist „Vorher leeren" nicht angehakt, fragt die App vor
+dem Senden explizit nach, ob die neuen Daten wirklich in dieses bestehende Dataset gemischt werden
+sollen.
 
 ## 2 · Auswertung
 
