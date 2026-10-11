@@ -2,6 +2,21 @@
 
 What each command in the ribbon bar does — and what the selection options mean.
 
+## Start page
+
+Entry point before the actual analysis, grouped **company → SAP client → run**. Each run gets a
+card with its as-of date (or the dataset ID, if no as-of date is on record), the **findings**/
+**rules**/optional **sleeping** badges, and the last-applied ruleset; the most recent run per
+client is marked "Current". Datasets without any run yet (freshly imported, not evaluated) show
+up as a separate hint card without a compare option. **Open** jumps straight into the analysis
+(`analysis.html`) for that run.
+
+**Compare (preview).** A checkbox on each run card selects up to two runs **within the same
+client group** for the planned concept comparison (ROADMAP-V2, phase 3). In this first stage,
+only runs with the **same ruleset** can be combined — runs with a different ruleset get disabled
+as soon as one run is selected. The "Compare concepts" button is currently still a preview note;
+the actual comparison (new/removed conflicts, delta per rule/user/query) is planned next.
+
 ## Banner
 
 At the top left, the wordmark; at the top right, the **light/dark toggle** (remembers the choice

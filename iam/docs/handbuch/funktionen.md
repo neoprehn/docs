@@ -2,6 +2,22 @@
 
 Was macht welcher Befehl in der Ribbon-Bar — und was bedeuten die Auswahlmöglichkeiten.
 
+## Startseite
+
+Einstiegspunkt vor der eigentlichen Auswertung, gegliedert **Firma → Mandant → Lauf**. Je Lauf
+eine Karte mit Stichtag (bzw. Dataset-ID, wenn kein Stichtag hinterlegt ist), den Badges
+**Findings**/**Regeln**/optional **Sleeping** sowie dem zuletzt angewendeten Ruleset; der jeweils
+neueste Lauf je Mandant trägt die Markierung „Aktuell". Datasets ohne jeden Lauf (frischer Import,
+noch nicht ausgewertet) erscheinen als eigene Hinweiskarte ohne Vergleichsoption. **Öffnen** springt
+direkt in die Auswertung (`analysis.html`) zu diesem Lauf.
+
+**Vergleichen (Vorschau).** Checkbox je Lauf-Karte wählt bis zu zwei Läufe **innerhalb derselben
+Mandant-Gruppe** für den geplanten Konzeptvergleich aus (ROADMAP-V2, Phase 3). In der ersten
+Ausbaustufe nur innerhalb **desselben Rulesets** möglich — Läufe mit abweichendem Ruleset werden
+gesperrt, sobald ein Lauf gewählt ist. Der „Konzepte vergleichen"-Button ist aktuell noch ein
+Vorschau-Hinweis; die eigentliche Vergleichsauswertung (neue/entfallene Konflikte, Delta je
+Regel/User/Query) ist als Nächstes geplant.
+
 ## Banner
 
 Oben links die Wortmarke, oben rechts der **Hell/Dunkel-Umschalter** (merkt sich die Wahl im
