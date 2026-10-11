@@ -52,6 +52,6 @@ phasen/phase-10
 
 ## Weiterführend
 
-- Architektur-Entscheidungen & Vertrauensgrenze: `ROADMAP.md` im Repo-Root.
+- Architektur-Entscheidungen & Vertrauensgrenze: `ARCHITECTURE.md` im Repo-Root.
 - Aktueller Fahrplan (v1 abgeschlossen, aktive Weiterentwicklung): `ROADMAP-V2.md` im Repo-Root.
 - Quellcode & Umgebung: <https://github.com/neoprehn/iam>
