@@ -19,14 +19,44 @@ straight to the analysis page (manual access via the ribbon required); "✨ Guid
 overview of existing datasets before the actual upload, to avoid exactly the mix-up described in
 the user finding below.
 
-**Compare (preview).** A checkbox on each dataset card selects up to two datasets **within the
-same client group** for the planned concept comparison (ROADMAP-V2, phase 3) — one card means one
-checkbox, so comparing a dataset against itself is structurally impossible (and wouldn't make
-sense anyway, since no differences would be expected). In this first stage, only datasets whose
-currently selected run shares the **same ruleset** can be combined — datasets with a different
-ruleset get disabled as soon as one is selected (switching the dropdown re-evaluates the lock).
-The "Compare concepts" button is currently still a preview note; the actual comparison (new/removed
-conflicts, delta per rule/user/query) is planned next.
+**Compare.** A checkbox on each dataset card selects up to two datasets **within the same client
+group** — one card means one checkbox, so comparing a dataset against itself is structurally
+impossible. This only works within the **same ruleset** — datasets whose currently selected run has
+a different ruleset get disabled as soon as one is selected (switching the dropdown re-evaluates
+the lock). "Compare concepts" opens the comparison page (see below); the run with the **earlier
+as-of date** is used as the **baseline**.
+
+## Concept comparison
+
+A separate page (`compare.html`) to **compare** two runs with the same ruleset — deliberately
+separate from the analysis: compare first, then (as a second step) audit specific items. The
+**baseline** is on the left, the **compared run** on the right; "Swap direction" exchanges them (an
+active category filter flips between *New* and *Gone* accordingly).
+
+**SoD conflicts** (per user and rule) and **single-filter matches** (per user and query) are
+compared. Every finding falls into exactly one category:
+
+| Category | Meaning |
+|---|---|
+| **New** | only present in the compared run |
+| **Gone** | only present in the baseline |
+| **Changed** | present in both, but with a **different cause** — criticality, sleeping status, triggering roles or profiles differ (e.g. the same violation now arises through another role) |
+| **Unchanged** | present in both with the same cause |
+
+Single-filter matches carry no further attributes and are therefore never *Changed*.
+
+The four tiles at the top double as filters (a click sets/clears the category). Below, the
+**All / SoD rules / Single filters** switch selects the type and the field takes a **user ID**
+(Enter). The **By rule / filter** table shows, per entry, the count in baseline and compared run
+plus the four categories; clicking a row narrows the detail list below to that rule or filter. The
+detail list loads page by page ("Load more"). The counters and the "By rule / filter" table always
+cover the **whole** comparison — only the detail list follows the filters.
+
+**Export.** "Export XLSX" delivers two sheets (*By rule/filter* and *Findings*), "Export CSV" only
+the findings — in both cases **all** rows matching the current filter (not just the loaded page).
+Only technical user IDs appear, no real names, so the anonymization toggle is not needed. A
+comparison result is cached briefly so that filter and page changes respond quickly; the first
+calculation can take a few seconds on large data sets.
 
 ## Banner
 

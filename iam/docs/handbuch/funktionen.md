@@ -19,15 +19,45 @@ Geführter Import (Assistent)" startet dort sofort den 7-Schritte-Assistenten be
 Import — der zeigt vor dem eigentlichen Hochladen eine Übersicht vorhandener Datasets, um genau
 die Verwechslung aus dem Nutzer-Fund unten zu vermeiden.
 
-**Vergleichen (Vorschau).** Checkbox je Dataset-Karte wählt bis zu zwei Datasets **innerhalb
-derselben Mandant-Gruppe** für den geplanten Konzeptvergleich aus (ROADMAP-V2, Phase 3) — eine
-Karte = eine Checkbox, ein Vergleich eines Datasets gegen sich selbst ist damit strukturell
-ausgeschlossen (ergäbe auch fachlich keinen Sinn, da keine Unterschiede zu erwarten sind). In der
-ersten Ausbaustufe nur innerhalb **desselben Rulesets** möglich — Datasets, deren aktuell gewählter
-Lauf ein abweichendes Ruleset hat, werden gesperrt, sobald ein Dataset gewählt ist (Dropdown-Wechsel
-wertet die Sperre neu aus). Der „Konzepte vergleichen"-Button ist aktuell noch ein Vorschau-Hinweis;
-die eigentliche Vergleichsauswertung (neue/entfallene Konflikte, Delta je Regel/User/Query) ist als
-Nächstes geplant.
+**Vergleichen.** Checkbox je Dataset-Karte wählt bis zu zwei Datasets **innerhalb derselben
+Mandant-Gruppe** aus — eine Karte = eine Checkbox, ein Vergleich eines Datasets gegen sich selbst
+ist damit strukturell ausgeschlossen. Möglich ist das nur innerhalb **desselben Rulesets** —
+Datasets, deren aktuell gewählter Lauf ein abweichendes Ruleset hat, werden gesperrt, sobald ein
+Dataset gewählt ist (Dropdown-Wechsel wertet die Sperre neu aus). „Konzepte vergleichen" öffnet die
+Vergleichsseite (s. u.); als **Basis** gilt der Lauf mit dem älteren Stichtag.
+
+## Konzeptvergleich
+
+Eigene Seite (`compare.html`) zum **Vergleichen** zweier Läufe mit demselben Ruleset — bewusst
+getrennt von der Auswertung: erst vergleichen, danach (im zweiten Schritt) gezielt auditieren.
+Links steht die **Basis**, rechts der **Vergleichsstand**; „Richtung tauschen" vertauscht beide
+(ein gesetzter Kategoriefilter wechselt dabei zwischen *Neu* und *Entfallen* mit).
+
+Verglichen werden **SoD-Konflikte** (je User und Regel) und **Einzelfilter-Treffer** (je User und
+Query). Jedes Finding landet in genau einer Kategorie:
+
+| Kategorie | Bedeutung |
+|---|---|
+| **Neu** | nur im Vergleichsstand vorhanden |
+| **Entfallen** | nur in der Basis vorhanden |
+| **Verändert** | in beiden vorhanden, aber **anders begründet** — Kritikalität, Sleeping-Status, auslösende Rollen oder Profile weichen ab (z. B. dieselbe Verletzung entsteht jetzt über eine andere Rolle) |
+| **Unverändert** | in beiden vorhanden und gleich begründet |
+
+Einzelfilter-Treffer tragen keine weiteren Merkmale und sind deshalb nie *Verändert*.
+
+Die vier Kacheln oben sind zugleich Filter (Klick setzt/löst die Kategorie). Darunter wählen die
+Schalter **Alle / SoD-Regeln / Einzelfilter** die Art und das Feld die **User-ID** (Enter). Die
+Tabelle **Je Regel / Filter** zeigt je Eintrag die Zahl in Basis und Vergleichsstand sowie die vier
+Kategorien; ein Klick auf eine Zeile schränkt die Einzelliste darunter auf diese Regel bzw. diesen
+Filter ein. Die Einzelliste lädt seitenweise nach („Mehr laden"). Die Zähler und die Tabelle
+„Je Regel / Filter" gelten immer für den **gesamten** Vergleich, nur die Einzelliste folgt den Filtern.
+
+**Export.** „Export XLSX" liefert zwei Blätter (*Je Regel-Filter* und *Findings*), „Export CSV" nur
+die Findings — jeweils **alle** Zeilen, die zum aktuellen Filter passen (nicht nur die geladene
+Seite). Es erscheinen nur technische User-IDs, keine Klarnamen; der Anonymisierungsschalter ist
+daher nicht nötig. Die Berechnung eines Vergleichs wird kurz zwischengespeichert, damit Filter- und
+Seitenwechsel schnell reagieren; die erste Berechnung kann bei großen Datenbeständen einige Sekunden
+dauern.
 
 ## Banner
 
