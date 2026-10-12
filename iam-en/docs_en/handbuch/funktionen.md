@@ -64,6 +64,13 @@ in an existing dataset instead of a new one). If the entered name matches an exi
 "clear first" is unchecked, the app explicitly asks for confirmation before sending whether the
 new data should really be merged into that existing dataset.
 
+**"or existing folder" never creates a new dataset** — the dropdown only lists folders already
+present under `data/import/`, meant for resuming an interrupted import or reloading after manually
+adding files (live finding 2026-10-12: "import folder" clicked instead of "import ZIP", unintentionally
+reloading the one existing folder because no other option was listed). Without an active resume
+state and without "clear first", the app asks for confirmation here too before sending. For a
+**new** dataset, always use the upload section above.
+
 ## 2 · Analysis
 
 | Command | Effect |

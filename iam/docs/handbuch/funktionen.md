@@ -66,6 +66,14 @@ einem bereits vorhandenen Dataset überein und ist „Vorher leeren" nicht angeh
 dem Senden explizit nach, ob die neuen Daten wirklich in dieses bestehende Dataset gemischt werden
 sollen.
 
+**„oder vorhandener Ordner" legt nie ein neues Dataset an** — das Dropdown zeigt ausschließlich
+bereits unter `data/import/` liegende Ordner, gedacht zum Fortsetzen eines unterbrochenen Imports
+oder erneuten Laden nach manuell ergänzten Dateien (Live-Fund 2026-10-12: „Ordner importieren"
+statt „ZIP importieren" gedrückt, dabei unbeabsichtigt den einzigen vorhandenen Ordner erneut
+geladen, weil keine andere Auswahl bestand). Ohne aktiven Resume-Zustand und ohne „Vorher leeren"
+fragt die App auch hier vor dem Senden nach. Für ein **neues** Dataset immer den oberen
+ZIP-/Ordner-Upload-Bereich nutzen.
+
 ## 2 · Auswertung
 
 | Befehl | Wirkung |
