@@ -80,6 +80,38 @@ reichern nur an (es erscheint lediglich ein Hinweis, wenn sie fehlen).
 Die genaue Ladereihenfolge ergibt sich aus den Dateinamen unter `load/` (`00…99`); die
 benötigten **Spalten je Tabelle** stehen unten.
 
+## Security-Erweiterung: RFC-Vertrauensstellungen (optional, noch kein Loader)
+
+Eigene, bewusst **nicht** Teil von Pflicht/Optional oben, da unverifiziert und noch ohne
+Lade-Skript — Datengrundlage für die geplante Security-Angriffspfade-Sicht
+(`backend/security.py`, [ROADMAP-V2.md, Abschnitt „Security-Sicht — Angriffspfade"](https://github.com/neoprehn/iam/blob/main/ROADMAP-V2.md#security-sicht--angriffspfade-folgeschritte)):
+Ziel ist eine Kante „User X kann per RFC-Destination auf System Y wechseln, ohne sich erneut
+anzumelden" — das bereits geladene `S_RFC` deckt nur ab, *ob* ein User RFC-Bausteine ausführen
+darf, nicht *wohin* eine Destination mit hinterlegten Zugangsdaten führt.
+
+:::{admonition} Unverifiziert — vor Nutzung gegen ein echtes System prüfen
+:class: warning
+Feldnamen stammen aus Doku-Erinnerung, nicht aus einem geprüften Extrakt (Stand 2026-10-10, s.
+`config/required_tables.json` → `rfcTrust`). Vor dem Bau eines Loaders zwingend gegen SE11/ein
+reales System verifizieren — insbesondere die Kodierung von `RFCOPTIONS`.
+:::
+
+| Tabelle | Zweck | Quelle (SAP) |
+| --- | --- | --- |
+| **RFCDES** | RFC-Zielsystem-Definitionen — Verbindungstyp, Anmeldeverfahren (fest hinterlegter Benutzer vs. aktueller Benutzer vs. Trusted System), kodiert in `RFCOPTIONS` | SM59 |
+| **RFCSYSACL** | Trusted-System-Vertrauensstellungen — welches Quellsystem/Mandant darf sich per Trusted RFC ohne erneute Anmeldung anmelden | SMT1/SMT2 |
+
+Felder je Tabelle (identisch zu `config/required_tables.json` → `rfcTrust.fields`):
+
+| Tabelle | Felder |
+| --- | --- |
+| `RFCDES` | `MANDT`, `RFCDEST`, `RFCTYPE`, `RFCOPTIONS` |
+| `RFCSYSACL` | `MANDT`, `RFCSYSID`, `RFCCLIENT` |
+
+**Blocker:** Es fehlt aktuell ein Testsystem/-dataset, um diese Erweiterung gegen echte Daten zu
+verifizieren und einen Loader zu bauen — rein dokumentarisch vorbereitet, bis ein passendes
+System verfügbar ist.
+
 ## Spalten je Tabelle
 
 ### 01 — USR02 (Benutzer) → `:User`

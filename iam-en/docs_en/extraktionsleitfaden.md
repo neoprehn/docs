@@ -79,6 +79,37 @@ only enrich the data (only a notice appears if they are missing).
 The exact load order follows from the file names under `load/` (`00…99`); the required **columns
 per table** are listed below.
 
+## Security Extension: RFC Trust Relationships (optional, no loader yet)
+
+Deliberately **not** part of required/optional above, since unverified and without a load script
+yet — data basis for the planned security attack-path view
+(`backend/security.py`, [ROADMAP-V2.md, section "Security view — attack paths"](https://github.com/neoprehn/iam/blob/main/ROADMAP-V2.md#security-sicht--angriffspfade-folgeschritte)):
+the goal is an edge "User X can switch to system Y via an RFC destination without logging in
+again" — the already-loaded `S_RFC` only covers *whether* a user may execute RFC function
+modules, not *where* a destination with stored credentials leads.
+
+:::{admonition} Unverified — check against a real system before use
+:class: warning
+Field names come from documentation memory, not a verified extract (as of 2026-10-10, see
+`config/required_tables.json` → `rfcTrust`). Verify against SE11/a real system before building a
+loader — especially the encoding of `RFCOPTIONS`.
+:::
+
+| Table | Purpose | SAP source |
+| --- | --- | --- |
+| **RFCDES** | RFC destination definitions — connection type, logon method (stored user vs. current user vs. trusted system), encoded in `RFCOPTIONS` | SM59 |
+| **RFCSYSACL** | Trusted-system trust relationships — which source system/client may log on via trusted RFC without a new login | SMT1/SMT2 |
+
+Fields per table (identical to `config/required_tables.json` → `rfcTrust.fields`):
+
+| Table | Fields |
+| --- | --- |
+| `RFCDES` | `MANDT`, `RFCDEST`, `RFCTYPE`, `RFCOPTIONS` |
+| `RFCSYSACL` | `MANDT`, `RFCSYSID`, `RFCCLIENT` |
+
+**Blocker:** there is currently no test system/dataset to verify this extension against real data
+and build a loader — prepared purely as documentation until a suitable system becomes available.
+
 ## Columns per Table
 
 ### 01 — USR02 (Users) → `:User`
