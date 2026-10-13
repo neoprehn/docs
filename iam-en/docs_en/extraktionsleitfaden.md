@@ -110,6 +110,60 @@ Fields per table (identical to `config/required_tables.json` → `rfcTrust.field
 **Blocker:** there is currently no test system/dataset to verify this extension against real data
 and build a loader — prepared purely as documentation until a suitable system becomes available.
 
+## Did-Do: Obtaining Usage Data (STAD/ST03N) (optional, no loader yet)
+
+Deliberately **not** part of Required/Optional above — data basis for the planned Did-Do analysis
+([ROADMAP-V2.md, phase 4](https://github.com/neoprehn/iam/blob/main/ROADMAP-V2.md#phase-4--neuer-extraktor-und-did-do)):
+Can-Do says what a user **may** do, Did-Do what they **actually executed** in the period under
+review. This yields, among other things, "unused authorizations" (least privilege) and the
+Can-Do × Did-Do comparison.
+
+**Unlike the Can-Do tables, there is no simple SE16 export.** SAP stores the single-record
+statistics (STAD) in a cluster (report `RSCOLL00` → table `MONI`) and only exposes them through
+transactions, the service tool `/SDF/ST03DL`, or function modules.
+
+:::{admonition} Unverified — check against a real system before use
+:class: warning
+As of 2026-10-13, no real extract is available yet. Specifically open: **whether and for how long
+the workload aggregation keeps a user level (user × transaction).** The standard aggregation per
+transaction contains no user; whether a user/transaction profile is available and how long it is
+retained depends on release, ST-PI level and collector settings. For field names see
+`config/required_tables.json` → `didDo`.
+:::
+
+**What Did-Do needs at minimum:** per `(user, tcode)` in the period under review (max. 1 year) the
+number of calls plus first and last call. Did-Do attaches to the `Transaction` node (AE-12);
+single records with runtime/database figures are not required for this.
+
+### Possible Routes
+
+| Route | Content | Assessment |
+| --- | --- | --- |
+| **ST03N** (expert mode, user/transaction profile) | aggregated per user and transaction: call count, period | Entry point without development; Basis can do the export. **Check availability of the user level and retention** (see warning). |
+| **Function module `SWNC_COLLECTOR_GET_AGGREGATES`** | the same aggregates, machine-readable | Route for the later extractor; needs a small Z report or RFC call. Not a table export in the usual sense. |
+| **STAD** (single-record statistics) | individual dialog steps with timestamps | Retention usually only days to a few weeks (parameters `stat/*`, archiving) — usable for a year only if the files were backed up regularly. |
+| **`/SDF/ST03DL`** (SAP Note 2943445) | download of the workload data | Good if the ST-PI level allows it. |
+| **Security Audit Log (SM20/SAL)** | audit events (logon, transaction start) | Only if it was active; **not a usage log** in the strict sense (AE-13), rather for forensics. |
+
+### Recommended Order
+
+1. **Obtain a sample.** Have someone with ST03N access export a small extract (user/transaction
+   profile for the longest possible period). This verifies the field names in `didDo` against the
+   real format — the current blocker for phase 4.
+2. **Build the `EXECUTED` edge and the Can-Do × Did-Do matrix** (user → transaction with `count`,
+   `firstSeen`, `lastSeen`, `asOf`, `runId`).
+3. **Extractor** (Z report/RFC) only once the format is settled.
+
+### To Clarify with the Customer Beforehand
+
+- **Retention:** How far back do the workload data reach, and is the user level available over the
+  whole period? Can be checked in ST03N and in the workload collector settings.
+- **Data protection / works council:** usage data is personal. Planned: pseudonymization of the
+  user ID, clear text only in justified individual cases.
+- **Limits of the statement:** rare but important transactions (e.g. year-end closing) may fall
+  outside the window; indirect calls (batch, RFC, calls from other programs) appear differently or
+  not at all as a transaction. "Not used" is an indication, not proof.
+
 ## Columns per Table
 
 ### 01 — USR02 (Users) → `:User`

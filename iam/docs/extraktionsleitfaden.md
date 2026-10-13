@@ -112,6 +112,60 @@ Felder je Tabelle (identisch zu `config/required_tables.json` → `rfcTrust.fiel
 verifizieren und einen Loader zu bauen — rein dokumentarisch vorbereitet, bis ein passendes
 System verfügbar ist.
 
+## Did-Do: Nutzungsdaten (STAD/ST03N) beschaffen (optional, noch kein Loader)
+
+Eigene, bewusst **nicht** Teil von Pflicht/Optional oben — Datengrundlage für die geplante
+Did-Do-Auswertung ([ROADMAP-V2.md, Phase 4](https://github.com/neoprehn/iam/blob/main/ROADMAP-V2.md#phase-4--neuer-extraktor-und-did-do)):
+Can-Do sagt, was ein User **darf**, Did-Do, was er im Betrachtungszeitraum **tatsächlich
+ausgeführt** hat. Daraus entstehen u. a. „ungenutzte Berechtigungen" (Least-Privilege) und die
+Gegenüberstellung Can-Do × Did-Do.
+
+**Anders als bei den Can-Do-Tabellen gibt es keinen einfachen SE16-Export.** SAP speichert die
+Einzelsatzstatistik (STAD) clusterartig (Report `RSCOLL00` → Tabelle `MONI`) und stellt sie nur über
+Transaktionen, das Service-Tool `/SDF/ST03DL` oder Funktionsbausteine bereit.
+
+:::{admonition} Unverifiziert — vor Nutzung gegen ein echtes System prüfen
+:class: warning
+Stand 2026-10-13, noch kein realer Auszug vorhanden. Insbesondere offen: **ob und wie lange die
+Workload-Aggregation eine User-Ebene (User × Transaktion) vorhält.** Die Standardaggregation je
+Transaktion enthält keinen User; ob ein Benutzer-/Transaktionsprofil verfügbar ist und wie lange es
+aufbewahrt wird, hängt von Release, ST-PI-Stand und Collector-Einstellungen ab. Feldnamen s.
+`config/required_tables.json` → `didDo`.
+:::
+
+**Was Did-Do mindestens braucht:** je `(User, TCode)` im Betrachtungszeitraum (max. 1 Jahr) die
+Anzahl der Aufrufe sowie erster und letzter Aufruf. Did-Do hängt am `Transaction`-Knoten (AE-12),
+Einzelsätze mit Laufzeit-/Datenbankkennzahlen sind dafür nicht nötig.
+
+### Mögliche Wege
+
+| Weg | Inhalt | Einschätzung |
+| --- | --- | --- |
+| **ST03N** (Expertenmodus, Benutzer-/Transaktionsprofil) | aggregiert je User und Transaktion: Aufrufzahl, Zeitraum | Einstieg ohne Entwicklung, die Basis kann den Export machen. **Verfügbarkeit der User-Ebene und Aufbewahrung prüfen** (s. Warnung). |
+| **Funktionsbaustein `SWNC_COLLECTOR_GET_AGGREGATES`** | dieselben Aggregate maschinenlesbar | Weg für den späteren Extraktor; braucht einen kleinen Z-Report oder RFC-Aufruf. Kein Tabellenexport im bisherigen Sinn. |
+| **STAD** (Einzelsatzstatistik) | einzelne Dialogschritte mit Zeitstempel | Aufbewahrung meist nur Tage bis wenige Wochen (Parameter `stat/*`, Archivierung) — für ein Jahr nur nutzbar, wenn die Dateien regelmäßig gesichert wurden. |
+| **`/SDF/ST03DL`** (OSS-Hinweis 2943445) | Download der Workload-Daten | Gut, sofern der ST-PI-Stand es zulässt. |
+| **Security Audit Log (SM20/SAL)** | Audit-Ereignisse (Anmeldung, Transaktionsstart) | Nur wenn aktiviert gewesen; **kein Nutzungsprotokoll** im engeren Sinn (AE-13), eher für Forensik. |
+
+### Empfohlene Reihenfolge
+
+1. **Stichprobe beschaffen.** Mit ST03N-Zugriff einen kleinen Auszug (Benutzer-/Transaktionsprofil
+   über den längstmöglichen Zeitraum) exportieren lassen. Damit werden die Feldnamen in `didDo` am
+   echten Format verifiziert — das ist der aktuelle Blocker für Phase 4.
+2. **`EXECUTED`-Kante und Can-Do × Did-Do-Matrix bauen** (User → Transaction mit `count`,
+   `firstSeen`, `lastSeen`, `asOf`, `runId`).
+3. **Extraktor** (Z-Report/RFC) erst, wenn das Format feststeht.
+
+### Beim Kunden vorab klären
+
+- **Aufbewahrung:** Wie weit reichen die Workload-Daten zurück, und gibt es die User-Ebene über den
+  gesamten Zeitraum? Prüfbar in ST03N sowie in den Einstellungen des Workload-Collectors.
+- **Datenschutz/Mitbestimmung:** Nutzungsdaten sind personenbezogen. Vorgesehen ist
+  Pseudonymisierung der User-ID, Klartext nur im begründeten Einzelfall.
+- **Grenzen der Aussage:** Selten, aber wichtige Transaktionen (z. B. Jahresabschluss) liegen ggf.
+  außerhalb des Fensters; indirekte Aufrufe (Batch, RFC, Aufruf aus anderen Programmen) tauchen
+  anders oder gar nicht als Transaktion auf. „Nicht genutzt" ist ein Hinweis, kein Beweis.
+
 ## Spalten je Tabelle
 
 ### 01 — USR02 (Benutzer) → `:User`
