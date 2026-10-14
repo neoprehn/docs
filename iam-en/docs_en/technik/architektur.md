@@ -22,7 +22,8 @@ This page describes the system **as it is built today**. How it got there is cov
 ```
 
 The graph visualization (conflict paths, root cause) runs directly in the ribbon UI via vendored
-Cytoscape.js — the earlier `iam-neodash` PoC container (port 5005, phase 6) has been fully replaced
+Cytoscape.js (plus the dagre layout plugin for the left-to-right arrangement of hierarchical
+graphs, also vendored, see `frontend/vendor/dagre/NOTICE.md`) — the earlier `iam-neodash` PoC container (port 5005, phase 6) has been fully replaced
 and removed since 2026-07-16 (see ROADMAP 9.2).
 
 Everything is **local**, everything is in **a single Docker Compose**. The **backend** is

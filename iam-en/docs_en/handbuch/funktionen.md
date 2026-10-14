@@ -313,7 +313,9 @@ quickly zooming in/out.
 **View: table · path graph · radial.** Above the results list, a second toggle switches between
 the **table** (default, with all annotations below) and two **graph representations of the same
 data**. The **path graph** shows the path **user → rule → clause → query → authorization object →
-role/profile** as a tree from top to bottom; the **radial** view places the user at the center and
+role/profile** as a tree from **left to right** (so wide labels sit side by side in one level; the
+same applies to the tree full view and the security paths); the **radial** view places the user at
+the center and
 arranges the causes outward in rings. Each actor (role/profile) is shown **only once, independent
 of the profile filter**, even if it carries several objects/transaction-code checks of a query —
 this turns the graph into a DAG (several object nodes point to the same actor node), instead of

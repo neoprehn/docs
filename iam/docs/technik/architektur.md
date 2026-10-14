@@ -22,7 +22,8 @@ Diese Seite beschreibt das System **wie es heute gebaut ist**. Wie es dahin kam,
 ```
 
 Die Graph-Darstellung (Konfliktpfade, Root-Cause) läuft direkt in der Ribbon-UI über vendored
-Cytoscape.js — der frühere `iam-neodash`-PoC-Container (Port 5005, Phase 6) ist seit 2026-07-16
+Cytoscape.js (plus das Layout-Plugin dagre für die links→rechts-Anordnung hierarchischer Graphen,
+ebenfalls vendored, s. `frontend/vendor/dagre/NOTICE.md`) — der frühere `iam-neodash`-PoC-Container (Port 5005, Phase 6) ist seit 2026-07-16
 vollständig abgelöst und entfernt (s. ROADMAP 9.2).
 
 Alles **lokal**, alles in **einem Docker-Compose**. Das **Backend** ist als Container

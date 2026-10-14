@@ -314,7 +314,9 @@ Rand für schnelles Rein-/Rauszoomen.
 **Ansicht Tabelle · Pfadgraph · Radial.** Über der Ergebnisliste schaltet ein zweiter Umschalter
 zwischen der **Tabelle** (Default, mit allen Anmerkungen unten) und zwei **Graph-Darstellungen
 derselben Daten** um. Der **Pfadgraph** zeigt den Weg **User → Regel → Klausel → Query →
-Berechtigungsobjekt → Rolle/Profil** als Baum von oben nach unten; die **Radiale** Ansicht setzt
+Berechtigungsobjekt → Rolle/Profil** als Baum von **links nach rechts** (so liegen auch breite
+Beschriftungen nebeneinander in einer Ebene; das gilt ebenso für die Baum-Vollansicht und die
+Security-Pfade); die **Radiale** Ansicht setzt
 den User ins Zentrum und legt die Ursachen ringförmig nach außen. Jeder Akteur (Rolle/Profil) wird
 dabei **unabhängig vom Profil-Filter nur einmal** gezeigt, auch wenn er mehrere Objekte/TCode-
 Prüfungen einer Query trägt — der Graph wird dadurch zum DAG (mehrere Objekt-Knoten zeigen auf
