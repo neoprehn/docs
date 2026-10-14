@@ -581,7 +581,10 @@ filters), below it three **tabs**:
   the text editor** — save afterwards as usual via "Save" or "Save as…". In doing so, an
   **unchecked** object is removed with all its lines; objects unknown to the TCode (added manually)
   and fields outside the SU24 suggestions of a checked object stay **untouched**; changed lines keep
-  their position. To handle several TCodes, start the assistant several times in a row.
+  their position. In the dialog, a **dropdown** lists the query's TCodes; switching reloads the
+  suggestion (changes in the dialog that were not yet applied are lost) — so you can switch quickly
+  if you change your mind. "Apply" closes the dialog; for another TCode, simply start the
+  assistant again.
 - **Risk** — risk type/level/status (dropdowns), free text on the potential risk of this
   authorization, a **threat walkthrough** (step-by-step attack path for the threat analysis), as
   well as **sources** (internet sources/references, one URL per line).

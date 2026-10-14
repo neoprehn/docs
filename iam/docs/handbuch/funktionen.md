@@ -588,7 +588,10 @@ darunter drei **Tabs**:
   „Speichern" oder „Speichern unter…". Dabei gilt: ein **abgehaktes** Objekt entfällt mit allen
   seinen Zeilen; Objekte, die der TCode nicht kennt (selbst ergänzte), und Felder außerhalb der
   SU24-Vorschläge eines angehakten Objekts bleiben **unangetastet**; geänderte Zeilen behalten ihre
-  Position. Mehrere TCodes bearbeitet man, indem man den Assistenten nacheinander mehrfach startet.
+  Position. Im Dialog zeigt ein **Dropdown** die TCodes der Query; ein Wechsel lädt den Vorschlag
+  neu (noch nicht übernommene Änderungen im Dialog gehen dabei verloren) — so lässt sich schnell
+  umschalten, falls man sich anders entscheidet. „Übernehmen" schließt den Dialog; für einen
+  weiteren TCode startet man den Assistenten einfach erneut.
 - **Risiko** — Risikoart/-stufe/-status (Dropdowns), Freitext zum potenziellen Risiko dieser
   Berechtigung, **Threat-Walkthrough** (Schritt-für-Schritt-Angriffspfad für die Threat-Analyse)
   sowie **Quellen** (Internetquellen/Referenzen, eine URL je Zeile).
