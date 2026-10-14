@@ -429,7 +429,9 @@ unterschiedlichen Org-Werten, sie werden nicht zusammengefasst; Werte: Bereiche 
 `*` unverändert, lange Listen gekappt mit Tooltip), **Einzelberechtigungen**
 (welche Einzelfilter die Rolle **allein** erfüllt) und **SoD-Regeln** (welche Regeln die Rolle
 **allein** auslösen kann — Intra-Rollen-Konflikt); die letzten beiden **rollenzentrisch** (frisch
-berechnet, unabhängig vom Lauf). Ein separates **Generierungsdatum** ist im SAP-Extrakt nicht
+berechnet, unabhängig vom Lauf). Hat eine Rolle selbst **keine S_TCODE-Berechtigung** (Sammelrolle,
+abgeleitete Rolle oder reine Daten-/Org-Berechtigungsrolle), steht im Reiter **TCodes** statt der Listen
+ein Erklärtext — die Leere entspricht dann dem Extrakt, es ist kein Importfehler. Ein separates **Generierungsdatum** ist im SAP-Extrakt nicht
 enthalten und wird daher nicht gezeigt.
 
 Die Matches-Tabelle zeigt dafür **User · Name · Query · Bezeichnung (Kurzbezeichnung der Query) ·

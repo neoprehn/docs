@@ -427,7 +427,10 @@ different org values and are not merged; values: ranges as `from..to`, `*` uncha
 truncated with a tooltip),
 **individual authorizations** (which individual filters the role satisfies **on its own**), and
 **SoD rules** (which rules the role can trigger **on its own** — intra-role conflict); the latter
-two are **role-centric** (freshly computed, independent of the run). A separate **generation
+two are **role-centric** (freshly computed, independent of the run). If a role has **no S_TCODE
+authorization of its own** (composite role, derived role, or a pure data/org authorization role),
+the **TCodes** tab shows an explanatory text instead of the lists — the emptiness then matches the
+extract, it is not an import error. A separate **generation
 date** is not contained in the SAP extract and is therefore not shown.
 
 For this, the matches table shows **user · name · query · label (query's short label) ·
