@@ -225,7 +225,7 @@ Above the results table, in its own row: **criticality** (very-critical…low) a
 type** (`all` / `individual filter` / `SoD`) **only outside the entry table** (see below), and —
 only when the result type is "all" — **sleeping** (`all` / `only sleeping` / `not sleeping` /
 `unknown`) as well as **locked** (`all` / `locked` / `not locked`) as colored clickable buttons
-(pills), taking effect immediately. For "only sleeping"/"not sleeping", a **days quick-select**
+(pills), taking effect immediately. The **criticality** applies to the criticality of the **query** for result type "individual filter" (and also narrows the query dropdown), and to that of the **rule** for "SoD". For "only sleeping"/"not sleeping", a **days quick-select**
 additionally appears (`run default` / `90` / `180` / `360`) — if it deviates from the `sleepDays`
 window set on the run, the filter calculates live against the logon date instead of against the
 value materialized on the run (only works if TRDAT is present in the extract). For "locked", the

@@ -226,7 +226,7 @@ gewählten Einzelfilter bzw. SoD-Regeln zur Auswahl — nicht der gesamte Rulese
 **Ergebnistyp** (`alle` / `Einzelfilter` / `SoD`) **nur außerhalb der Einstiegstabelle** (s. u.)
 und — nur bei Ergebnistyp „alle" — **Sleeping** (`alle` / `nur sleeping` / `nicht sleeping` /
 `unbekannt`) sowie **Gesperrt** (`alle` / `gesperrt` / `nicht gesperrt`) als farbige Klick-Buttons
-(Pills), wirken sofort. Bei „nur sleeping"/„nicht sleeping" erscheint zusätzlich eine
+(Pills), wirken sofort. Die **Kritikalität** gilt bei Ergebnistyp „Einzelfilter" für die Kritikalität der **Query** (und schränkt auch das Query-Dropdown ein), bei „SoD" für die der **Regel**. Bei „nur sleeping"/„nicht sleeping" erscheint zusätzlich eine
 **Tage-Schnellwahl** (`Lauf-Standard` / `90` / `180` / `360`) — weicht sie vom beim Lauf gesetzten
 `sleepDays`-Fenster ab, rechnet der Filter live gegen das Logon-Datum statt gegen den beim Lauf
 materialisierten Wert (funktioniert nur, wenn TRDAT im Extrakt vorhanden ist). Bei „gesperrt"
