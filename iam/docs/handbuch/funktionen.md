@@ -423,7 +423,10 @@ SAP-Kürzel (Basis-Team-Accounts ohne Dialog-Zugang stehen z. B. nicht zwingend 
 Extrakt). Die **Anzahl zugewiesener User** ist anklickbar und öffnet eine eigene **Nutzerliste**
 (ID · Name · Benutzertyp · Benutzergruppe · Letzter Login · Sleeping) — dieselbe Listenseite wie
 beim Konsistenzcheck-Drilldown (s. u.). Darunter als Reiter: **TCodes** (effektiv aus
-`S_TCODE` + Rollenmenü), **Berechtigungsobjekte** (mit Instanz-Anzahl), **Einzelberechtigungen**
+`S_TCODE` + Rollenmenü), **Berechtigungsobjekte** (mit den in der Rolle gepflegten **Feldwerten** je Instanz; eine
+**Instanz** ist eine Berechtigung (AUTH) des Objekts in der Rolle — mehrere gibt es z. B. bei
+unterschiedlichen Org-Werten, sie werden nicht zusammengefasst; Werte: Bereiche als `von..bis`,
+`*` unverändert, lange Listen gekappt mit Tooltip), **Einzelberechtigungen**
 (welche Einzelfilter die Rolle **allein** erfüllt) und **SoD-Regeln** (welche Regeln die Rolle
 **allein** auslösen kann — Intra-Rollen-Konflikt); die letzten beiden **rollenzentrisch** (frisch
 berechnet, unabhängig vom Lauf). Ein separates **Generierungsdatum** ist im SAP-Extrakt nicht

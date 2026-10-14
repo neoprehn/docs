@@ -421,7 +421,10 @@ SAP initials (basis team accounts without dialog access, for example, are not ne
 as their own user in the extract). The **number of assigned users** is clickable and opens a
 dedicated **user list** (ID · name · user type · user group · last login · sleeping) — the same
 list page as in the consistency-check drill-down (see below). Below that, as tabs: **transaction
-codes** (effective, from `S_TCODE` + role menu), **authorization objects** (with instance count),
+codes** (effective, from `S_TCODE` + role menu), **authorization objects** (with the **field values** maintained in the role per instance; an
+**instance** is one authorization (AUTH) of the object in the role — several exist e.g. for
+different org values and are not merged; values: ranges as `from..to`, `*` unchanged, long lists
+truncated with a tooltip),
 **individual authorizations** (which individual filters the role satisfies **on its own**), and
 **SoD rules** (which rules the role can trigger **on its own** — intra-role conflict); the latter
 two are **role-centric** (freshly computed, independent of the run). A separate **generation
