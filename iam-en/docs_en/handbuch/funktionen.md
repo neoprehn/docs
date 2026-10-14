@@ -570,6 +570,18 @@ filters), below it three **tabs**:
   objects: `Object | Field | AND/OR | Value1,Value2`), analogous to the clause text editor for SoD
   rules. Rare `audit`/`stad` flags on lines that were not touched are preserved on save, even
   though the plain text format does not surface them.
+
+  **Assistant** (button in edit mode, above the two editors) — guided selection of the
+  authorization objects and values for **one** TCode instead of typing everything as text. If the
+  query contains several TCodes, a choice is offered first; with exactly one, the same dialog as
+  "Derive from TCode" opens directly (pick the dataset, SU24 suggestion and real values as chips).
+  It is **pre-filled from the current query** (including unsaved changes in the editor): objects
+  the query already contains are checked and show their current values, further objects checked per
+  SU24 are **not** checked and can be ticked to add them. "Apply" **only writes the result back into
+  the text editor** — save afterwards as usual via "Save" or "Save as…". In doing so, an
+  **unchecked** object is removed with all its lines; objects unknown to the TCode (added manually)
+  and fields outside the SU24 suggestions of a checked object stay **untouched**; changed lines keep
+  their position. To handle several TCodes, start the assistant several times in a row.
 - **Risk** — risk type/level/status (dropdowns), free text on the potential risk of this
   authorization, a **threat walkthrough** (step-by-step attack path for the threat analysis), as
   well as **sources** (internet sources/references, one URL per line).

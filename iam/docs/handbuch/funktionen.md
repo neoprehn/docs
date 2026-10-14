@@ -576,6 +576,19 @@ darunter drei **Tabs**:
   Berechtigungsobjekte: `Objekt | Feld | UND/ODER | Wert1,Wert2`), analog zum Klausel-Texteditor
   bei SoD-Regeln. Seltene `audit`/`stad`-Sonderflags unver&auml;ndert gebliebener Zeilen bleiben
   beim Speichern erhalten, auch wenn die Zeile selbst nicht angefasst wurde.
+
+  **Assistent** (Button im Bearbeiten-Modus, über den beiden Editoren) — geführte Auswahl der
+  Berechtigungsobjekte und -werte zu **einem** TCode, statt alles als Text zu tippen. Enthält die
+  Query mehrere TCodes, erscheint vorab eine Auswahl; bei genau einem öffnet sich direkt derselbe
+  Dialog wie bei „Aus TCode ableiten" (Dataset wählen, SU24-Vorschlag und reale Werte als Chips).
+  Er ist auf die **aktuelle Query vorbelegt** (auch auf ungespeicherte Änderungen im Editor):
+  Objekte, die die Query schon enthält, sind angehakt und zeigen ihre aktuellen Werte, weitere laut
+  SU24 geprüfte Objekte sind **nicht** angehakt und lassen sich zum Hinzufügen anhaken. „Übernehmen"
+  schreibt das Ergebnis **nur in den Texteditor zurück** — gespeichert wird danach wie gewohnt über
+  „Speichern" oder „Speichern unter…". Dabei gilt: ein **abgehaktes** Objekt entfällt mit allen
+  seinen Zeilen; Objekte, die der TCode nicht kennt (selbst ergänzte), und Felder außerhalb der
+  SU24-Vorschläge eines angehakten Objekts bleiben **unangetastet**; geänderte Zeilen behalten ihre
+  Position. Mehrere TCodes bearbeitet man, indem man den Assistenten nacheinander mehrfach startet.
 - **Risiko** — Risikoart/-stufe/-status (Dropdowns), Freitext zum potenziellen Risiko dieser
   Berechtigung, **Threat-Walkthrough** (Schritt-für-Schritt-Angriffspfad für die Threat-Analyse)
   sowie **Quellen** (Internetquellen/Referenzen, eine URL je Zeile).
