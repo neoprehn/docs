@@ -83,6 +83,7 @@ Namen — dort gibt es nichts zu anonymisieren.
 
 | Befehl | Wirkung |
 | --- | --- |
+| **Import-Protokoll** | Öffnet das **Import-Protokoll (Vollständigkeitsnachweis)** des gewählten Datasets (s. u.). |
 | **Import** | Öffnet den Import-Dialog: **ZIP hochladen** (`.txt`/`.csv` im ZIP) oder **vorhandener Ordner**. Startet den Import-Job (konvertieren → Schema → laden → prüfen). |
 
 Optionen im Dialog: **Sprachen** (für sprachabhängige Texttabellen, Standard `DE,DEU,D`),
@@ -103,6 +104,54 @@ statt „ZIP importieren" gedrückt, dabei unbeabsichtigt den einzigen vorhanden
 geladen, weil keine andere Auswahl bestand). Ohne aktiven Resume-Zustand und ohne „Vorher leeren"
 fragt die App auch hier vor dem Senden nach. Für ein **neues** Dataset immer den oberen
 ZIP-/Ordner-Upload-Bereich nutzen.
+
+(import-protokoll)=
+### Import-Protokoll (Vollständigkeitsnachweis)
+
+Der Befehl **Import-Protokoll** (Gruppe „1 · Daten“) zeigt, **welche Daten wann importiert wurden und ob alles
+vollständig in den Graphen übernommen wurde** — als Nachweis für die Prüfungsdokumentation. Es entsteht bei jedem
+Import automatisch; ältere Importe lassen sich nachträglich nachweisen (s. u.). Je Dataset und Import zeigt die Seite:
+
+- **Gesamtergebnis** (*OK*, *OK mit Hinweisen* oder *Abweichung*) mit den Zählern je Status.
+- **Kennzahlen-Kacheln** für **Nutzer, Rollen, Profile, Berechtigungen und Transaktionen** — die Zahlen werden
+  nach dem Import **im Graphen gezählt** und, wo es eine passende Quelltabelle gibt, **gegen deren Zeilen** gehalten
+  (z. B. Nutzer gegen `USR02`). Darunter die Aufschlüsselung (Nutzer nach Typ und Status, Rollen nach Einzel-/Sammel-/
+  abgeleiteter Rolle, Profile, Beziehungen).
+- **Stammdaten des Imports:** Import-Zeitpunkt und -Dauer, Quelle (ZIP-Name bzw. Ordner), Sprachen, **Stichtag**,
+  die **System-Stammdaten aus `T000`** (Firma, Mandant, Ort, Währung, logisches System) und der Programmstand.
+- **Nachweis je Quelldatei:** Datei, **Größe und SHA-256-Prüfsumme**, Quellzeilen, bewusst übersprungene Zeilen,
+  der **Sollwert aus der Quelle** und das Graph-Ergebnis, dazu Status und Erklärung. **Alle** Tabellen des Extrakts
+  sind erfasst: die genutzten mit Abgleich, die derzeit nicht ausgewerteten (ohne Loader) gesondert als „im Extrakt
+  vorhanden, aber nicht ausgewertet“ — ebenfalls mit Prüfsumme.
+- **Importverlauf:** über die Auswahl „Import“ lässt sich jeder frühere Import desselben Datasets ansehen.
+
+**Wie der Abgleich rechnet.** Die Zuordnung *Quelltabelle → Verwendung* steht an **einer** Stelle
+(`config/import_sources.json`, der Quellenkatalog); ein Test stellt sicher, dass jede von den Ladeskripten gelesene
+Tabelle darin verzeichnet ist. Wo die Ladelogik Zeilen bewusst überspringt oder zusammenführt, wird der **Sollwert
+direkt aus der Quelldatei nachgerechnet** — nach denselben Regeln wie der Loader (eindeutige Schlüssel ohne die
+übersprungenen Zeilen). Beispiele: `AGR_USERS` hat mehr Zeilen als der Graph Zuordnungen, weil mehrere Zeilen
+desselben Paares (verschiedene Gültigkeiten) zu **einer** Kante werden — der Nachweis zeigt, dass die Zahl der
+eindeutigen Paare **exakt** der Kantenzahl entspricht; `TSTCT` ist eine Sprachtabelle mit mehreren Zeilen je
+Transaktion. Hat der Graph **mehr** Knoten als die Quelltabelle (z. B. Rollen, die nur in Zuordnungen vorkommen, aber
+nicht in `AGR_DEFINE` definiert sind), ist das ein **Hinweis** mit der Differenz; **weniger** Knoten als das Soll sind
+eine **Abweichung**.
+
+**Zusätzliche Prüfungen.** *Graph jetzt neu zählen* zählt den Graphen **jetzt** noch einmal und markiert jede
+Kennzahl, die seit dem Import abweicht (der Graph wurde nach dem Import verändert). Wurde eine Quelldatei **nach
+dem Import geändert** (Änderungszeit jünger als der Import), wird sie markiert; ihr Nachweis ist dann nur
+eingeschränkt belastbar.
+
+**Ältere Importe nachweisen.** *Quelldatei-Nachweis rekonstruieren* ermittelt Quellzeilen, verworfene Spalten,
+Größe, Änderungszeit, Prüfsumme und Sollwerte aus dem **heutigen Inhalt des Importordners** und ergänzt damit den
+neuesten Import. Die Graph-Zähler vom Importzeitpunkt bleiben unverändert (sie wurden damals gemessen); das
+Protokoll vermerkt den Zeitpunkt der Rekonstruktion. Das dauert bei großen Extrakten einige Minuten (es werden
+alle Dateien gelesen). Voraussetzung ist, dass der Importordner `data/import/<Dataset>` noch vorhanden ist.
+
+**Export.** *Export Excel* (Standard) erzeugt eine Arbeitsmappe mit den Blättern **Protokoll** (Stammdaten und
+Gesamtergebnis), **Kennzahlen**, **Quelldateien**, **Nicht genutzt** und **Importverlauf**; *Export PDF* ein
+Querformat-Dokument mit Stammdaten, Kennzahlen-Kacheln und Quelldateien samt Prüfsumme; *Export CSV* den
+Dateinachweis zur Weiterverarbeitung. Im Aufklappbereich „Kopffelder für den Export“ lassen sich Unternehmen,
+Prüfungsanlass und Ersteller eintragen. Die Bezeichnungen im Export sind deutsch.
 
 ## 2 · Auswertung
 
@@ -467,7 +516,8 @@ Ergebnistabelle des Checks zurück. Das Dataset kommt aus dem Lauf der Zeile bzw
 des gewählten Datasets. R20 braucht beim ersten Aufruf einige Sekunden (bei allen Queries des
 Rulesets rund eine halbe Minute) und wird danach kurz zwischengespeichert.
 
-**Import-Evidenz (I1) im Detail.** Nutzt den bei jedem Import automatisch mitgeschriebenen
+**Import-Evidenz (I1) im Detail.** (Die ausführlichere Sicht — mit Kennzahlen, Dateihash, Stammdaten und Export —
+steht im {ref}`Import-Protokoll <import-protokoll>` unter „1 · Daten“.) Nutzt den bei jedem Import automatisch mitgeschriebenen
 Rekonziliierungsdatensatz (kein separater Lauf nötig — sofern das Dataset seit Einführung dieses
 Checks (Server-)importiert wurde, sonst erscheint ein Hinweis statt Zahlen). Je Quelltabelle:
 Quellzeilen, ggf. gefilterte Zeilen (z. B. `DELETED='X'`), verworfene Sensibel-Spalten, das

@@ -100,8 +100,10 @@ Likewise not raw data, but written by the backend after every import (completene
 the source SAP extract, see {ref}`consistency-checks`, consistency check I1):
 
 ```
-(:Dataset)-[:HAS_IMPORT]->(:Import {dataset, importedAt, lang})
-                          -[:HAS_TABLE]->(:ImportTable {table, sourceRows, droppedColumns, filteredRows})
+(:Dataset)-[:HAS_IMPORT]->(:Import {dataset, importedAt, importedAtEpoch, lang, durationSec, source, options,
+                                   appVersion, derivedRoles, reconstructedAt})
+                          -[:HAS_TABLE]->(:ImportTable {table, sourceRows, droppedColumns, filteredRows, expectedGraph, rowsSource,
+                                              fileName, fileBytes, fileMtime, sha256, hashOf})
                           -[:HAS_NODE_COUNT]->(:ImportNodeCount {labels, count})
                           -[:HAS_EDGE_COUNT]->(:ImportEdgeCount {type, count})
 ```

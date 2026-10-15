@@ -102,8 +102,10 @@ Ebenfalls keine Rohdaten, sondern vom Backend nach jedem Import geschrieben (Vol
 nachweis gegen den Quell-SAP-Extrakt, s. {ref}`konsistenzchecks`, Konsistenzcheck I1):
 
 ```
-(:Dataset)-[:HAS_IMPORT]->(:Import {dataset, importedAt, lang})
-                          -[:HAS_TABLE]->(:ImportTable {table, sourceRows, droppedColumns, filteredRows})
+(:Dataset)-[:HAS_IMPORT]->(:Import {dataset, importedAt, importedAtEpoch, lang, durationSec, source, options,
+                                   appVersion, derivedRoles, reconstructedAt})
+                          -[:HAS_TABLE]->(:ImportTable {table, sourceRows, droppedColumns, filteredRows, expectedGraph, rowsSource,
+                                              fileName, fileBytes, fileMtime, sha256, hashOf})
                           -[:HAS_NODE_COUNT]->(:ImportNodeCount {labels, count})
                           -[:HAS_EDGE_COUNT]->(:ImportEdgeCount {type, count})
 ```

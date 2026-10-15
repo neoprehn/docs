@@ -82,6 +82,7 @@ name — there is nothing to anonymize there.
 
 | Command | Effect |
 | --- | --- |
+| **Import log** | Opens the **import log (completeness evidence)** of the selected dataset (see below). |
 | **Import** | Opens the import dialog: **upload ZIP** (`.txt`/`.csv` inside the ZIP) or **existing folder**. Starts the import job (convert → schema → load → verify). |
 
 Options in the dialog: **languages** (for language-dependent text tables, default `DE,DEU,D`),
@@ -100,6 +101,52 @@ adding files (live finding 2026-10-12: "import folder" clicked instead of "impor
 reloading the one existing folder because no other option was listed). Without an active resume
 state and without "clear first", the app asks for confirmation here too before sending. For a
 **new** dataset, always use the upload section above.
+
+(import-log)=
+### Import Log (Completeness Evidence)
+
+The **Import log** command (group "1 · Data") shows **which data was imported when and whether everything was taken
+over into the graph completely** — as evidence for the audit documentation. It is created automatically with every
+import; older imports can be evidenced afterwards (see below). For each dataset and import, the page shows:
+
+- **Overall result** (*OK*, *OK with notes* or *Deviation*) with the counters per status.
+- **Key-figure tiles** for **users, roles, profiles, authorizations and transactions** — the numbers are **counted
+  in the graph** after the import and, where a matching source table exists, **held against its rows** (e.g. users
+  against `USR02`). Below, the breakdown (users by type and status, roles by single/composite/derived role, profiles,
+  relationships).
+- **Master data of the import:** import time and duration, source (ZIP name or folder), languages, **as-of date**,
+  the **system master data from `T000`** (company, client, city, currency, logical system) and the program version.
+- **Evidence per source file:** file, **size and SHA-256 checksum**, source rows, deliberately skipped rows, the
+  **expected value from the source** and the graph result, plus status and explanation. **All** tables of the
+  extract are covered: those in use with reconciliation, those currently not evaluated (without a loader) separately
+  as "present in the extract but not evaluated" — also with checksum.
+- **Import history:** the "Import" selection lets you view any earlier import of the same dataset.
+
+**How the reconciliation works.** The mapping *source table → usage* lives in **one** place
+(`config/import_sources.json`, the source catalog); a test ensures that every table read by the load scripts is listed
+in it. Where the load logic deliberately skips or merges rows, the **expected value is recomputed directly from the
+source file** — by the same rules as the loader (distinct keys without the skipped rows). Examples: `AGR_USERS` has
+more rows than the graph has assignments, because several rows of the same pair (different validity periods) become
+**one** edge — the evidence shows that the number of distinct pairs **exactly** equals the edge count; `TSTCT` is a
+language table with several rows per transaction. If the graph has **more** nodes than the source table (e.g. roles
+that only occur in assignments but are not defined in `AGR_DEFINE`), that is a **note** with the difference; **fewer**
+nodes than expected is a **deviation**.
+
+**Additional checks.** *Recount graph now* counts the graph once more **now** and flags every key figure that deviates
+since the import (the graph was changed after the import). If a source file was **changed after the import** (its
+modification time is later than the import), it is flagged; its evidence is then only of limited reliability.
+
+**Evidencing older imports.** *Reconstruct source file evidence* determines source rows, dropped columns, size,
+modification time, checksum and expected values from the **current content of the import folder** and adds them to
+the latest import. The graph counts from the time of the import stay unchanged (they were measured back then); the
+log notes the time of the reconstruction. This takes a few minutes for large extracts (all files are read). It
+requires the import folder `data/import/<dataset>` to still exist.
+
+**Export.** *Export Excel* (default) creates a workbook with the sheets **Protokoll** (master data and overall
+result), **Kennzahlen**, **Quelldateien**, **Nicht genutzt** and **Importverlauf**; *Export PDF* a landscape document
+with master data, key-figure tiles and source files including checksum; *Export CSV* the file evidence for further
+processing. In the collapsible "Header fields for the export" area, company, audit purpose and preparer can be
+entered. The labels in the export are in German.
 
 ## 2 · Analysis
 
@@ -465,7 +512,8 @@ authorizations, SoD rules); "← back" returns to the check's result table. The 
 row's run or the latest run of the selected dataset. R20 takes a few seconds on the first call (about
 half a minute with all queries of the ruleset) and is cached briefly afterwards.
 
-**Import evidence (I1) in detail.** Uses the reconciliation record automatically recorded with
+**Import evidence (I1) in detail.** (The more detailed view — with key figures, file hash, master data and export —
+is the {ref}`Import log <import-log>` under "1 · Data".) Uses the reconciliation record automatically recorded with
 every import (no separate run needed — provided the dataset was (server-)imported since this
 check was introduced; otherwise a notice appears instead of figures). Per source table: source
 rows, any filtered rows (e.g., `DELETED='X'`), discarded sensitive columns, the resulting graph
