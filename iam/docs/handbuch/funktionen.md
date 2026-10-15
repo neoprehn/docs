@@ -111,6 +111,8 @@ Der Befehl **Import-Protokoll** (Menü „Admin“, Gruppe „7 · Admin“ — 
 vollständig in den Graphen übernommen wurde** — als Nachweis für die Prüfungsdokumentation. Es entsteht bei jedem
 Import automatisch; ältere Importe lassen sich nachträglich nachweisen (s. u.). Je Dataset und Import zeigt die Seite:
 
+- **Reiter:** Die Seite ist nach Themen gegliedert — *Übersicht* (Gesamtergebnis, Kacheln, Stammdaten), *Quelldateien*
+  (Nachweis je Datei mit Erläuterung der Hinweise), *Kennzahlen* (Aufschlüsselungen) und *Nicht genutzt*.
 - **Gesamtergebnis** (*OK*, *OK mit Hinweisen* oder *Abweichung*) mit **Status-Kacheln** je Status (OK, Hinweis,
   Abweichung, …).
 - **Hinweise sind nummeriert:** Ein *Hinweis* heißt „kein Fehler, aber das Ergebnis weicht vom einfachen Quellvergleich

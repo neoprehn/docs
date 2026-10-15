@@ -108,6 +108,8 @@ The **Import log** command (menu "Admin", group "7 · Admin" — next to the err
 over into the graph completely** — as evidence for the audit documentation. It is created automatically with every
 import; older imports can be evidenced afterwards (see below). For each dataset and import, the page shows:
 
+- **Tabs:** the page is organized by topic — *Overview* (overall result, tiles, master data), *Source files*
+  (evidence per file with explanation of the notes), *Key figures* (breakdowns) and *Not used*.
 - **Overall result** (*OK*, *OK with notes* or *Deviation*) with **status tiles** per status (OK, note, deviation, …).
 - **Notes are numbered:** a *note* means "not an error, but the result differs from the plain source comparison for a
   **known, explainable reason**" (e.g. roles that only occur in assignments). Each row carries a number **[1]–[9]**; the
