@@ -454,6 +454,19 @@ Check-Katalog des jeweiligen Bereichs; „&larr; zurück zu Ergebnisse" wechselt
 | **Rollen-spezifisch** | Check-Katalog Kategorie R (Rollendesign/-qualität — Struktur/Generierung, Zuordnung/Reichweite, Risiko/SoD, Wartbarkeit). |
 | **Import** | Check-Katalog Kategorie I — Import-Evidenz (I1): Vollständigkeitsnachweis gegen den Quell-SAP-Extrakt, je Quelltabelle Quellzeilen gegen das Graph-Ergebnis abgeglichen (Prüfungsnachweisführung). Dataset-weit, kein User-/Rollenbezug. |
 
+**Rollen-Rankings (R19, R20) und anklickbare Rollen.** In der Box „Risiko & SoD“ des Rollen-
+Katalogs stehen zwei Ranglisten: **R19** — Rollen mit den meisten **SoD-Findings** (Intra- und
+Inter-Rollen-Konflikte zusammen; setzt die Evidenz des Laufs voraus) und **R20** — Rollen, die die
+meisten **Einzelfilter-Queries allein erfüllen** (nur Queries mit Treffern im Lauf; Sammelrollen
+zählen mit ihren Einzelrollen, Spalte „Typ“). Beide haben den Parameter **Top-N** (10/25/50/100) und
+eine Spalte **Lauf**, die den ausgewerteten Lauf nennt; bei R19 ist das der jüngste Lauf mit
+SoD-Evidenz, bei R20 der jüngste mit Einzelfilter-Treffern. In jeder Ergebnistabelle der
+Rollen-Checks ist die **Rolle anklickbar** und öffnet die **Rollen-Detailseite** (Stammdaten,
+TCodes, Berechtigungsobjekte mit Werten, Einzelberechtigungen, SoD-Regeln); „← zurück“ führt zur
+Ergebnistabelle des Checks zurück. Das Dataset kommt aus dem Lauf der Zeile bzw. dem jüngsten Lauf
+des gewählten Datasets. R20 braucht beim ersten Aufruf einige Sekunden (bei allen Queries des
+Rulesets rund eine halbe Minute) und wird danach kurz zwischengespeichert.
+
 **Import-Evidenz (I1) im Detail.** Nutzt den bei jedem Import automatisch mitgeschriebenen
 Rekonziliierungsdatensatz (kein separater Lauf nötig — sofern das Dataset seit Einführung dieses
 Checks (Server-)importiert wurde, sonst erscheint ein Hinweis statt Zahlen). Je Quelltabelle:

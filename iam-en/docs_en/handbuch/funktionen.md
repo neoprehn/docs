@@ -453,6 +453,18 @@ check catalog of the respective area; "← back to results" switches back.
 | **Role-specific** | Check catalog category R (role design/quality — structure/generation, assignment/scope, risk/SoD, maintainability). |
 | **Import** | Check catalog category I — import evidence (I1): completeness proof against the source SAP extract, matching source rows against the graph result per source table (audit evidence trail). Dataset-wide, no user/role reference. |
 
+**Role rankings (R19, R20) and clickable roles.** The "Risk & SoD" box of the role catalog holds two
+rankings: **R19** — roles with the most **SoD findings** (intra- and inter-role conflicts together;
+requires the run's evidence) and **R20** — roles that **satisfy the most single-filter queries on
+their own** (only queries with hits in the run; composite roles count with their single roles,
+column "Type"). Both have the **Top-N** parameter (10/25/50/100) and a **Run** column naming the
+evaluated run; for R19 this is the latest run with SoD evidence, for R20 the latest run with
+single-filter hits. In every result table of the role checks the **role is clickable** and opens the
+**role detail page** (master data, TCodes, authorization objects with values, individual
+authorizations, SoD rules); "← back" returns to the check's result table. The dataset comes from the
+row's run or the latest run of the selected dataset. R20 takes a few seconds on the first call (about
+half a minute with all queries of the ruleset) and is cached briefly afterwards.
+
 **Import evidence (I1) in detail.** Uses the reconciliation record automatically recorded with
 every import (no separate run needed — provided the dataset was (server-)imported since this
 check was introduced; otherwise a notice appears instead of figures). Per source table: source
