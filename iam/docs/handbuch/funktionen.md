@@ -83,7 +83,6 @@ Namen — dort gibt es nichts zu anonymisieren.
 
 | Befehl | Wirkung |
 | --- | --- |
-| **Import-Protokoll** | Öffnet das **Import-Protokoll (Vollständigkeitsnachweis)** des gewählten Datasets (s. u.). |
 | **Import** | Öffnet den Import-Dialog: **ZIP hochladen** (`.txt`/`.csv` im ZIP) oder **vorhandener Ordner**. Startet den Import-Job (konvertieren → Schema → laden → prüfen). |
 
 Optionen im Dialog: **Sprachen** (für sprachabhängige Texttabellen, Standard `DE,DEU,D`),
@@ -108,11 +107,17 @@ ZIP-/Ordner-Upload-Bereich nutzen.
 (import-protokoll)=
 ### Import-Protokoll (Vollständigkeitsnachweis)
 
-Der Befehl **Import-Protokoll** (Gruppe „1 · Daten“) zeigt, **welche Daten wann importiert wurden und ob alles
+Der Befehl **Import-Protokoll** (Menü „Admin“, Gruppe „7 · Admin“ — neben dem Fehlerprotokoll) zeigt, **welche Daten wann importiert wurden und ob alles
 vollständig in den Graphen übernommen wurde** — als Nachweis für die Prüfungsdokumentation. Es entsteht bei jedem
 Import automatisch; ältere Importe lassen sich nachträglich nachweisen (s. u.). Je Dataset und Import zeigt die Seite:
 
-- **Gesamtergebnis** (*OK*, *OK mit Hinweisen* oder *Abweichung*) mit den Zählern je Status.
+- **Gesamtergebnis** (*OK*, *OK mit Hinweisen* oder *Abweichung*) mit **Status-Kacheln** je Status (OK, Hinweis,
+  Abweichung, …).
+- **Hinweise sind nummeriert:** Ein *Hinweis* heißt „kein Fehler, aber das Ergebnis weicht vom einfachen Quellvergleich
+  ab und hat einen **bekannten, erklärbaren Grund**“ (z. B. Rollen, die nur in Zuordnungen vorkommen). Jede Zeile trägt
+  eine Nummer **[1]–[9]**; die zugehörige Erläuterung steht **unter der Tabelle** und in **allen Exporten** (Excel: Blatt
+  „Erlaeuterungen“, CSV: Spalten *hintNumber*/*hintTitle* plus Legende, PDF: Seite „Erläuterung der Hinweise“) —
+  der Ausdruck ist damit ohne Rückfrage lesbar.
 - **Kennzahlen-Kacheln** für **Nutzer, Rollen, Profile, Berechtigungen und Transaktionen** — die Zahlen werden
   nach dem Import **im Graphen gezählt** und, wo es eine passende Quelltabelle gibt, **gegen deren Zeilen** gehalten
   (z. B. Nutzer gegen `USR02`). Darunter die Aufschlüsselung (Nutzer nach Typ und Status, Rollen nach Einzel-/Sammel-/
@@ -517,7 +522,7 @@ des gewählten Datasets. R20 braucht beim ersten Aufruf einige Sekunden (bei all
 Rulesets rund eine halbe Minute) und wird danach kurz zwischengespeichert.
 
 **Import-Evidenz (I1) im Detail.** (Die ausführlichere Sicht — mit Kennzahlen, Dateihash, Stammdaten und Export —
-steht im {ref}`Import-Protokoll <import-protokoll>` unter „1 · Daten“.) Nutzt den bei jedem Import automatisch mitgeschriebenen
+steht im {ref}`Import-Protokoll <import-protokoll>` im Menü „Admin“.) Nutzt den bei jedem Import automatisch mitgeschriebenen
 Rekonziliierungsdatensatz (kein separater Lauf nötig — sofern das Dataset seit Einführung dieses
 Checks (Server-)importiert wurde, sonst erscheint ein Hinweis statt Zahlen). Je Quelltabelle:
 Quellzeilen, ggf. gefilterte Zeilen (z. B. `DELETED='X'`), verworfene Sensibel-Spalten, das
@@ -616,6 +621,7 @@ Beide Aktionen fragen vor dem Ausführen nach.
 | **Query Management** | Link direkt auf die eigene Seite `/admin.html` (kein Zwischendialog). |
 | **Masterdata** | Link direkt auf die eigene Seite `/admin-masterdata.html` (kein Zwischendialog). |
 | **Scope** | Link direkt auf die eigene Seite `/admin-scopes.html` (kein Zwischendialog). |
+| **Import-Protokoll** | Öffnet das **Import-Protokoll (Vollständigkeitsnachweis)** des gewählten Datasets (s. {ref}`Import-Protokoll <import-protokoll>`). |
 | **Fehlerprotokoll** | Dialog mit fehlgeschlagenen Jobs (Import/Lauf/Backup/Restore/Bereinigen) — **persistent**, überlebt einen Container-Neustart (Datei `data/logs/job_errors.jsonl`). Neueste zuerst. |
 
 ### Query Management (eigene Seite, eigene Ribbon-Bar)

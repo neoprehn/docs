@@ -82,7 +82,6 @@ name — there is nothing to anonymize there.
 
 | Command | Effect |
 | --- | --- |
-| **Import log** | Opens the **import log (completeness evidence)** of the selected dataset (see below). |
 | **Import** | Opens the import dialog: **upload ZIP** (`.txt`/`.csv` inside the ZIP) or **existing folder**. Starts the import job (convert → schema → load → verify). |
 
 Options in the dialog: **languages** (for language-dependent text tables, default `DE,DEU,D`),
@@ -105,11 +104,16 @@ state and without "clear first", the app asks for confirmation here too before s
 (import-log)=
 ### Import Log (Completeness Evidence)
 
-The **Import log** command (group "1 · Data") shows **which data was imported when and whether everything was taken
+The **Import log** command (menu "Admin", group "7 · Admin" — next to the error log) shows **which data was imported when and whether everything was taken
 over into the graph completely** — as evidence for the audit documentation. It is created automatically with every
 import; older imports can be evidenced afterwards (see below). For each dataset and import, the page shows:
 
-- **Overall result** (*OK*, *OK with notes* or *Deviation*) with the counters per status.
+- **Overall result** (*OK*, *OK with notes* or *Deviation*) with **status tiles** per status (OK, note, deviation, …).
+- **Notes are numbered:** a *note* means "not an error, but the result differs from the plain source comparison for a
+  **known, explainable reason**" (e.g. roles that only occur in assignments). Each row carries a number **[1]–[9]**; the
+  matching explanation is shown **below the table** and in **all exports** (Excel: sheet "Erlaeuterungen", CSV: columns
+  *hintNumber*/*hintTitle* plus legend, PDF: page "Erläuterung der Hinweise") — so a printout is readable without
+  follow-up questions.
 - **Key-figure tiles** for **users, roles, profiles, authorizations and transactions** — the numbers are **counted
   in the graph** after the import and, where a matching source table exists, **held against its rows** (e.g. users
   against `USR02`). Below, the breakdown (users by type and status, roles by single/composite/derived role, profiles,
@@ -513,7 +517,7 @@ row's run or the latest run of the selected dataset. R20 takes a few seconds on 
 half a minute with all queries of the ruleset) and is cached briefly afterwards.
 
 **Import evidence (I1) in detail.** (The more detailed view — with key figures, file hash, master data and export —
-is the {ref}`Import log <import-log>` under "1 · Data".) Uses the reconciliation record automatically recorded with
+is the {ref}`Import log <import-log>` in the "Admin" menu.) Uses the reconciliation record automatically recorded with
 every import (no separate run needed — provided the dataset was (server-)imported since this
 check was introduced; otherwise a notice appears instead of figures). Per source table: source
 rows, any filtered rows (e.g., `DELETED='X'`), discarded sensitive columns, the resulting graph
@@ -609,6 +613,7 @@ Both actions ask for confirmation before executing.
 | **Query Management** | Link directly to its own page `/admin.html` (no intermediate dialog). |
 | **Masterdata** | Link directly to its own page `/admin-masterdata.html` (no intermediate dialog). |
 | **Scope** | Link directly to its own page `/admin-scopes.html` (no intermediate dialog). |
+| **Import log** | Opens the **import log (completeness evidence)** of the selected dataset (see {ref}`Import Log <import-log>`). |
 | **Error log** | Dialog with failed jobs (import/run/backup/restore/clean-up) — **persistent**, survives a container restart (file `data/logs/job_errors.jsonl`). Newest first. |
 
 ### Query Management (own page, own ribbon bar)
