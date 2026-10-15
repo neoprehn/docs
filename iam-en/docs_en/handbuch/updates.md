@@ -87,6 +87,15 @@ then: use the Git Pull button only when you are sure there are **no** Python cha
   an update deliberately aborts if there are local changes in the installation folder instead of
   overwriting them.
 
+### Update Button in the Import Dialog
+
+The **Import** dialog has three tabs: **New dataset** (upload ZIP or folder), **Existing folder** (resume/reload) and
+**Update**. The *Update* tab (native Windows installation only) shows the installed version, checks for new changes
+(*Check for updates*) and, with **Update now**, starts the scheduled task `IAM-Update` — the same as "Update now" in
+"IAM manage": fetch the state, **install Python packages** (into the existing `.venv-win`, no additional Python
+needed), restart the backend. A plain `git pull` is not enough if `requirements.txt` or Python code changed. Neo4j and
+Java are **not** updated. The update log appears right in the tab; with Docker the tab only shows a hint.
+
 ## With Docker (Development Machine)
 
 The backend runs here in development mode with **automatic reloading**: the Python files that are

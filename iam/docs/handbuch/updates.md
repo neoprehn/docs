@@ -89,6 +89,16 @@ auf. Bis dahin gilt: Git-Pull-Knopf nur, wenn sicher **keine** Python-Änderunge
   anzeigen“); ein Update bricht bewusst ab, wenn im Installationsordner lokale Änderungen liegen,
   statt sie zu überschreiben.
 
+### Update-Knopf im Import-Dialog
+
+Der Dialog **Import** hat drei Reiter: **Neues Dataset** (ZIP oder Ordner hochladen), **Vorhandener Ordner**
+(fortsetzen/erneut laden) und **Update**. Der Reiter *Update* (nur native Windows-Installation) zeigt den installierten
+Stand, prüft auf neue Änderungen (*Auf Updates prüfen*) und startet mit **Jetzt aktualisieren** den geplanten Task
+`IAM-Update` — also dasselbe wie „Jetzt aktualisieren“ in „IAM verwalten“: Stand holen, **Python-Pakete installieren**
+(im vorhandenen `.venv-win`, kein zusätzliches Python nötig), Backend neu starten. Ein `git pull` allein genügt dafür
+nicht, wenn sich `requirements.txt` oder Python-Code geändert haben. Neo4j und Java werden dabei **nicht** aktualisiert.
+Das Update-Protokoll erscheint direkt im Reiter; im Docker-Betrieb zeigt der Reiter nur einen Hinweis.
+
 ## Im Docker-Betrieb (Entwicklungsrechner)
 
 Das Backend läuft hier im Entwicklungsmodus mit **automatischem Nachladen**: Die Python-Dateien, die in
