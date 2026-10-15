@@ -27,10 +27,10 @@ has development tools (native Windows installation, "third-party machine").
 | **Rule sets** (`rules/`: single filters, SoD rules, risk catalog) | visible in the maintenance view immediately; **in the graph only at the next "New run"** (or after saving in the editor) | Start a new run for new rules. **Runs that were already computed do not change.** |
 | **Import logic** (`load/`, `migrations/`) | at the next import | Nothing; schema migrations run idempotently with every import. |
 | **Backend program** (`backend/*.py`) | **only after the backend is restarted** | Restart (see below). |
-| **Python packages** (`backend/requirements.txt`) | only after package installation **and** restart | Full update ("Update now") — see the trap below. |
+| **Python packages** (`backend/requirements.txt`) | only after package installation **and** restart | Full update ("Update now"). |
 | **Neo4j** (version, memory, APOC settings) | never automatically | Manually only, e.g. via "Set memory + restart Neo4j". |
 | **Documentation** (`docs/`) | only on Read the Docs | Not part of the running app. |
-| **`install.exe` / `manage.exe`** | only by replacing the file | Rebuilt files are **handed over manually**; a pull does not change them. |
+| **`install.exe` / `manage.exe` / `update.ps1`** (installation folder, not in the Git clone) | only by replacing the file | New versions are **handed over manually**; a pull does not change them. Replacing `update.ps1` is enough, `install.exe` stays untouched. |
 
 An update **never** touches data, backups or the `.env`: `data/`, `backups/` and `.env` stay
 unchanged. New program logic also applies **to new runs** — existing runs and results are not
@@ -42,37 +42,44 @@ Here the backend runs **without automatic reloading**. There are three ways to f
 
 | Way | What happens | Backend restart? | Python packages? |
 | --- | --- | --- | --- |
-| **Automatic, daily at 06:00** (task `IAM-Update`) | Fetches the latest state, installs packages, restarts the backend — but **only if there was a new state** | yes | yes |
-| **"Update now"** (window "Manage IAM", `manage.exe`) | like the daily task, immediately | yes (on a new state) | yes (on a new state) |
+| **Automatic, daily at 06:00** (task `IAM-Update`) | Fetches the latest state, installs packages, restarts the backend — but **only if there was a new or not yet activated state** | yes | yes |
+| **"Update now"** (window "Manage IAM", `manage.exe`) | like the daily task, immediately | yes (on a new or not yet activated state) | yes (likewise) |
 | **"Update code (Git Pull)"** (Admin menu in the app) | fetches **only the files** (`git pull`) | **no** | **no** |
 
 It follows that:
 
 - **The Git Pull button is the quick way for pure interface, query, catalog or rule-set changes.**
-  Afterwards, reloading the page is enough.
+  Afterwards, reloading the page is enough. If the update nevertheless contained Python changes, the
+  **old** backend stays active until "Update now" activates the fetched state.
 - **If an update contains Python changes**, the **old** program version keeps running until the
   backend restarts. The new interface may then call functions the old backend does not know yet —
   typical signs are messages like "Not Found", empty views or buttons that do nothing. **Remedy: click
-  "Restart" in the "Manage IAM" window.**
+  "Update now" in the "Manage IAM" window** (activates the fetched state) or "Restart".
 
-:::{admonition} Trap: "Update now" after the Git Pull button
-:class: warning
-If the Git Pull button has already fetched the state, "Update now" reports **"Already up to date, no
-restart needed"** and exits — **without** restarting the backend and **without** installing Python
-packages. The hint in the Git Pull button ("for that keep using 'Update now'") therefore does not
-apply in this case.
+**The activation marker.** The update script records in `data\logs\deployed-head.txt` **for which state
+packages and restart last ran successfully**. If the code was fetched beforehand with the Git Pull
+button, "Update now" (or the daily task) sees that the fetched state is **not yet activated** and
+**catches up** with the package installation and backend restart. The update log then says: "State …
+is already fetched …, but not yet activated — catching up on package installation and backend
+restart." If the package installation fails, the backend is deliberately **not** restarted (so it does
+not start with missing packages) and the next run tries again.
 
-**Rule of thumb:** when in doubt, **do not** use the Git Pull button but go straight to **"Update
-now"** — it does everything in one step. If the button was already used and the update contained
-Python changes, **"Restart"** helps. If **new Python packages** were involved, they stay
-**uninstalled** in this case (only the full update installs them, and only when it fetches the new
-state itself) — the backend may then abort at startup with an import error. So use the Git Pull
-button only when you are sure there are **no** Python changes.
+:::{admonition} Older installations
+:class: note
+If the machine still has an **older `update.ps1`** (without the activation marker), "Update now"
+reports **"Already up to date, no restart needed"** after the Git Pull button and restarts
+**nothing** — Python changes stay ineffective there until the next restart, and new Python packages
+are not installed. You can tell from the update log: the line reads "Bereits aktuell (…)" **without**
+"und aktiv". Remedy: replace the file **`update.ps1` in the installation folder** (the folder with
+`install.exe`/`manage.exe`) with the new version. `install.exe` does **not** need to be run again and
+`manage.exe` does not need to be rebuilt: the task and the window only call the file by path. Until
+then: use the Git Pull button only when you are sure there are **no** Python changes, otherwise
+"Update now" **without** pressing the button first; if that is not enough, "Restart" helps.
 :::
 
 - **"Restart"** restarts **Neo4j and the backend** (not just the backend).
 - New **Python packages** are installed **exclusively** by the full update (daily task or "Update
-  now"), and only if it fetches the new state itself.
+  now") — also when the state was fetched beforehand with the Git Pull button.
 - A **restart interrupts a running run**. It can be resumed but is unnecessary — so do not schedule
   updates in the middle of an evaluation, especially not at 06:00 when a run is still going. If the
   machine follows the `main` branch, **every new commit** restarts the backend at the next update run.

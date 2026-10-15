@@ -27,10 +27,10 @@ niemand Entwicklungswerkzeuge hat (native Windows-Installation, „Drittrechner�
 | **Regelwerke** (`rules/`: Einzelfilter, SoD-Regeln, Risikokatalog) | in der Pflege-Ansicht sofort sichtbar; **im Graphen erst beim nächsten „Neuer Lauf“** (oder nach dem Speichern im Editor) | Für neue Regeln einen neuen Lauf starten. **Bereits berechnete Läufe ändern sich nicht.** |
 | **Import-Logik** (`load/`, `migrations/`) | beim nächsten Import | Nichts; Schema-Migrationen laufen bei jedem Import idempotent mit. |
 | **Backend-Programm** (`backend/*.py`) | **erst nach Neustart des Backends** | Neu starten (s. u.). |
-| **Python-Pakete** (`backend/requirements.txt`) | erst nach Paket-Installation **und** Neustart | Vollständiges Update („Jetzt aktualisieren“) — s. Falle unten. |
+| **Python-Pakete** (`backend/requirements.txt`) | erst nach Paket-Installation **und** Neustart | Vollständiges Update („Jetzt aktualisieren“). |
 | **Neo4j** (Version, Speicher-, APOC-Einstellungen) | nie automatisch | Nur manuell, z. B. über „Speicher setzen + Neo4j neu starten“. |
 | **Dokumentation** (`docs/`) | nur auf Read the Docs | Nicht Teil der laufenden App. |
-| **`install.exe` / `manage.exe`** | nur durch Austausch der Datei | Neu gebaute Dateien werden **manuell übergeben**, ein Pull ändert sie nicht. |
+| **`install.exe` / `manage.exe` / `update.ps1`** (Installationsordner, nicht im Git-Klon) | nur durch Austausch der Datei | Neue Fassungen werden **manuell übergeben**, ein Pull ändert sie nicht. `update.ps1` ersetzen genügt, `install.exe` bleibt unberührt. |
 
 Daten, Backups und die `.env` fasst ein Update **nie** an: `data/`, `backups/` und `.env` bleiben
 unverändert. Neue Programmlogik gilt außerdem **für neue Läufe** — vorhandene Läufe und Ergebnisse
@@ -42,37 +42,45 @@ Hier läuft das Backend **ohne automatisches Nachladen**. Es gibt drei Wege, den
 
 | Weg | Was passiert | Backend-Neustart? | Python-Pakete? |
 | --- | --- | --- | --- |
-| **Automatisch, täglich 06:00** (Aufgabe `IAM-Update`) | Holt den neuesten Stand, installiert Pakete, startet das Backend neu — aber **nur, wenn es neuen Stand gab** | ja | ja |
-| **„Jetzt aktualisieren“** (Fenster „IAM verwalten“, `manage.exe`) | wie die tägliche Aufgabe, sofort | ja (bei neuem Stand) | ja (bei neuem Stand) |
+| **Automatisch, täglich 06:00** (Aufgabe `IAM-Update`) | Holt den neuesten Stand, installiert Pakete, startet das Backend neu — aber **nur, wenn es neuen oder noch nicht aktivierten Stand gab** | ja | ja |
+| **„Jetzt aktualisieren“** (Fenster „IAM verwalten“, `manage.exe`) | wie die tägliche Aufgabe, sofort | ja (bei neuem oder noch nicht aktiviertem Stand) | ja (ebenso) |
 | **„Code aktualisieren (Git Pull)“** (Admin-Menü in der App) | holt **nur die Dateien** (`git pull`) | **nein** | **nein** |
 
 Daraus folgt:
 
 - **Der Git-Pull-Knopf ist der schnelle Weg für reine Oberflächen-, Abfrage-, Katalog- oder
-  Regelwerks-Änderungen.** Danach reicht es, die Seite neu zu laden.
+  Regelwerks-Änderungen.** Danach reicht es, die Seite neu zu laden. Enthielt das Update dennoch
+  Python-Änderungen, bleibt das **alte** Backend aktiv, bis „Jetzt aktualisieren“ den Stand aktiviert.
 - **Enthält ein Update Python-Änderungen**, läuft danach die **alte** Programmversion weiter, bis das
   Backend neu startet. Dann kann die neue Oberfläche Funktionen aufrufen, die das alte Backend noch
   nicht kennt — typische Anzeichen sind Fehlermeldungen wie „Not Found“, leere Ansichten oder
-  Schaltflächen ohne Wirkung. **Abhilfe: im Fenster „IAM verwalten“ auf „Neu starten“ klicken.**
+  Schaltflächen ohne Wirkung. **Abhilfe: im Fenster „IAM verwalten“ auf „Jetzt aktualisieren“
+  klicken** (aktiviert den geholten Stand) bzw. auf „Neu starten“.
 
-:::{admonition} Falle: „Jetzt aktualisieren“ nach dem Git-Pull-Knopf
-:class: warning
-Hat der Git-Pull-Knopf den Stand schon geholt, meldet „Jetzt aktualisieren“ **„Bereits aktuell, kein
-Neustart nötig“** und beendet sich — **ohne** das Backend neu zu starten und **ohne** Python-Pakete
-zu installieren. Der Hinweis im Git-Pull-Knopf („dafür weiterhin ‚Jetzt aktualisieren‘ nutzen“)
-trifft deshalb in diesem Fall nicht zu.
+**Der Aktivierungs-Marker.** Das Update-Skript merkt sich in `data\logs\deployed-head.txt`, **für welchen
+Stand Pakete und Neustart zuletzt erfolgreich durchgelaufen sind**. Wurde der Code vorher per
+Git-Pull-Knopf geholt, sieht „Jetzt aktualisieren“ (oder die tägliche Aufgabe), dass der geholte Stand
+noch **nicht aktiviert** ist, und holt Paketinstallation und Backend-Neustart **nach**. Im Update-Log
+steht dann: „Stand … ist bereits geholt …, aber noch nicht aktiviert — hole Paketinstallation und
+Backend-Neustart nach.“ Schlägt die Paketinstallation fehl, wird das Backend bewusst **nicht** neu
+gestartet (damit es nicht mit fehlenden Paketen anläuft) und der nächste Lauf versucht es erneut.
 
-**Faustregel:** Im Zweifel **nicht** den Git-Pull-Knopf benutzen, sondern gleich **„Jetzt
-aktualisieren“** — das erledigt alles in einem Schritt. Wurde der Knopf trotzdem schon benutzt und
-das Update enthielt Python-Änderungen, hilft **„Neu starten“**. Waren **neue Python-Pakete** dabei,
-bleiben sie in diesem Fall **uninstalliert** (nur das vollständige Update installiert sie, und nur,
-wenn es selbst neuen Stand holt) — das Backend kann dann beim Start mit einem Importfehler abbrechen.
-Den Git-Pull-Knopf deshalb nur benutzen, wenn sicher **keine** Python-Änderungen dabei sind.
+:::{admonition} Ältere Installationen
+:class: note
+Hat der Rechner noch eine **ältere `update.ps1`** (ohne Aktivierungs-Marker), meldet „Jetzt
+aktualisieren“ nach dem Git-Pull-Knopf **„Bereits aktuell, kein Neustart nötig“** und startet
+**nichts** neu — dort bleiben Python-Änderungen bis zum nächsten Neustart wirkungslos, neue
+Python-Pakete werden nicht installiert. Erkennbar im Update-Log: die Zeile heißt „Bereits aktuell
+(…)“ **ohne** „und aktiv“. Abhilfe: die Datei **`update.ps1` im Installationsordner** (dem Ordner mit
+`install.exe`/`manage.exe`) durch die neue Version ersetzen. `install.exe` muss **nicht** erneut
+ausgeführt werden und `manage.exe` nicht neu gebaut: Aufgabe und Fenster rufen die Datei nur per Pfad
+auf. Bis dahin gilt: Git-Pull-Knopf nur, wenn sicher **keine** Python-Änderungen dabei sind, sonst
+„Jetzt aktualisieren“ **ohne** vorherigen Knopf; reicht das nicht, hilft „Neu starten“.
 :::
 
 - **„Neu starten“** startet **Neo4j und das Backend** neu (nicht nur das Backend).
-- Neue **Python-Pakete** werden **ausschließlich** vom vollständigen Update installiert (tägliche
-  Aufgabe oder „Jetzt aktualisieren“), und nur, wenn dieses den neuen Stand selbst holt.
+- Neue **Python-Pakete** installiert **ausschließlich** das vollständige Update (tägliche Aufgabe oder
+  „Jetzt aktualisieren“) — auch dann, wenn der Stand vorher per Git-Pull-Knopf geholt wurde.
 - Ein **Neustart unterbricht einen laufenden Lauf**. Er ist fortsetzbar, aber unnötig — Updates
   deshalb nicht mitten in eine Auswertung legen, besonders nicht um 06:00 Uhr, wenn dann noch ein
   Lauf läuft. Folgt der Rechner dem Zweig `main`, startet **jeder neue Commit** beim nächsten
