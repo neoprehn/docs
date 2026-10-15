@@ -87,6 +87,9 @@ Ein Update-Lauf rührt **nur den Code** an — `data/`, `backups/` und `.env` bl
 Neo4j selbst (Version, Speicher-/APOC-Konfiguration) wird nicht automatisch aktualisiert, genau
 wie eine Docker-Compose-Änderung dort auch kein automatisches Update auslöst.
 
+**Was nach einem Update wann wirksam wird** — und warum der Knopf „Code aktualisieren (Git Pull)“ nicht
+alles erledigt — steht im Benutzerhandbuch unter [Updates: Was braucht einen Neustart?](../handbuch/updates.md).
+
 ## Details, Troubleshooting, Deinstallation
 
 Vollständig in [`deploy/windows-native/README.md`][repo-deploy] im Repo — u. a. Verwaltung über

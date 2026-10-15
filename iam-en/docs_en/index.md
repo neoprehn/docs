@@ -24,6 +24,7 @@ SAP extracts, the DB volume, and backups stay local (`data/`, `backups/`, gitign
 handbuch/ueberblick
 handbuch/workflow
 handbuch/funktionen
+handbuch/updates
 ```
 
 ```{toctree}

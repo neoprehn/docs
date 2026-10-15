@@ -24,6 +24,7 @@ SAP-Extrakte, das DB-Volume und Backups bleiben lokal (`data/`, `backups/`, giti
 handbuch/ueberblick
 handbuch/workflow
 handbuch/funktionen
+handbuch/updates
 ```
 
 ```{toctree}
