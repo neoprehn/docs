@@ -106,6 +106,34 @@ sofort. Ein `git pull` im Projektordner genügt also meistens. Ausnahmen:
 Der Knopf „Code aktualisieren (Git Pull)“ gibt es nur auf der nativen Windows-Installation; im Container
 meldet er, dass er dort nicht verfügbar ist.
 
+## Bibliotheken und Docker-Komponenten aktualisieren (mit Test und Rollback)
+
+Die Versionen sind **gepinnt**: Python-Basisimage (`backend/Dockerfile`), Neo4j-Image (`docker-compose.yml`),
+neo4j-migrations (`docker/neo4j-migrations.Dockerfile`) und alle Python-Pakete (`backend/requirements.txt`).
+Aktualisiert wird in zwei Schritten: erst die Pins in den Dateien anheben, dann das Skript
+`deploy\docker-update-test.ps1` laufen lassen (ohne Administratorrechte, nur der Docker-Client wird benutzt):
+
+```powershell
+deploy\docker-update-test.ps1                 # aktualisieren, testen, bei Fehler automatisch zurück
+deploy\docker-update-test.ps1 -VolumeBackup   # zusätzlich das Neo4j-Datenvolume sichern (bei Neo4j-Versionssprung)
+deploy\docker-update-test.ps1 -Mode Check     # nur den aktuellen Stand prüfen, nichts ändern
+deploy\docker-update-test.ps1 -Mode Rollback  # manuell auf den gesicherten Stand zurück
+```
+
+Ablauf: Das Skript sichert die **laufenden** Images als `iam-rollback/*:pre`, baut und startet den neuen Stand und
+führt einen **Smoke-Test** aus: Neo4j und APOC (inkl. Versionsgleichheit und `apoc.load.json` auf die Rulesets),
+Backend (`/health`, Oberfläche, Datenbankzugriff), Paketkonsistenz (`pip check`), Import aller Module, PDF-/Excel-
+Erzeugung, die **Unit-Tests im neuen Image**, die Migrationen und ein **unveränderter Graph** (Fingerabdruck der
+Knoten- und Kantenzahlen je Label – es werden keine Zahlen ausgegeben). Schlägt irgendetwas fehl, startet das Skript
+selbst mit den gesicherten Images neu und prüft, dass der Stack wieder gesund ist. Danach die geänderten Pins mit
+`git checkout -- <Datei>` zurücknehmen. Mit `-ForceRollbackTest` lässt sich der Rollback-Weg üben.
+
+```{note}
+Die **native Windows-Installation** hat eigene Versionen (`Neo4jVersion`/`ApocVersion` in `install.ps1`; APOC muss
+zur Neo4j-Patchversion passen). Sie werden nicht vom Docker-Update berührt; ein Anheben dort erfordert ein neu
+gebautes `install.exe`/`manage.exe` und eine Übergabe an den Drittrechner.
+```
+
 ## Weiterführend
 
 Installation, Aufgaben und Verwaltung der Windows-Installation:

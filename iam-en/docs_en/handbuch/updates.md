@@ -104,6 +104,34 @@ project folder is therefore usually enough. Exceptions:
 The "Update code (Git Pull)" button only exists in the native Windows installation; in the container
 it reports that it is not available there.
 
+## Updating Libraries and Docker Components (with Test and Rollback)
+
+Versions are **pinned**: Python base image (`backend/Dockerfile`), Neo4j image (`docker-compose.yml`),
+neo4j-migrations (`docker/neo4j-migrations.Dockerfile`) and all Python packages (`backend/requirements.txt`).
+Updating takes two steps: raise the pins in the files, then run `deploy\docker-update-test.ps1`
+(no administrator rights needed, only the Docker client is used):
+
+```powershell
+deploy\docker-update-test.ps1                 # update, test, automatic rollback on failure
+deploy\docker-update-test.ps1 -VolumeBackup   # additionally back up the Neo4j data volume (for a Neo4j version jump)
+deploy\docker-update-test.ps1 -Mode Check     # only test the current state, change nothing
+deploy\docker-update-test.ps1 -Mode Rollback  # manually go back to the saved state
+```
+
+Sequence: the script saves the **running** images as `iam-rollback/*:pre`, builds and starts the new state and runs a
+**smoke test**: Neo4j and APOC (including matching versions and `apoc.load.json` on the rulesets), backend (`/health`,
+UI, database access), package consistency (`pip check`), import of all modules, PDF/Excel generation, the **unit tests
+in the new image**, the migrations and an **unchanged graph** (fingerprint of node and edge counts per label — no
+numbers are printed). If anything fails, the script restarts with the saved images itself and checks that the stack
+is healthy again. Afterwards revert the changed pins with `git checkout -- <file>`. `-ForceRollbackTest` lets you
+rehearse the rollback path.
+
+```{note}
+The **native Windows installation** has its own versions (`Neo4jVersion`/`ApocVersion` in `install.ps1`; APOC must
+match the Neo4j patch version). They are not touched by the Docker update; raising them there requires a rebuilt
+`install.exe`/`manage.exe` and a handover to the third-party machine.
+```
+
 ## Further Reading
 
 Installation, tasks and administration of the Windows installation:
