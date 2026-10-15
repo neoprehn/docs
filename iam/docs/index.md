@@ -26,6 +26,7 @@ handbuch/installation
 handbuch/workflow
 handbuch/funktionen
 handbuch/updates
+handbuch/troubleshooting
 ```
 
 ```{toctree}
