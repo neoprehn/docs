@@ -21,6 +21,7 @@ SAP-Extrakte, das DB-Volume und Backups bleiben lokal (`data/`, `backups/`, giti
 :maxdepth: 2
 :caption: Benutzerhandbuch
 
+handbuch/installation
 handbuch/ueberblick
 handbuch/workflow
 handbuch/funktionen

@@ -21,6 +21,7 @@ SAP extracts, the DB volume, and backups stay local (`data/`, `backups/`, gitign
 :maxdepth: 2
 :caption: User Handbook
 
+handbuch/installation
 handbuch/ueberblick
 handbuch/workflow
 handbuch/funktionen

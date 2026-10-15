@@ -34,6 +34,9 @@ Die Oberfläche ist als **Ribbon-Bar** genau nach diesem Ablauf gegliedert:
 
 ## Starten
 
+Eine ausführliche Schritt-für-Schritt-Anleitung (Docker **und** native Windows-Installation, mit Bildschirmfotos)
+steht unter [Installation](installation.md); hier die Kurzfassung für Docker:
+
 ```bash
 docker compose up -d --build      # Neo4j + Backend starten
 docker compose run --rm migrations  # Schema einmalig anlegen (idempotent)

@@ -34,6 +34,9 @@ The interface is organized as a **ribbon bar** that follows exactly this flow:
 
 ## Starting
 
+A detailed step-by-step guide (Docker **and** native Windows installation, with screenshots) is in
+[Installation](installation.md); here is the short version for Docker:
+
 ```bash
 docker compose up -d --build      # start Neo4j + backend
 docker compose run --rm migrations  # create schema once (idempotent)
