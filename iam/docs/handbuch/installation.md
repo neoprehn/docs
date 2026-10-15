@@ -85,12 +85,20 @@ PowerShell-Skripten. Entpacke ihn an einen **dauerhaften lokalen Ort** (z. B. `C
 OneDrive und nicht in „Downloads“) — die Update-Aufgabe und das Verwaltungsfenster rufen die Dateien später aus
 diesem Ordner auf.
 
-### 2 · Zugangsschlüssel ablegen (nur beim allerersten Mal)
+### 2 · Zugangsschlüssel neben `install.exe` legen
 
-Der Programmcode wird aus dem privaten Repository per SSH geladen. Lege dafür den vom Betreiber erhaltenen
-**Deploy-Schlüssel** im Ordner `%USERPROFILE%\.ssh\` ab. Beim ersten Zugriff muss die Verbindung zu GitHub
-einmal bestätigt werden (`ssh -T git@github.com` in einer Eingabeaufforderung und die Rückfrage mit `yes`
-beantworten). Der Rest wird von der Installation automatisch eingerichtet.
+Der Programmcode wird aus dem privaten Repository per SSH geladen. Der **Deploy-Schlüssel** (Datei
+`iam-deploy-key`) kommt **getrennt vom Paket** vom Betreiber — aus Sicherheitsgründen nicht in der ZIP. Lege die Datei
+**in den entpackten Ordner, direkt neben `install.exe`**, **bevor** du die Installation startest.
+
+`install.exe` prüft beim Start, ob der Schlüssel dort (oder in `%USERPROFILE%\.ssh\`) liegt, und übernimmt ihn in einen
+geschützten Ordner (`C:\ProgramData\iam\ssh`), den auch der Update-Task nutzen kann. Eine manuelle Bestätigung der
+GitHub-Verbindung (`ssh -T …`) ist **nicht** mehr nötig. Fehlt der Schlüssel bei der Erstinstallation, bricht die
+Installation sofort mit einem klaren Hinweis ab.
+
+- **Update durch erneutes Starten von `install.exe`:** Der Schlüssel muss nicht erneut dabei liegen, wenn er schon
+  eingerichtet ist; andernfalls erscheint eine Warnung.
+- **Danach:** Die Schlüsseldatei im Paketordner kann gelöscht werden, die Installation hat eine geschützte Kopie.
 
 ### 3 · `install.exe` starten
 
@@ -215,7 +223,7 @@ Wie es weitergeht (Auswertung starten, Ergebnisse lesen, Konsistenzchecks, Siche
 | Das Backend startet nicht und meldet einen Importfehler | Es fehlt ein Python-Paket oder eine Datei, meist nach einem Update. **Docker:** `docker compose up -d --build`. **Nativ:** „Jetzt aktualisieren“ (s. [Updates](updates.md)). |
 | Neo4j startet nicht oder antwortet nicht | **Docker:** `docker compose logs neo4j`. **Nativ:** „Neo4j-Log anzeigen“ im Verwaltungsfenster; beim allerersten Start kann der Dienst bis zu einer Minute brauchen. |
 | Import bricht mit einem Speicherfehler (`OutOfMemory`) ab | Dem Neo4j mehr Speicher geben (Docker: Werte in `docker-compose.yml`; nativ: „Speicher setzen + Neo4j neu starten“). Der Import ist fortsetzbar. |
-| Bei der nativen Installation: „Deploy-Schlüssel nicht gefunden“ oder „Host key verification failed“ | Schlüssel in `%USERPROFILE%\.ssh\` ablegen und die Verbindung zu GitHub einmal mit `ssh -T git@github.com` bestätigen, dann `install.exe` erneut starten. |
+| Bei der nativen Installation: „Zugangsschlüssel nicht gefunden“ oder „Host key verification failed“ | Die Datei `iam-deploy-key` **neben `install.exe`** legen (alternativ nach `%USERPROFILE%\.ssh\`) und `install.exe` erneut starten. |
 | Fehlermeldung beim Ändern oder Laden eines Regelwerks | Den Schritt „Verifizieren“ (oben) ausführen. |
 
 Weitere Details, Deinstallation und Verwaltung der Windows-Installation:

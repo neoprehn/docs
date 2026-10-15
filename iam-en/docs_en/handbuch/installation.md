@@ -82,12 +82,20 @@ The operator sends a **folder (usually as a ZIP)** containing `install.exe`, `ma
 PowerShell scripts. Unpack it to a **permanent local location** (e.g. `C:\iam-setup`, **not** under OneDrive
 and not in "Downloads") — the update task and the management window call the files from this folder later.
 
-### 2 · Place the access key (first time only)
+### 2 · Place the access key next to `install.exe`
 
-The program code is loaded from the private repository via SSH. For this, place the **deploy key** you received
-from the operator in the folder `%USERPROFILE%\.ssh\`. On first access, the connection to GitHub must be
-confirmed once (`ssh -T git@github.com` in a command prompt, answer the question with `yes`). The installation
-sets up the rest automatically.
+The program code is loaded from the private repository via SSH. The **deploy key** (file `iam-deploy-key`) comes
+from the operator **separately from the package** — for security reasons not inside the ZIP. Put the file **into
+the unpacked folder, right next to `install.exe`**, **before** you start the installation.
+
+At startup `install.exe` checks whether the key is there (or in `%USERPROFILE%\.ssh\`) and takes it over into a
+protected folder (`C:\ProgramData\iam\ssh`) that the update task can also use. Confirming the GitHub connection
+manually (`ssh -T …`) is **no longer** needed. If the key is missing during the first installation, the
+installation stops immediately with a clear message.
+
+- **Update by starting `install.exe` again:** the key does not have to be there again if it is already set up;
+  otherwise a warning appears.
+- **Afterwards:** the key file in the package folder can be deleted; the installation keeps a protected copy.
 
 ### 3 · Start `install.exe`
 
@@ -218,7 +226,7 @@ How to continue (starting an evaluation, reading results, consistency checks, ba
 | The backend does not start and reports an import error | A Python package or a file is missing, usually after an update. **Docker:** `docker compose up -d --build`. **Native:** "Jetzt aktualisieren" (update now, see [Updates](updates.md)). |
 | Neo4j does not start or does not respond | **Docker:** `docker compose logs neo4j`. **Native:** "Neo4j-Log anzeigen" (show Neo4j log) in the management window; on the very first start the service can take up to a minute. |
 | Import aborts with a memory error (`OutOfMemory`) | Give Neo4j more memory (Docker: values in `docker-compose.yml`; native: "Speicher setzen + Neo4j neu starten"). The import can be resumed. |
-| Native installation: "deploy key not found" or "Host key verification failed" | Place the key in `%USERPROFILE%\.ssh\` and confirm the connection to GitHub once with `ssh -T git@github.com`, then start `install.exe` again. |
+| Native installation: "access key not found" or "Host key verification failed" | Put the file `iam-deploy-key` **next to `install.exe`** (alternatively into `%USERPROFILE%\.ssh\`) and start `install.exe` again. |
 | Error when changing or loading a rule set | Run the "Verify" step (above). |
 
 More details, uninstallation and administration of the Windows installation:
