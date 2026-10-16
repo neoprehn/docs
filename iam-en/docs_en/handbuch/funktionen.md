@@ -313,6 +313,12 @@ filter):
   chip opens an overlay with its master data. There is additionally a **full view** (Cytoscape
   graph for exactly the expanded path, with a color legend and zoom slider/full screen, like the
   root cause page).
+- **Roles** (only with exactly one selected single authorization): shows the **causing roles** — roles and composite
+  roles that are assigned to an affected user on the run's as-of date and fulfil the authorization **on their own**.
+  Each role gets a bar with the number of affected users, below it a table with "directly assigned", "via composite
+  role" and the most frequent composite roles; clicking a role opens its master data. Users who only receive the
+  authorization from several roles or through a directly assigned profile are **not covered** and are reported
+  separately ("25 of 27 users …").
 
 "Individual filter" shows the **matches table** ("who matches which query") even **without**
 first selecting a specific individual authorization in the sidebar — in that case for all queries,

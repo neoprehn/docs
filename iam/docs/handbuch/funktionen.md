@@ -316,6 +316,12 @@ Umschalter** — unabhängig von den Sidebar-Filtern, folgt nur `Ergebnistyp` (S
   Rollen-Chip öffnet ein Overlay mit dessen Stammdaten. Zusätzlich eine **Vollansicht** (Cytoscape-
   Graph für genau den aufgeklappten Pfad, mit Farblegende und Zoom-Slider/Vollbild wie die
   Root-Cause-Seite).
+- **Rollen** (nur bei genau einer gewählten Einzelberechtigung): zeigt die **verursachenden Rollen** — Rollen und
+  Sammelrollen, die einem betroffenen Nutzer am Stichtag des Laufs zugeordnet sind und die Berechtigung **für sich
+  allein** erfüllen. Je Rolle ein Balken mit der Zahl betroffener Nutzer, darunter eine Tabelle mit „direkt zugewiesen“,
+  „über Sammelrolle“ und den häufigsten Sammelrollen; Klick auf eine Rolle öffnet ihre Stammdaten. Nutzer, die die
+  Berechtigung erst aus mehreren Rollen oder über ein direkt zugewiesenes Profil erhalten, sind **nicht abgedeckt**
+  und werden gesondert ausgewiesen („25 von 27 Nutzern …“).
 
 „Einzelfilter" zeigt die **Matches-Tabelle** („wer matcht welche Query") auch **ohne** vorher eine
 konkrete Einzelberechtigung in der Sidebar zu wählen — dann für alle Queries, sonst nur für die
