@@ -629,7 +629,7 @@ Dataset wurde seither neu befüllt), fragt die App vor dem Restore ausdrücklich
 
 | Befehl | Wirkung |
 | --- | --- |
-| **Bereinigen** | Dialog: **Dieses Dataset löschen** oder **Alles zurücksetzen** (Ruleset & Schema bleiben in beiden Fällen erhalten), sowie separat **einen einzelnen Auswertungslauf löschen** (Run + Findings; Dataset und andere Läufe bleiben unberührt). |
+| **Bereinigen** | Dialog: **Dieses Dataset löschen** (nur das gewählte Dataset, nach Rückfrage) oder — abgesetzt im „Gefahrenbereich“ — **Alle Datasets löschen**, was **sämtliche** Datasets betrifft und eine Texteingabe („ALLES LÖSCHEN“) als Bestätigung verlangt (Ruleset & Schema bleiben in beiden Fällen erhalten), sowie separat **einen einzelnen Auswertungslauf löschen** (Run + Findings; Dataset und andere Läufe bleiben unberührt). |
 
 Beide Aktionen fragen vor dem Ausführen nach.
 

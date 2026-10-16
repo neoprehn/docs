@@ -620,7 +620,7 @@ explicitly asks before the restore.
 
 | Command | Effect |
 | --- | --- |
-| **Clean up** | Dialog: **delete this dataset** or **reset everything** (the ruleset & schema are preserved in both cases), as well as, separately, **delete a single analysis run** (run + findings; the dataset and other runs remain unaffected). |
+| **Clean up** | Dialog: **delete this dataset** (only the selected dataset, after confirmation) or — set apart in the "danger zone" — **delete all datasets**, which affects **all** datasets and requires typing a confirmation ("DELETE ALL") (the ruleset & schema are preserved in both cases), as well as, separately, **delete a single analysis run** (run + findings; the dataset and other runs remain unaffected). |
 
 Both actions ask for confirmation before executing.
 

@@ -87,7 +87,7 @@ reproducible). You export results for reports separately as CSV (step 3).
 Ribbon **Manage → Clean up**:
 
 - **Delete this dataset** — removes one snapshot including its runs/findings.
-- **Reset everything** — removes all data/runs.
+- **Delete all datasets** (danger zone) — removes **all** datasets and runs, not only the selected one; confirmation by typing a text.
 
 In **both** cases, the **ruleset and schema are preserved** — afterward you can import and
 analyze again immediately, without reloading the ruleset.

@@ -86,7 +86,7 @@ Ergebnisse für Berichte exportierst du separat als CSV (Schritt 3).
 Ribbon **Verwalten → Bereinigen**:
 
 - **Dieses Dataset löschen** — entfernt einen Stand inkl. seiner Läufe/Findings.
-- **Alles zurücksetzen** — entfernt alle Daten/Läufe.
+- **Alle Datasets löschen** (Gefahrenbereich) — entfernt **sämtliche** Datasets und Läufe, nicht nur das gewählte; Bestätigung per Texteingabe.
 
 In **beiden** Fällen bleiben **Regelwerk (Ruleset) und Schema erhalten** — danach kann sofort neu
 importiert und ausgewertet werden, ohne das Regelwerk neu zu laden.
