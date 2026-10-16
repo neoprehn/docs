@@ -65,6 +65,14 @@ in the browser), the **anonymization toggle** (see below), the chip showing the 
 applied ruleset** of the currently displayed run, and two further **status chips**: the database
 connection and the context **"N datasets · M runs"** (refreshes after every action).
 
+**Dataset filter.** The selection in the banner decides **which dataset** the whole UI shows: runs, backups, selection
+lists in all dialogs, import log, consistency checks and the security view then refer only to this dataset and its
+evaluations. Opening a dataset ("Open") on the start page lands in the evaluation with this filter. Switching opens
+the **newest run** of the selected dataset. The entry **"All datasets"** removes the filter; on the start page the
+button **"Evaluate all datasets together"** leads there (shown from two datasets). The filter is remembered in the
+browser; when opened directly without parameters the last used value applies, otherwise the newest dataset. A newly
+imported dataset immediately becomes the active filter.
+
 **Anonymization.** A single, global toggle (chip "names visible"/"names anonymized") replaces
 real user names (from USR02/ADRP) everywhere with a stable pseudonym ("Anonymous-XXXXXX", always
 the same for a given user ID) — the technical user ID itself remains unchanged, and

@@ -66,6 +66,14 @@ Browser), der **Anonymisierungs-Schalter** (s. u.), der Chip mit dem **aktiv ang
 des gerade angezeigten Laufs sowie zwei weitere **Status-Chips**: Verbindung zur Datenbank und der
 Kontext **„N Datasets · M Läufe"** (aktualisiert sich nach jeder Aktion).
 
+**Dataset-Filter.** Die Auswahl im Banner legt fest, **welches Dataset** die ganze Oberfläche zeigt: Läufe, Backups,
+Auswahllisten in allen Dialogen, Import-Protokoll, Konsistenzchecks und Security-Sicht beziehen sich dann nur auf dieses
+Dataset und seine Auswertungen. Wer auf der Startseite ein Dataset („Öffnen“) wählt, landet automatisch mit diesem
+Filter in der Auswertung. Ein Wechsel öffnet den **neuesten Lauf** des gewählten Datasets. Der Eintrag **„Alle
+Datasets“** hebt den Filter auf; auf der Startseite führt dorthin der Knopf **„Alle Datasets gemeinsam auswerten“**
+(erscheint ab zwei Datasets). Der Filter wird im Browser gemerkt; beim Direktaufruf ohne Angabe gilt der zuletzt
+benutzte Wert, sonst das jüngste Dataset. Ein neu importiertes Dataset wird sofort zum aktiven Filter.
+
 **Anonymisierung.** Ein einzelner, globaler Schalter (Chip „Namen sichtbar"/„Namen anonymisiert")
 ersetzt echte Nutzernamen (aus USR02/ADRP) überall durch ein stabiles Pseudonym
 („Anonym-XXXXXX", je User-ID immer dasselbe) — die technische User-ID selbst bleibt unverändert,
