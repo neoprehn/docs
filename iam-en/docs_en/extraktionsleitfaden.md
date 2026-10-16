@@ -23,6 +23,11 @@ once against the specific SAP system (SE11/SE16) before a production run.
   The runner sets it; all nodes/edges receive it (the version dimension).
 - **Date fields** (SAP `YYYYMMDD`): converted to Neo4j `date` on import (AE-07).
   `TO_DAT = '99991231'` (unbounded) → `9999-12-31`; empty/`00000000` → `1900-01-01`.
+- **Date format of the extract.** SAP writes dates in the format of the extracting person's user master
+  (`DD.MM.YYYY`, `MM/DD/YYYY`, `MM-DD-YYYY`, `YYYY.MM.DD`, `YYYY/MM/DD`, `YYYY-MM-DD`). The converter rewrites all
+  formats to `DD.MM.YYYY` during import; the message "Date format … detected" appears after the import. Without
+  this conversion, rows with day > 12 would not be loaded and all others would have day and month swapped.
+  Folders imported earlier are converted once more on the next import.
 - **`*`/unrestricted**: stored "as delivered" (no upfront mapping); normalization only happens in
   the query logic (AE-06).
 

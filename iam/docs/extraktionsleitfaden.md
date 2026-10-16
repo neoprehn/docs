@@ -24,6 +24,11 @@ vor dem Produktivlauf einmal gegen das konkrete SAP-System verifizieren (SE11/SE
   `acme-2026-12-31`). Der Runner setzt ihn; alle Knoten/Kanten erhalten ihn (Versionsdimension).
 - **Datumsfelder** (SAP `YYYYMMDD`): Umwandlung in Neo4j-`date` beim Import (AE-07).
   `TO_DAT = '99991231'` (unbegrenzt) → `9999-12-31`; leeres/`00000000` → `1900-01-01`.
+- **Datumsformat des Extrakts.** SAP schreibt Datumswerte im Format des Benutzerstamms der extrahierenden
+  Person (`TT.MM.JJJJ`, `MM/TT/JJJJ`, `MM-TT-JJJJ`, `JJJJ.MM.TT`, `JJJJ/MM/TT`, `JJJJ-MM-TT`). Der Konverter schreibt
+  alle Formate beim Import auf `TT.MM.JJJJ` um; die Meldung „Datumsformat … erkannt“ erscheint nach dem Import.
+  Ohne diese Umwandlung würden Zeilen mit Tag > 12 nicht geladen und alle übrigen mit vertauschtem Tag/Monat.
+  Bereits früher importierte Ordner werden beim nächsten Import einmalig neu konvertiert.
 - **`*`/unbeschränkt**: wird gespeichert „wie geliefert" (kein Vorab-Mapping); Normalisierung
   erst in der Abfragelogik (AE-06).
 
