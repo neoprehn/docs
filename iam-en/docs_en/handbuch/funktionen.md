@@ -109,6 +109,14 @@ reloading the one existing folder because no other option was listed). Without a
 state and without "clear first", the app asks for confirmation here too before sending. For a
 **new** dataset, always use the upload section above.
 
+**Pre-check of the extract.** Before anything is loaded or deleted, the import checks the extract automatically (step
+"Pre-check extract"): required tables and columns, separator, empty tables, invalid dates and dates in a format that was
+not converted, unknown user types, encoding errors. **Errors stop the import** — the existing graph stays unchanged
+(also with "clear first"); **warnings and notes** appear in the import result. The date format of the user master (e.g.
+`MM/DD/YYYY`) is rewritten to `DD.MM.YYYY` automatically during conversion. The **"Check only"** button ("Existing
+folder" tab) converts and checks without importing anything — useful for a new extract before the actual import. Large
+tables are checked by sample (start of the file).
+
 (import-log)=
 ### Import Log (Completeness Evidence)
 
@@ -623,6 +631,7 @@ Both actions ask for confirmation before executing.
 | **Query Management** | Link directly to its own page `/admin.html` (no intermediate dialog). |
 | **Masterdata** | Link directly to its own page `/admin-masterdata.html` (no intermediate dialog). |
 | **Scope** | Link directly to its own page `/admin-scopes.html` (no intermediate dialog). |
+| **Documentation** | Opens the documentation on Read the Docs in a new tab — in the currently selected language (German or English). |
 | **Import log** | Opens the **import log (completeness evidence)** of the selected dataset (see {ref}`Import Log <import-log>`). |
 | **Error log** | Dialog with failed jobs (import/run/backup/restore/clean-up) — **persistent**, survives a container restart (file `data/logs/job_errors.jsonl`). Newest first. |
 

@@ -112,6 +112,15 @@ geladen, weil keine andere Auswahl bestand). Ohne aktiven Resume-Zustand und ohn
 fragt die App auch hier vor dem Senden nach. Für ein **neues** Dataset immer den oberen
 ZIP-/Ordner-Upload-Bereich nutzen.
 
+**Vorprüfung des Extrakts.** Bevor etwas geladen oder gelöscht wird, prüft der Import den Extrakt automatisch
+(Schritt „Extrakt vorprüfen“): Pflichttabellen und -spalten, Trennzeichen, leere Tabellen, ungültige Datumswerte und
+Datumswerte in einem nicht umgewandelten Format, unbekannte Benutzertypen, Kodierungsfehler. **Fehler stoppen den
+Import** — der bestehende Graph bleibt dann unverändert (auch bei „Vorher leeren“); **Warnungen und Hinweise** erscheinen
+im Importergebnis. Das Datumsformat des Benutzerstamms (z. B. `MM/TT/JJJJ`) wird beim Konvertieren automatisch auf
+`TT.MM.JJJJ` umgeschrieben. Der Knopf **„Nur prüfen“** (Reiter „Vorhandener Ordner“) konvertiert und prüft, ohne
+etwas zu importieren — sinnvoll für einen neuen Extrakt vor dem eigentlichen Import. Große Tabellen werden
+stichprobenartig (Dateianfang) geprüft.
+
 (import-protokoll)=
 ### Import-Protokoll (Vollständigkeitsnachweis)
 
@@ -631,6 +640,7 @@ Beide Aktionen fragen vor dem Ausführen nach.
 | **Query Management** | Link direkt auf die eigene Seite `/admin.html` (kein Zwischendialog). |
 | **Masterdata** | Link direkt auf die eigene Seite `/admin-masterdata.html` (kein Zwischendialog). |
 | **Scope** | Link direkt auf die eigene Seite `/admin-scopes.html` (kein Zwischendialog). |
+| **Dokumentation** | Öffnet die Dokumentation auf Read the Docs in einem neuen Tab — in der gerade eingestellten Sprache (Deutsch bzw. Englisch). |
 | **Import-Protokoll** | Öffnet das **Import-Protokoll (Vollständigkeitsnachweis)** des gewählten Datasets (s. {ref}`Import-Protokoll <import-protokoll>`). |
 | **Fehlerprotokoll** | Dialog mit fehlgeschlagenen Jobs (Import/Lauf/Backup/Restore/Bereinigen) — **persistent**, überlebt einen Container-Neustart (Datei `data/logs/job_errors.jsonl`). Neueste zuerst. |
 
