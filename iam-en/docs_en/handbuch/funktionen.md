@@ -259,7 +259,9 @@ profile, and sleeping days are then already ticked and remain adjustable.
    "New run" with the selection as preset. With **"Start at a scheduled time"** the run (including
    several org variants) is queued on the server and started at the chosen time, e.g. overnight —
    the browser does not need to stay open. Queued runs are listed at the top of the dialog and can
-   be cancelled. The plan lives in the backend's memory: restarting the container before the start
+   be cancelled. Optionally the server also stores the **consistency report** (CSV, or PDF with
+   header block) after the run; it is listed under "Generated reports" in the same dialog for
+   download (stored locally under `backups/reports/`). The plan lives in the backend's memory: restarting the container before the start
    discards it.
 
 ### Further Parameters

@@ -265,7 +265,9 @@ Sleeping-Tage sind danach bereits angehakt und bleiben anpassbar.
    öffnet „Neuer Lauf" mit der Auswahl als Voreinstellung. Mit **„Zeitgesteuert starten"** wird der
    Lauf (auch mehrere Org-Varianten) auf dem Server vorgemerkt und zum gewählten Zeitpunkt gestartet,
    z. B. über Nacht — der Browser muss nicht offen bleiben. Vorgemerkte Läufe stehen oben im
-   Dialog und lassen sich abbrechen. Der Plan liegt im Speicher des Backends: ein Neustart des
+   Dialog und lassen sich abbrechen. Optional legt der Server **nach dem Lauf den Konsistenz-Bericht**
+   (CSV oder PDF mit Kopfblock) ab; er steht im selben Dialog unter „Erzeugte Berichte" zum
+   Download (Ablage lokal unter `backups/reports/`). Der Plan liegt im Speicher des Backends: ein Neustart des
    Containers vor dem Start verwirft ihn.
 
 ### Weitere Parameter
