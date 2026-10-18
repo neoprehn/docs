@@ -246,6 +246,22 @@ filters and skips the SoD analysis entirely ("can-do"); if **SoD rules are also*
 run materializes only their clause queries (instead of all SoD-relevant queries of the ruleset)
 and evaluates only these rules.
 
+**Preselecting a scope in the wizard:** In the wizard step "Scoping", the dropdown **"Load saved
+scope"** loads a scope profile as the preselection — individual filters, SoD rules, user-type
+profile, and sleeping days are then already ticked and remain adjustable.
+
+**Two paths through the wizard:**
+
+1. **Step by step** — with **Next/Back** (from step ④ on, in a bar below the stepper) through
+   consistency, SoD, and root cause. SoD/root cause need an open run; if there is none, the bar
+   offers "Start run with scoping…".
+2. **Select everything, then compute in one go** — in Scoping, "Run everything / schedule…" opens
+   "New run" with the selection as preset. With **"Start at a scheduled time"** the run (including
+   several org variants) is queued on the server and started at the chosen time, e.g. overnight —
+   the browser does not need to stay open. Queued runs are listed at the top of the dialog and can
+   be cancelled. The plan lives in the backend's memory: restarting the container before the start
+   discards it.
+
 ### Further Parameters
 
 - **Reference date** — evaluation date (role validity + sleeping). **No longer an input field**,

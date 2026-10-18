@@ -252,6 +252,22 @@ ausschließlich diese Einzelfilter und überspringt die SoD-Auswertung komplett 
 **auch SoD-Regeln** ausgewählt, materialisiert der Lauf nur deren Klausel-Queries (statt aller
 SoD-relevanten Queries des Rulesets) und wertet nur diese Regeln aus.
 
+**Scope im Assistenten vorbelegen:** Im Assistenten-Schritt „Scoping" lädt das Dropdown **„Gespeicherten
+Scope laden"** ein Scope-Profil als Vorauswahl — Einzelfilter, SoD-Regeln, Nutzertyp-Profil und
+Sleeping-Tage sind danach bereits angehakt und bleiben anpassbar.
+
+**Zwei Wege durch den Assistenten:**
+
+1. **Schritt für Schritt** — mit **Weiter/Zurück** (ab Schritt ④ in einer Leiste unter dem Stepper)
+   durch Konsistenz, SoD und Root-Cause. Für SoD/Root-Cause braucht es einen geöffneten Lauf; fehlt
+   er, bietet die Leiste „Lauf mit Scoping starten…" an.
+2. **Alles auswählen, dann in einem Zug berechnen** — im Scoping „Gesamtlauf starten / planen…":
+   öffnet „Neuer Lauf" mit der Auswahl als Voreinstellung. Mit **„Zeitgesteuert starten"** wird der
+   Lauf (auch mehrere Org-Varianten) auf dem Server vorgemerkt und zum gewählten Zeitpunkt gestartet,
+   z. B. über Nacht — der Browser muss nicht offen bleiben. Vorgemerkte Läufe stehen oben im
+   Dialog und lassen sich abbrechen. Der Plan liegt im Speicher des Backends: ein Neustart des
+   Containers vor dem Start verwirft ihn.
+
 ### Weitere Parameter
 
 - **Stichtag** — Bewertungsdatum (Rollen-Gültigkeit + Sleeping). **Keine Eingabe mehr**, sondern
