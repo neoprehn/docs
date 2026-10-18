@@ -57,6 +57,23 @@ Hinweis), die Tabelle „Je Regel / Filter" hat eine Spalte *Exception*, und bei
 Kategorie und Begründung beider Stände. Die Exception-Werte werden nicht zwischengespeichert, sondern
 bei jedem Aufruf frisch gelesen.
 
+**Wiedervorlage — Entscheidungen übernehmen.** Der Button **„Entscheidungen übernehmen…"** überträgt die
+Exception-Entscheidungen (Kategorie + Begründung) der **Basis** in das Dataset des **Vergleichsstands**,
+z. B. vom Vorjahr ins neue Dataset, damit nur noch Neues und Abweichendes neu bewertet werden muss.
+Zuerst erscheint eine **Vorschau** mit Zählern, geschrieben wird erst nach Bestätigung:
+
+- Übernommen werden nur Findings, die in **beiden** Läufen vorkommen, und nur **ausdrückliche**
+  Entscheidungen der Basis (nicht die Standardkategorie ohne Begründung).
+- Standardmäßig nur **unverändert** vorhandene Findings; **anders begründete** Findings (Kategorie
+  *Verändert*, die alte Entscheidung passt eventuell nicht mehr) nur auf ausdrücklichen Haken.
+- Es werden nur **offene** Stellen gefüllt (Entscheidung fehlt oder ist noch die Standardkategorie ohne
+  Begründung). Eine **abweichende vorhandene** Entscheidung des Vergleichsstands bleibt unberührt, außer
+  man setzt „Auch abweichende vorhandene Entscheidungen ersetzen". Die Zähler zeigen je Gruppe
+  „offen" und „mit abweichender Entscheidung".
+- Basis und Vergleichsstand müssen in **verschiedenen** Datasets liegen. Übernommene Entscheidungen
+  tragen die Herkunft (Quell-Dataset) und werden von der automatischen Kategorisierung nie überschrieben.
+  Die Richtung folgt „Richtung tauschen".
+
 Die vier Kacheln oben sind zugleich Filter (Klick setzt/löst die Kategorie). Darunter wählen die
 Schalter **Alle / SoD-Regeln / Einzelfilter** die Art und das Feld die **User-ID** (Enter). Die
 Tabelle **Je Regel / Filter** zeigt je Eintrag die Zahl in Basis und Vergleichsstand sowie die vier

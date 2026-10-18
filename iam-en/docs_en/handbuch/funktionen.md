@@ -56,6 +56,23 @@ detail list shows "Exception: category A → category B" (with a note if the jus
 the "Per rule / filter" table has an *Exception* column, and both exports contain the category and
 justification of both states. Exception values are not cached; they are read fresh on every call.
 
+**Follow-up — carrying decisions over.** The **"Carry over decisions…"** button copies the exception
+decisions (category + justification) of the **baseline** into the dataset of the **compared state**,
+e.g. from last year into the new dataset, so that only what is new or different needs to be assessed
+again. A **preview** with counts comes first; nothing is written until you confirm:
+
+- Only findings present in **both** runs are carried over, and only **explicit** decisions of the
+  baseline (not the default category without justification).
+- By default only **unchanged** findings; findings with a **different basis** (category *Changed*,
+  the old decision may no longer fit) only if explicitly ticked.
+- Only **open** spots are filled (decision missing, or still the default category without
+  justification). An **existing, differing** decision of the compared state stays untouched unless
+  you tick "Also replace existing, differing decisions". The counts show "open" and "with a
+  differing decision" per group.
+- Baseline and compared state must be in **different** datasets. Carried-over decisions record their
+  origin (source dataset) and are never overwritten by the automatic categorization. The direction
+  follows "Swap direction".
+
 The four tiles at the top double as filters (a click sets/clears the category). Below, the
 **All / SoD rules / Single filters** switch selects the type and the field takes a **user ID**
 (Enter). The **By rule / filter** table shows, per entry, the count in baseline and compared run
