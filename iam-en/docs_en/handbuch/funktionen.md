@@ -45,6 +45,17 @@ compared. Every finding falls into exactly one category:
 
 Single-filter matches carry no further attributes and are therefore never *Changed*.
 
+**Exception comparison.** A fifth tile, **"Exception changed"**, shows for how many findings the
+**exception decision** (category and justification) differs between the two states. It only
+considers findings that occur in **both** runs — regardless of whether the finding itself is
+*Changed* or *Unchanged* (so you can see, e.g., an unchanged finding that was assessed differently
+the following year). Decisions belong to the dataset, not to the run. A missing decision counts as
+the default category without justification, so "not yet auto-categorized" does not produce a false
+difference. The tile acts as an additional filter (combinable with category, type and user), the
+detail list shows "Exception: category A → category B" (with a note if the justification changed),
+the "Per rule / filter" table has an *Exception* column, and both exports contain the category and
+justification of both states. Exception values are not cached; they are read fresh on every call.
+
 The four tiles at the top double as filters (a click sets/clears the category). Below, the
 **All / SoD rules / Single filters** switch selects the type and the field takes a **user ID**
 (Enter). The **By rule / filter** table shows, per entry, the count in baseline and compared run

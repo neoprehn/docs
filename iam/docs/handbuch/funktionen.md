@@ -45,6 +45,18 @@ Query). Jedes Finding landet in genau einer Kategorie:
 
 Einzelfilter-Treffer tragen keine weiteren Merkmale und sind deshalb nie *Verändert*.
 
+**Exception-Vergleich.** Eine fünfte Kachel **„Exception geändert"** zeigt, bei wie vielen Findings die
+**Exception-Entscheidung** (Kategorie und Begründung) zwischen den beiden Ständen abweicht. Sie
+betrachtet nur Findings, die in **beiden** Läufen vorkommen — unabhängig davon, ob das Finding selbst
+*Verändert* oder *Unverändert* ist (so sieht man z. B. ein unverändertes Finding, das im Folgejahr
+anders bewertet wurde). Die Entscheidungen hängen am Dataset, nicht am Lauf. Eine fehlende
+Entscheidung gilt als Standardkategorie ohne Begründung, damit „noch nicht automatisch kategorisiert"
+keine Scheinabweichung ergibt. Die Kachel ist ein zusätzlicher Filter (kombinierbar mit Kategorie, Art
+und User), die Einzelliste zeigt „Exception: Kategorie A → Kategorie B" (bei geänderter Begründung mit
+Hinweis), die Tabelle „Je Regel / Filter" hat eine Spalte *Exception*, und beide Exporte enthalten
+Kategorie und Begründung beider Stände. Die Exception-Werte werden nicht zwischengespeichert, sondern
+bei jedem Aufruf frisch gelesen.
+
 Die vier Kacheln oben sind zugleich Filter (Klick setzt/löst die Kategorie). Darunter wählen die
 Schalter **Alle / SoD-Regeln / Einzelfilter** die Art und das Feld die **User-ID** (Enter). Die
 Tabelle **Je Regel / Filter** zeigt je Eintrag die Zahl in Basis und Vergleichsstand sowie die vier
