@@ -75,7 +75,8 @@ only enrich the data (only a notice appears if they are missing).
 | **USORG** | registry of org-relevant authorization fields, basis of the org dimension (used by loader `23`) — without it, org-field detection is lost |
 | **AGR_FLAGS** | role flags/switches — usefulness for can-do still to be clarified, currently without a loader |
 | **AGR_1250** | manually maintained (not via SU24 suggestion) authorizations per role — a potential deviation/risk indicator, currently without a loader |
-| **USR06** | license type per user — more of an SAP license-management than a can-do topic, listed anyway at user request, currently without a loader |
+| **USR06** | license type per user (`User.licenseType`, loader `31`) — basis of consistency checks **B8** (active dialog users without license type) and **B9** (license type overview). Validity fields (`VONDAT`/`BISDAT`) are often `00.00.0000` in exports and are not loaded |
+| **T001**, **T001W**, **T014**, **T024E**, **TVKO** | org master data (company codes, plants, credit control areas, purchasing/sales organizations) — provide the **plain-text name** of org values (`:OrgValue`, loaders `26`–`30`); display enrichment only, e.g. "0001 – Plant North" in the value picker of the org variants. Key and name are enough per table (`BUKRS`/`BUTXT`, `WERKS`/`NAME1`, `KKBER`/`KKBTX`, `EKORG`/`EKOTX`, `VKORG`/`VTEXT`) |
 
 > `ADRP` (first name in addition to `V_USERNAME`) is likewise listed as optional, but contains
 > personally identifiable plain-text data (PII) — clarify the purpose of use before extraction;

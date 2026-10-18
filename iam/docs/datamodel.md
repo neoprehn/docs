@@ -171,6 +171,10 @@ das Unique-Constraint auf `Authorization.key` (Performance, siehe [Phase 2](phas
 - `(:Risk)` (CSI-nativ), je Regel verknüpft.
 
 **Org-Feld-Registry — je `dataset`:** `(:OrgField)` aus USORG (welche Felder org-relevant sind).
+**Org-Wert-Bezeichnungen — je `dataset`:** `(:OrgValue {field, value, text})` aus T001/T001W/T014/T024E/TVKO
+(Buchungskreis, Werk, Kreditkontrollbereich, Einkaufs-/Verkaufsorganisation) — reine Anzeige-Anreicherung der
+Org-Werte, kein Teil der Berechtigungslogik; Schlüssel `dataset|field|value` (Constraint `orgvalue_key`, V007).
+**Lizenztyp:** `User.licenseType` (+ `licenseSystem`) aus USR06 (Loader `31`).
 
 **Run-/Snapshot-Schicht — regenerierbar, mit Provenienz** (AE-10):
 - Zwischenergebnis „wer kann was": `(:User)-[:MATCHES {ruleset, asOf, runId}]->(:Query)`.

@@ -76,7 +76,8 @@ reichern nur an (es erscheint lediglich ein Hinweis, wenn sie fehlen).
 | **USORG** | Registry der org-relevanten Berechtigungsfelder, Grundlage der Org-Dimension (genutzt von Loader `23`) — ohne sie entfällt die Org-Feld-Erkennung |
 | **AGR_FLAGS** | Rollen-Flags/-Schalter — Nutzen für Can-Do noch zu klären, aktuell ohne Loader |
 | **AGR_1250** | Manuell (nicht per SU24-Vorschlag) gepflegte Berechtigungen je Rolle — potenzieller Abweichungs-/Risikoindikator, aktuell ohne Loader |
-| **USR06** | Lizenztyp je Nutzer — eher SAP-Lizenzmanagement- als Can-Do-Thema, auf Nutzerwunsch trotzdem gelistet, aktuell ohne Loader |
+| **USR06** | Lizenztyp je Nutzer (`User.licenseType`, Loader `31`) — Grundlage der Konsistenzchecks **B8** (aktive Dialog-User ohne Lizenztyp) und **B9** (Lizenztyp-Übersicht). Gültigkeitsfelder (`VONDAT`/`BISDAT`) liegen in Exporten häufig als `00.00.0000` vor und werden nicht geladen |
+| **T001**, **T001W**, **T014**, **T024E**, **TVKO** | Org-Stammdaten (Buchungskreise, Werke, Kreditkontrollbereiche, Einkaufs-/Verkaufsorganisationen) — liefern die **Klartextbezeichnung** zu Org-Werten (`:OrgValue`, Loader `26`–`30`); reine Anzeige-Anreicherung, z. B. „0001 – Werk Nord" in der Werteauswahl der Org-Varianten. Je Tabelle genügen Schlüssel und Bezeichnung (`BUKRS`/`BUTXT`, `WERKS`/`NAME1`, `KKBER`/`KKBTX`, `EKORG`/`EKOTX`, `VKORG`/`VTEXT`) |
 
 > `ADRP` (Vorname zusätzlich zu `V_USERNAME`) ist ebenfalls als optional hinterlegt, enthält aber
 > personenbezogene Klartextdaten (PII) — Einsatzzweck vor Extraktion klären, daher bewusst nicht in

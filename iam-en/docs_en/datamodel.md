@@ -170,6 +170,10 @@ Above the can-do layer lie three clearly separated areas (details:
 - `(:Risk)` (CSI-native), linked per rule.
 
 **Org-field registry — per `dataset`:** `(:OrgField)` from USORG (which fields are org-relevant).
+**Org value names — per `dataset`:** `(:OrgValue {field, value, text})` from T001/T001W/T014/T024E/TVKO
+(company code, plant, credit control area, purchasing/sales organization) — display enrichment of org values
+only, not part of the authorization logic; key `dataset|field|value` (constraint `orgvalue_key`, V007).
+**License type:** `User.licenseType` (+ `licenseSystem`) from USR06 (loader `31`).
 
 **Run/snapshot layer — regenerable, with provenance** (AE-10):
 - Intermediate result "who can do what": `(:User)-[:MATCHES {ruleset, asOf, runId}]->(:Query)`.
