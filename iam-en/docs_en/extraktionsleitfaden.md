@@ -31,6 +31,24 @@ once against the specific SAP system (SE11/SE16) before a production run.
 - **`*`/unrestricted**: stored "as delivered" (no upfront mapping); normalization only happens in
   the query logic (AE-06).
 
+## Alternative Delivery: Extractor Package
+
+Instead of an SE16 list export, a SAP extractor can deliver the tables as a **package**. The import detects this
+automatically (or via the "Source format" option, see the [manual](handbuch/funktionen.md)):
+
+- **Container:** outer ZIP → one folder per extraction run → one ZIP per table `<prefix>_<TABLE>_<NNNN>.ZIP` with a
+  `.TXT` of the same name (parts `_0001`, `_0002`, … for large tables). Log files (`…_<date>_<time>.TXT`), images and
+  XML descriptions are ignored.
+- **Content:** UTF-8 (usually with BOM), LF line endings, delimiter **`#|#`**, first line = SAP field names (as in the
+  SE16 export), dates `YYYYMMDD` (`00000000` = empty, `99991231` = unlimited) — the converter rewrites them to
+  `DD.MM.YYYY`.
+- **Several runs in one package:** per table the run with the most columns wins; tables the import does not know are
+  not unpacked.
+- **User master:** if `USR02` is missing (e.g. because the user group did not run in the extractor), the import still
+  runs, with a clear warning (user type/lock/validity/last logon unknown). For complete results, deliver `USR02` —
+  if needed together with `V_USERNAME`, `USREFUS` and `USR06`.
+- The extractor logs the **source row count** per table (`…_RECORDCOUNT_…`); it can be held against the import log.
+
 ## Which Tables to Download?
 
 The SE16 exports (one `.txt`/`.csv` per table, file name = table name) belong in the dataset

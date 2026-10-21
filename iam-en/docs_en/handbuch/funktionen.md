@@ -145,6 +145,20 @@ not converted, unknown user types, encoding errors. **Errors stop the import** �
 folder" tab) converts and checks without importing anything — useful for a new extract before the actual import. Large
 tables are checked by sample (start of the file).
 
+**Source format (SE16 or extractor package).** In the ZIP/folder upload and in the "Existing folder" tab, the field
+**"Source format"** selects how the data was delivered. **"detect automatically"** is the default and is usually enough:
+
+- **SE16 list export** (`.txt`, `|`-separated, fixed width) — the previous way.
+- **Extractor package**: a ZIP with one folder per extraction run, each containing one ZIP per table
+  `<prefix>_<TABLE>_<NNNN>.ZIP` (large tables in several parts) holding a UTF-8 text file, delimiter `#|#`, first line =
+  field names, dates as `YYYYMMDD`. The import unpacks the package, takes only the tables it knows (log files,
+  images and unrelated large tables are ignored), merges parts and rewrites dates to `DD.MM.YYYY`. If the package
+  contains several runs, the run with the most columns wins per table. Credential columns are dropped as usual.
+- **Missing user master:** with an extractor package `USR02` may be missing — the import still runs, but the pre-check
+  warns explicitly: user type, lock status, validity and last logon are unknown, users only arise from the
+  role/profile assignments, and checks by user type, lock or sleeping return no hits. The import log keeps showing
+  `USR02` as a missing required table.
+
 (import-log)=
 ### Import Log (Completeness Evidence)
 

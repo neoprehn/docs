@@ -150,6 +150,21 @@ im Importergebnis. Das Datumsformat des Benutzerstamms (z. B. `MM/TT/JJJJ`) wird
 etwas zu importieren — sinnvoll für einen neuen Extrakt vor dem eigentlichen Import. Große Tabellen werden
 stichprobenartig (Dateianfang) geprüft.
 
+**Quellformat (SE16 oder Extraktor-Paket).** Im ZIP-/Ordner-Upload und im Reiter „Vorhandener Ordner“ wählt das Feld
+**„Quellformat“**, wie die Daten geliefert wurden. **„automatisch erkennen“** ist der Standard und genügt in der Regel:
+
+- **SE16-Listenexport** (`.txt`, `|`-getrennt, fixbreit) — der bisherige Weg.
+- **Extraktor-Paket**: eine ZIP mit einem Ordner je Extraktionslauf, darin je Tabelle eine ZIP
+  `<Präfix>_<TABELLE>_<NNNN>.ZIP` (große Tabellen in mehreren Teilen) mit einer UTF-8-Textdatei, Trennzeichen `#|#`,
+  erste Zeile = Feldnamen, Datumswerte als `JJJJMMTT`. Der Import packt das Paket aus, nimmt nur die Tabellen, die er
+  kennt (Protokolldateien, Bilder und fremde Großtabellen bleiben unberücksichtigt), führt Teile zusammen und
+  schreibt die Datumswerte auf `TT.MM.JJJJ` um. Enthält das Paket mehrere Läufe, gewinnt je Tabelle der Lauf mit den
+  meisten Spalten. Credential-Spalten werden wie sonst verworfen.
+- **Fehlender Benutzerstamm:** Beim Extraktor-Paket darf `USR02` fehlen — der Import läuft dann trotzdem, die Vorprüfung
+  warnt aber ausdrücklich: Nutzertyp, Sperrstatus, Gültigkeit und letzte Anmeldung sind unbekannt, User entstehen nur
+  aus den Rollen-/Profilzuordnungen, und Prüfungen nach Nutzertyp, Sperre oder Sleeping liefern keine Treffer. Im
+  Import-Protokoll bleibt `USR02` als fehlende Pflichttabelle sichtbar.
+
 (import-protokoll)=
 ### Import-Protokoll (Vollständigkeitsnachweis)
 

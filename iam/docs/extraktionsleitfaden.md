@@ -32,6 +32,25 @@ vor dem Produktivlauf einmal gegen das konkrete SAP-System verifizieren (SE11/SE
 - **`*`/unbeschränkt**: wird gespeichert „wie geliefert" (kein Vorab-Mapping); Normalisierung
   erst in der Abfragelogik (AE-06).
 
+## Alternative Lieferform: Extraktor-Paket
+
+Statt eines SE16-Listenexports kann ein SAP-Extraktor die Tabellen als **Paket** liefern. Der Import erkennt das
+automatisch (oder über die Option „Quellformat“, s. [Handbuch](handbuch/funktionen.md)):
+
+- **Container:** äußere ZIP → ein Ordner je Extraktionslauf → je Tabelle eine ZIP `<Präfix>_<TABELLE>_<NNNN>.ZIP` mit
+  einer gleichnamigen `.TXT` (Teile `_0001`, `_0002`, … bei großen Tabellen). Protokolldateien (`…_<Datum>_<Uhrzeit>.TXT`),
+  Bilder und XML-Beschreibungen werden ignoriert.
+- **Inhalt:** UTF-8 (meist mit BOM), Zeilenende LF, Trennzeichen **`#|#`**, erste Zeile = SAP-Feldnamen (wie beim
+  SE16-Export), Datumswerte `JJJJMMTT` (`00000000` = leer, `99991231` = unbegrenzt) — der Konverter schreibt sie auf
+  `TT.MM.JJJJ` um.
+- **Mehrere Läufe in einem Paket:** je Tabelle gewinnt der Lauf mit den meisten Spalten; Tabellen, die der Import nicht
+  kennt, werden nicht ausgepackt.
+- **Benutzerstamm:** Fehlt `USR02` (z. B. weil die Benutzergruppe im Extraktor nicht gelaufen ist), läuft der Import
+  trotzdem, mit deutlicher Warnung (Nutzertyp/Sperre/Gültigkeit/letzte Anmeldung unbekannt). Für vollständige
+  Auswertungen `USR02` nachliefern — bei Bedarf zusammen mit `V_USERNAME`, `USREFUS` und `USR06`.
+- Der Extraktor protokolliert je Tabelle die **Zeilenzahl der Quelle** (`…_RECORDCOUNT_…`); sie lässt sich gegen das
+  Import-Protokoll halten.
+
 ## Welche Tabellen herunterladen?
 
 Die SE16-Exporte (eine `.txt`/`.csv` je Tabelle, Dateiname = Tabellenname) gehören in den
