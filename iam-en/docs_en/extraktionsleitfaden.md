@@ -194,7 +194,7 @@ by administrator (local); bit `128` = by administrator (global/ZBV). Combination
 
 **`PWDINITIAL` indicator** (⚠️ not consistently publicly documented by SAP, verify against your
 own system before production use — derived empirically from the test data, see
-`KONSISTENZCHECKS.md` B3): `1` correlates there 100% with `PWDCHGDATE = PWDSETDATE` ("password
+`KONSISTENZCHECKS.md` B3): `1` correlates there consistently with `PWDCHGDATE = PWDSETDATE` ("password
 never changed since issuance" — the solid finding); `2` is a mixed case (e.g., an admin-set/reset
 password, a weaker signal); `0` = regularly changed.
 
@@ -342,7 +342,7 @@ pairs (`load/10_su24_checks.cypher`). Additionally (since 2026-09-08,
 edge per (`NAME`,`OBJECT`,`FIELD`) row — the basis for the USOBT-based query builder
 ([ROADMAP-V2.md](https://github.com/neoprehn/iam/blob/main/ROADMAP-V2.md#phase-1--admin-editor-v2-und-regelpflege)). `FIELD`/`LOW`/`HIGH`
 are **already included in the extraction scope so far** (confirmed on 2026-09-08 against a real
-dataset, 100% field population) — no additional SAP-side extraction needed, just unused until
+dataset, fields consistently populated) — no additional SAP-side extraction needed, just unused until
 now. `LOW`/`HIGH` can contain SAP parameter-ID placeholders (`$EKORG`, `$WERKS`, … instead of a
 concrete value) — this marks an org-level field, analogous to the already-known org fields of the
 can-do analysis.

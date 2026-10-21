@@ -364,7 +364,7 @@ filter):
   Each role gets a bar with the number of affected users, below it a table with "directly assigned", "via composite
   role" and the most frequent composite roles; clicking a role opens its master data. Users who only receive the
   authorization from several roles or through a directly assigned profile are **not covered** and are reported
-  separately ("25 of 27 users …").
+  separately ("X of Y users …").
 
 "Individual filter" shows the **matches table** ("who matches which query") even **without**
 first selecting a specific individual authorization in the sidebar — in that case for all queries,

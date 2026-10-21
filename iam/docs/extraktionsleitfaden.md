@@ -196,7 +196,7 @@ möglich (Summe der Bits, z. B. `192` = `64`+`128`). Gespeichert als Property `l
 
 **`PWDINITIAL`-Kennzeichen** (⚠️ von SAP nicht einheitlich öffentlich dokumentiert, vor
 Produktivnutzung gegen das eigene System verifizieren — empirisch hergeleitet aus dem
-Testdatenbestand, s. `KONSISTENZCHECKS.md` B3): `1` korreliert dort zu 100 % mit
+Testdatenbestand, s. `KONSISTENZCHECKS.md` B3): `1` korreliert dort durchgehend mit
 `PWDCHGDATE = PWDSETDATE` („Passwort seit Vergabe nie geändert" — der belastbare Befund); `2` ist
 ein Mischfall (z. B. admin-gesetztes/zurückgesetztes Passwort, schwächeres Signal); `0` = regulär
 geändert.
@@ -344,7 +344,7 @@ Kante `(:Transaction)-[:CHECKS]->(:AuthObject)` aus den eindeutigen (`NAME`, `OB
 Zeile — Grundlage für den USOBT-gestützten Query-Builder
 ([ROADMAP-V2.md](https://github.com/neoprehn/iam/blob/main/ROADMAP-V2.md#phase-1--admin-editor-v2-und-regelpflege)). `FIELD`/`LOW`/`HIGH`
 sind **bereits im bisherigen Extraktumfang enthalten** (2026-09-08 gegen einen echten Datensatz
-bestätigt, 100% Feldbelegung) — keine zusätzliche SAP-seitige Extraktion nötig, nur bisher
+bestätigt, Felder durchgehend belegt) — keine zusätzliche SAP-seitige Extraktion nötig, nur bisher
 ungenutzt. `LOW`/`HIGH` können SAP-Parameter-ID-Platzhalter enthalten (`$EKORG`, `$WERKS`, …statt
 eines konkreten Werts) — das markiert ein Org-Ebenen-Feld, analog zu den bereits bekannten
 Org-Feldern der Can-Do-Auswertung.

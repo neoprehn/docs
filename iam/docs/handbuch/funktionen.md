@@ -368,7 +368,7 @@ Umschalter** — unabhängig von den Sidebar-Filtern, folgt nur `Ergebnistyp` (S
   allein** erfüllen. Je Rolle ein Balken mit der Zahl betroffener Nutzer, darunter eine Tabelle mit „direkt zugewiesen“,
   „über Sammelrolle“ und den häufigsten Sammelrollen; Klick auf eine Rolle öffnet ihre Stammdaten. Nutzer, die die
   Berechtigung erst aus mehreren Rollen oder über ein direkt zugewiesenes Profil erhalten, sind **nicht abgedeckt**
-  und werden gesondert ausgewiesen („25 von 27 Nutzern …“).
+  und werden gesondert ausgewiesen („X von Y Nutzern …“).
 
 „Einzelfilter" zeigt die **Matches-Tabelle** („wer matcht welche Query") auch **ohne** vorher eine
 konkrete Einzelberechtigung in der Sidebar zu wählen — dann für alle Queries, sonst nur für die
