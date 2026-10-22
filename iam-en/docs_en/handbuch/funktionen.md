@@ -145,16 +145,16 @@ not converted, unknown user types, encoding errors. **Errors stop the import** �
 folder" tab) converts and checks without importing anything — useful for a new extract before the actual import. Large
 tables are checked by sample (start of the file).
 
-**Source format (SE16 or extractor package).** In the ZIP/folder upload and in the "Existing folder" tab, the field
+**Source format (SE16 or KAAP extractor package).** In the ZIP/folder upload and in the "Existing folder" tab, the field
 **"Source format"** selects how the data was delivered. **"detect automatically"** is the default and is usually enough:
 
 - **SE16 list export** (`.txt`, `|`-separated, fixed width) — the previous way.
-- **Extractor package**: a ZIP with one folder per extraction run, each containing one ZIP per table
+- **KAAP extractor package**: a ZIP with one folder per extraction run, each containing one ZIP per table
   `<prefix>_<TABLE>_<NNNN>.ZIP` (large tables in several parts) holding a UTF-8 text file, delimiter `#|#`, first line =
   field names, dates as `YYYYMMDD`. The import unpacks the package, takes only the tables it knows (log files,
   images and unrelated large tables are ignored), merges parts and rewrites dates to `DD.MM.YYYY`. If the package
   contains several runs, the run with the most columns wins per table. Credential columns are dropped as usual.
-- **Missing user master:** with an extractor package `USR02` may be missing — the import still runs, but the pre-check
+- **Missing user master:** with an KAAP extractor package `USR02` may be missing — the import still runs, but the pre-check
   warns explicitly: user type, lock status, validity and last logon are unknown, users only arise from the
   role/profile assignments, and checks by user type, lock or sleeping return no hits. The import log keeps showing
   `USR02` as a missing required table.
@@ -183,7 +183,14 @@ import; older imports can be evidenced afterwards (see below). For each dataset 
 - **Evidence per source file:** file, **size and SHA-256 checksum**, source rows, deliberately skipped rows, the
   **expected value from the source** and the graph result, plus status and explanation. **All** tables of the
   extract are covered: those in use with reconciliation, those currently not evaluated (without a loader) separately
-  as "present in the extract but not evaluated" — also with checksum.
+  as "present in the extract but not evaluated" — also with checksum. The table can be filtered with the buttons **All /
+  OK + note / OK / Note / Deviation** (each with a count) and **sorted ascending and descending** via the column headers
+  (table, required/optional, source rows, skipped, expected, graph, status; not name, MB, SHA-256 and note). The
+  "Deviation" filter turns red as soon as there is one.
+- **Red only for a real import problem.** A **deviation** means: the graph is missing something compared with the
+  source. Everything else is at most a **note**, including a required table that is allowed to be missing by import
+  option (e.g. the user master `USR02` with the KAAP extractor package, note [10]). The overall status then reads "OK
+  with notes".
 - **Import history:** the "Import" selection lets you view any earlier import of the same dataset.
 
 **How the reconciliation works.** The mapping *source table → usage* lives in **one** place

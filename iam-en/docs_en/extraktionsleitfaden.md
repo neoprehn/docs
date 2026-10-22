@@ -31,7 +31,7 @@ once against the specific SAP system (SE11/SE16) before a production run.
 - **`*`/unrestricted**: stored "as delivered" (no upfront mapping); normalization only happens in
   the query logic (AE-06).
 
-## Alternative Delivery: Extractor Package
+## Alternative Delivery: KAAP extractor package
 
 Instead of an SE16 list export, a SAP extractor can deliver the tables as a **package**. The import detects this
 automatically (or via the "Source format" option, see the [manual](handbuch/funktionen.md)):

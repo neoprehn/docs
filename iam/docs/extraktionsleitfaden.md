@@ -32,7 +32,7 @@ vor dem Produktivlauf einmal gegen das konkrete SAP-System verifizieren (SE11/SE
 - **`*`/unbeschränkt**: wird gespeichert „wie geliefert" (kein Vorab-Mapping); Normalisierung
   erst in der Abfragelogik (AE-06).
 
-## Alternative Lieferform: Extraktor-Paket
+## Alternative Lieferform: KAAP-Extraktor-Paket
 
 Statt eines SE16-Listenexports kann ein SAP-Extraktor die Tabellen als **Paket** liefern. Der Import erkennt das
 automatisch (oder über die Option „Quellformat“, s. [Handbuch](handbuch/funktionen.md)):

@@ -150,17 +150,17 @@ im Importergebnis. Das Datumsformat des Benutzerstamms (z. B. `MM/TT/JJJJ`) wird
 etwas zu importieren — sinnvoll für einen neuen Extrakt vor dem eigentlichen Import. Große Tabellen werden
 stichprobenartig (Dateianfang) geprüft.
 
-**Quellformat (SE16 oder Extraktor-Paket).** Im ZIP-/Ordner-Upload und im Reiter „Vorhandener Ordner“ wählt das Feld
+**Quellformat (SE16 oder KAAP-Extraktor-Paket).** Im ZIP-/Ordner-Upload und im Reiter „Vorhandener Ordner“ wählt das Feld
 **„Quellformat“**, wie die Daten geliefert wurden. **„automatisch erkennen“** ist der Standard und genügt in der Regel:
 
 - **SE16-Listenexport** (`.txt`, `|`-getrennt, fixbreit) — der bisherige Weg.
-- **Extraktor-Paket**: eine ZIP mit einem Ordner je Extraktionslauf, darin je Tabelle eine ZIP
+- **KAAP-Extraktor-Paket**: eine ZIP mit einem Ordner je Extraktionslauf, darin je Tabelle eine ZIP
   `<Präfix>_<TABELLE>_<NNNN>.ZIP` (große Tabellen in mehreren Teilen) mit einer UTF-8-Textdatei, Trennzeichen `#|#`,
   erste Zeile = Feldnamen, Datumswerte als `JJJJMMTT`. Der Import packt das Paket aus, nimmt nur die Tabellen, die er
   kennt (Protokolldateien, Bilder und fremde Großtabellen bleiben unberücksichtigt), führt Teile zusammen und
   schreibt die Datumswerte auf `TT.MM.JJJJ` um. Enthält das Paket mehrere Läufe, gewinnt je Tabelle der Lauf mit den
   meisten Spalten. Credential-Spalten werden wie sonst verworfen.
-- **Fehlender Benutzerstamm:** Beim Extraktor-Paket darf `USR02` fehlen — der Import läuft dann trotzdem, die Vorprüfung
+- **Fehlender Benutzerstamm:** Beim KAAP-Extraktor-Paket darf `USR02` fehlen — der Import läuft dann trotzdem, die Vorprüfung
   warnt aber ausdrücklich: Nutzertyp, Sperrstatus, Gültigkeit und letzte Anmeldung sind unbekannt, User entstehen nur
   aus den Rollen-/Profilzuordnungen, und Prüfungen nach Nutzertyp, Sperre oder Sleeping liefern keine Treffer. Im
   Import-Protokoll bleibt `USR02` als fehlende Pflichttabelle sichtbar.
@@ -190,7 +190,13 @@ Import automatisch; ältere Importe lassen sich nachträglich nachweisen (s. u.)
 - **Nachweis je Quelldatei:** Datei, **Größe und SHA-256-Prüfsumme**, Quellzeilen, bewusst übersprungene Zeilen,
   der **Sollwert aus der Quelle** und das Graph-Ergebnis, dazu Status und Erklärung. **Alle** Tabellen des Extrakts
   sind erfasst: die genutzten mit Abgleich, die derzeit nicht ausgewerteten (ohne Loader) gesondert als „im Extrakt
-  vorhanden, aber nicht ausgewertet“ — ebenfalls mit Prüfsumme.
+  vorhanden, aber nicht ausgewertet“ — ebenfalls mit Prüfsumme. Die Tabelle lässt sich mit den Knöpfen **Alle / OK +
+  Hinweis / OK / Hinweis / Abweichung** (jeweils mit Anzahl) filtern und über die Spaltenköpfe **auf- und absteigend
+  sortieren** (Tabelle, Pflicht/optional, Quellzeilen, übersprungen, Soll, Graph, Status; nicht Bezeichnung, MB, SHA-256
+  und Hinweis). Der Statusfilter „Abweichung“ ist rot, sobald es eine gibt.
+- **Rot nur bei einem echten Importproblem.** Eine **Abweichung** heißt: im Graph fehlt etwas gegenüber der Quelle. Alles
+  andere ist höchstens ein **Hinweis**, auch eine Pflichttabelle, die laut Importoption fehlen darf (z. B. der
+  Benutzerstamm `USR02` beim KAAP-Extraktor-Paket, Hinweis [10]). Der Gesamtstatus lautet dann „OK mit Hinweisen“.
 - **Importverlauf:** über die Auswahl „Import“ lässt sich jeder frühere Import desselben Datasets ansehen.
 
 **Wie der Abgleich rechnet.** Die Zuordnung *Quelltabelle → Verwendung* steht an **einer** Stelle
