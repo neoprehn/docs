@@ -13,9 +13,15 @@ reflect whichever run is currently selected in the dropdown. Datasets without an
 imported, not evaluated) show a hint instead of the badges. **Open** jumps straight into the
 analysis (`analysis.html`) for the selected run.
 
-**Two ways to start a new import:** the plain "+ Import new authorization concept" link jumps
-straight to the analysis page (manual access via the ribbon required); "✨ Guided import
-(assistant)" immediately starts the 7-step assistant there at step ① Import — which shows an
+**Ribbon on the home page.** Above the tabs the functions are in four groups: **1 · Data** (Import, Guided import), **2 · Analysis**
+(All together — from two datasets; Compare — as soon as two datasets are selected; Cross-system), **3 · Backup** (Backup / Restore) and
+**4 · Manage** (Delete). **Backup / Restore** creates a backup of the selected dataset (optionally "clear afterwards") and lists existing
+backups with "Restore" (re-import) and "Download"; run backups stay in the analysis. **Delete** removes the selected dataset including its
+runs and cross-system analyses after confirmation; in the "Danger zone" "Delete all datasets…" removes everything — only after typing a
+confirmation word.
+
+**Two ways to start a new import:** "Import" jumps straight to the analysis page (import dialog); "✨ Guided import"
+immediately starts the 7-step assistant there at step ① Import — which shows an
 overview of existing datasets before the actual upload, to avoid exactly the mix-up described in
 the user finding below.
 

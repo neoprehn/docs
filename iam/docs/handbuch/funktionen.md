@@ -13,9 +13,15 @@ Dropdown zur Lauf-Auswahl (Standard: neuester Lauf) — Badges **Findings**/**Re
 Datasets ganz ohne Lauf (frischer Import, noch nicht ausgewertet) zeigen nur einen Hinweis statt
 der Badges. **Öffnen** springt direkt in die Auswertung (`analysis.html`) zum gewählten Lauf.
 
-**Zwei Wege für einen neuen Import:** der schlichte Link „+ Neues Berechtigungskonzept
-importieren" springt direkt zur Auswertungsseite (manueller Zugriff über die Ribbon nötig); „✨
-Geführter Import (Assistent)" startet dort sofort den 7-Schritte-Assistenten bei Schritt ①
+**Ribbon auf der Startseite.** Über den Reitern stehen die Funktionen in vier Gruppen: **1 · Daten** (Import, Geführter Import),
+**2 · Auswertung** (Alle gemeinsam — ab zwei Datasets; Vergleichen — sobald zwei Datasets gewählt sind; Systemübergreifend),
+**3 · Sichern** (Backup / Restore) und **4 · Verwalten** (Löschen). **Backup / Restore** erstellt ein Backup des gewählten Datasets
+(optional „danach leeren“) und listet vorhandene Backups mit „Wiederherstellen“ (Re-Import) und „Herunterladen“; Lauf-Backups bleiben in
+der Auswertung. **Löschen** entfernt das gewählte Dataset samt Läufen und systemübergreifenden Prüfungen nach Rückfrage; im
+„Gefahrenbereich“ löscht „Alle Datasets löschen…“ alles — nur nach Eingabe eines Bestätigungswortes.
+
+**Zwei Wege für einen neuen Import:** „Import“ springt direkt zur Auswertungsseite (Import-Dialog); „✨
+Geführter Import“ startet dort sofort den 7-Schritte-Assistenten bei Schritt ①
 Import — der zeigt vor dem eigentlichen Hochladen eine Übersicht vorhandener Datasets, um genau
 die Verwechslung aus dem Nutzer-Fund unten zu vermeiden.
 
