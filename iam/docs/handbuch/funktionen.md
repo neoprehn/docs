@@ -195,7 +195,8 @@ Import automatisch; ältere Importe lassen sich nachträglich nachweisen (s. u.)
   sortieren** (Tabelle, Pflicht/optional, Quellzeilen, übersprungen, Soll, Graph, Status; nicht Bezeichnung, MB, SHA-256
   und Hinweis). Der Statusfilter „Abweichung“ ist rot, sobald es eine gibt. Ein **Hinweis**, der nur eine erwartete
   technische Abweichung erklärt (Nummern 1–4), trägt in der Status-Spalte zusätzlich ein grünes **OK** — die Daten sind
-  vollständig; Hinweise mit Einschränkung (5–10) bekommen kein OK.
+  vollständig; Hinweise mit Einschränkung (5–10) bekommen kein OK. Dasselbe gilt für die Tabellen im Reiter
+  **Kennzahlen**: farbige Spaltenköpfe, feste Spaltenbreiten und das zusätzliche OK-Badge in der Status-Spalte.
 - **Rot nur bei einem echten Importproblem.** Eine **Abweichung** heißt: im Graph fehlt etwas gegenüber der Quelle. Alles
   andere ist höchstens ein **Hinweis**, auch eine Pflichttabelle, die laut Importoption fehlen darf (z. B. der
   Benutzerstamm `USR02` beim KAAP-Extraktor-Paket, Hinweis [10]). Der Gesamtstatus lautet dann „OK mit Hinweisen“.

@@ -188,7 +188,8 @@ import; older imports can be evidenced afterwards (see below). For each dataset 
   (table, required/optional, source rows, skipped, expected, graph, status; not name, MB, SHA-256 and note). The
   "Deviation" filter turns red as soon as there is one. A **note** that merely explains an expected technical
   difference (numbers 1–4) additionally carries a green **OK** in the status column — the data is complete; notes
-  with a limitation (5–10) get no OK.
+  with a limitation (5–10) get no OK. The same applies to the tables in the **Key figures** tab: colored column
+  headers, fixed column widths and the additional OK badge in the status column.
 - **Red only for a real import problem.** A **deviation** means: the graph is missing something compared with the
   source. Everything else is at most a **note**, including a required table that is allowed to be missing by import
   option (e.g. the user master `USR02` with the KAAP extractor package, note [10]). The overall status then reads "OK
