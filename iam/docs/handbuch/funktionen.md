@@ -26,6 +26,42 @@ Datasets, deren aktuell gewählter Lauf ein abweichendes Ruleset hat, werden ges
 Dataset gewählt ist (Dropdown-Wechsel wertet die Sperre neu aus). „Konzepte vergleichen" öffnet die
 Vergleichsseite (s. u.); als **Basis** gilt der Lauf mit dem älteren Stichtag.
 
+**Reiter „Einzelsystem“ / „Systemübergreifend“.** Oben auf der Startseite stehen zwei Reiter (wie überall: der aktive
+Reiter ist größer). **Einzelsystem** ist die bisherige Ansicht. **Systemübergreifend** listet die gespeicherten
+[systemübergreifenden SoD-Prüfungen](systemuebergreifend) (eine Karte je Prüfung mit Systemen, Ruleset, Datum und Zahl
+der Befunde, Personen und Regeln; „Öffnen“, „Löschen“) und startet über „+ Neue systemübergreifende Prüfung“ den Ablauf.
+
+(systemuebergreifend)=
+## Systemübergreifende SoD-Prüfung
+
+Prüft **dieselbe Person in zwei Systemen** (Datasets/Mandanten): Eine SoD-Regel gilt als verletzt, wenn die **Vereinigung** der
+Treffer aus System A und System B alle Klauseln der Regel erfüllt — aber **kein einzelnes System** sie allein erfüllt. Ein
+Konflikt innerhalb eines Systems ist ein normaler Einzelsystem-Befund und steht in dessen Läufen; hier erscheinen nur
+Befunde, die **beide** Systeme brauchen. Grundlage sind die bereits materialisierten Treffer (ein Lauf je System, gleiches
+Ruleset). Der Ablauf (Seite `cross.html`, Reiter wie überall):
+
+1. **Systeme.** System A und B (verschieden) und je einen **Lauf** wählen (Standard: neuester). Beide Läufe müssen dasselbe
+   Ruleset haben. Wurde ein Lauf mit eingeschränkter Auswahl gerechnet, fehlen dessen nicht materialisierte Queries —
+   dazu passende Befunde können nicht entstehen; das Ergebnis weist darauf hin.
+2. **SoD-Filter.** Welche Regeln geprüft werden: Filter nach Bezeichnung (mit `*`) und Kritikalität, „alle (gefiltert)
+   wählen“ / „Auswahl leeren“. Voreinstellung: alle Regeln.
+3. **Nutzerabgleich.** Vorab muss sichergestellt sein, dass die Person in beiden Systemen erkannt wird. Die Gegenüberstellung
+   zeigt Benutzer je System, **identische IDs**, per **Mapping verknüpfte** und die Differenzen **nur in A** / **nur in B**
+   (durchsuchbar). Für abweichende Schreibweisen (Groß-/Kleinschreibung, Sonderzeichen) macht die Seite **Vorschläge**, die
+   sich einzeln oder gesammelt übernehmen lassen. Das **Mapping** (ID in A → ID in B) lässt sich **als CSV exportieren**
+   (bestehende Zuordnungen plus alle offenen A-Benutzer als Vorlage), extern ergänzen und **importieren** (Semikolon- oder
+   Komma-CSV; „bestehende Zuordnung ersetzen“ optional) oder einzeln eintragen/entfernen. IDs, die im jeweiligen System nicht
+   existieren, werden beim Import als ungültig gemeldet. Das Mapping gilt je Systempaar und bleibt gespeichert. Ein Mapping
+   überschreibt die Gleichheit der ID.
+4. **Prüfung.** Name vergeben, „Prüfung starten“. Das Ergebnis wird **getrennt von den Einzelsystem-Läufen** gespeichert und ist
+   über die Startseite (Reiter „Systemübergreifend“) jederzeit wieder abrufbar.
+
+**Ergebnis.** Kacheln (Befunde, Personen, Regeln, verknüpfte Personen, Benutzer ohne Gegenstück), die Tabelle **Je Regel** (Klick
+filtert) und die **Einzelnen Befunde** mit Nutzer in A und B, Art der Zuordnung (identische ID/Mapping) und je Klausel, durch
+welche Queries aus welchem System sie erfüllt ist. Filter nach Nutzer-ID, **Export XLSX/CSV**, „Prüfung löschen“. Es erscheinen
+nur technische User-IDs. Beim Löschen eines Datasets (Bereinigen) werden dessen systemübergreifende Prüfungen und Mappings mit
+entfernt.
+
 ## Konzeptvergleich
 
 Eigene Seite (`compare.html`) zum **Vergleichen** zweier Läufe mit demselben Ruleset — bewusst

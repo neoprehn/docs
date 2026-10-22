@@ -26,6 +26,39 @@ a different ruleset get disabled as soon as one is selected (switching the dropd
 the lock). "Compare concepts" opens the comparison page (see below); the run with the **earlier
 as-of date** is used as the **baseline**.
 
+**Tabs "Single system" / "Cross-system".** At the top of the home page there are two tabs (as everywhere: the active tab is
+larger). **Single system** is the previous view. **Cross-system** lists the saved [cross-system SoD analyses](cross-system)
+(one card per analysis with systems, ruleset, date and number of findings, persons and rules; "Open", "Delete") and starts the
+flow via "+ New cross-system analysis".
+
+(cross-system)=
+## Cross-System SoD Analysis
+
+Checks **the same person in two systems** (datasets/clients): an SoD rule counts as violated if the **union** of the matches
+from system A and system B satisfies all clauses of the rule — but **no single system** satisfies it alone. A conflict within one
+system is a normal single-system finding and is in that system's runs; only findings that need **both** systems appear here. The
+basis is the already materialized matches (one run per system, same ruleset). The flow (page `cross.html`, tabs as everywhere):
+
+1. **Systems.** Choose system A and B (different) and a **run** each (default: latest). Both runs must have the same ruleset. If
+   a run was calculated with a restricted selection, its non-materialized queries are missing — matching findings cannot arise;
+   the result points this out.
+2. **SoD filters.** Which rules are checked: filter by name (with `*`) and criticality, "select all (filtered)" / "clear
+   selection". Default: all rules.
+3. **User comparison.** Beforehand it must be ensured that the person is recognized in both systems. The comparison shows users
+   per system, **identical IDs**, those **linked by mapping** and the differences **only in A** / **only in B** (searchable). For
+   differing spellings (case, special characters) the page makes **suggestions** that can be applied individually or all at once.
+   The **mapping** (ID in A → ID in B) can be **exported as CSV** (existing mappings plus all open A users as a template),
+   completed externally and **imported** (semicolon or comma CSV; "replace existing mapping" optional) or entered/removed
+   individually. IDs that do not exist in the respective system are reported as invalid on import. The mapping applies per
+   system pair and stays saved. A mapping overrides ID equality.
+4. **Analysis.** Enter a name, "Start analysis". The result is stored **separately from the single-system runs** and can be opened
+   again at any time from the home page (tab "Cross-system").
+
+**Result.** Tiles (findings, persons, rules, linked persons, users without counterpart), the **Per rule** table (click filters)
+and the **Individual findings** with user in A and B, kind of link (identical ID/mapping) and, per clause, which queries from which
+system satisfy it. Filter by user ID, **export XLSX/CSV**, "Delete analysis". Only technical user IDs appear. When a dataset is
+deleted (Clean up), its cross-system analyses and mappings are removed as well.
+
 ## Concept comparison
 
 A separate page (`compare.html`) to **compare** two runs with the same ruleset — deliberately
