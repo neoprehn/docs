@@ -56,7 +56,18 @@ basis is the already materialized matches (one run per system, same ruleset). Th
 
 **Result.** Tiles (findings, persons, rules, linked persons, users without counterpart), the **Per rule** table (click filters)
 and the **Individual findings** with user in A and B, kind of link (identical ID/mapping) and, per clause, which queries from which
-system satisfy it. Filter by user ID, **export XLSX/CSV**, "Delete analysis". Only technical user IDs appear. When a dataset is
+system satisfy it — **with the causing roles and profiles**: for each query it shows which roles assigned to the user (valid on
+the as-of date) or directly assigned profiles satisfy it **alone** (same semantics as "causing roles" in the single system; based on
+the evidence phase of the runs). If no single actor satisfies the query, "combination of several roles" is shown. The table
+**Causing roles and profiles** counts per system which roles/profiles take part in how many findings and rules; a click filters the
+findings. If a system lacks evidence (run calculated without evidence), the page points this out. Filter by user ID, **export
+XLSX/CSV/PDF**, "Delete analysis". Only technical user IDs appear.
+
+**PDF report.** "Export PDF" creates a landscape report: header block (company, audit purpose, author — optional via "Header
+fields"; plus system A/B with as-of date, ruleset, date), **summary**, **method and significance** (definition, linking of persons,
+limitations such as non-materialized queries or missing role evidence), **findings per rule**, **causing roles and profiles** per
+system (top 15) and the **individual findings** with clause evidence (the first 300; the XLSX/CSV export contains all). The Excel
+export additionally contains the "Roles/profiles" columns per system and a "Causing roles" sheet. When a dataset is
 deleted (Clean up), its cross-system analyses and mappings are removed as well.
 
 ## Concept comparison

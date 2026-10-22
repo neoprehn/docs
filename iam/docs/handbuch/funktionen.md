@@ -58,8 +58,19 @@ Ruleset). Der Ablauf (Seite `cross.html`, Reiter wie überall):
 
 **Ergebnis.** Kacheln (Befunde, Personen, Regeln, verknüpfte Personen, Benutzer ohne Gegenstück), die Tabelle **Je Regel** (Klick
 filtert) und die **Einzelnen Befunde** mit Nutzer in A und B, Art der Zuordnung (identische ID/Mapping) und je Klausel, durch
-welche Queries aus welchem System sie erfüllt ist. Filter nach Nutzer-ID, **Export XLSX/CSV**, „Prüfung löschen“. Es erscheinen
-nur technische User-IDs. Beim Löschen eines Datasets (Bereinigen) werden dessen systemübergreifende Prüfungen und Mappings mit
+welche Queries aus welchem System sie erfüllt ist — **mit den verursachenden Rollen und Profilen**: Zu jeder Query steht, welche dem
+Nutzer zugewiesenen Rollen (zum Stichtag gültig) bzw. direkt zugewiesenen Profile sie **allein** erfüllen (gleiche Semantik wie
+„verursachende Rollen“ im Einzelsystem, Grundlage ist die Evidenz-Phase der Läufe). Erfüllt kein einzelner Akteur die Query, steht
+„Kombination mehrerer Rollen“. Die Tabelle **Verursachende Rollen und Profile** zählt je System, welche Rollen/Profile an wie vielen
+Befunden und Regeln beteiligt sind; ein Klick filtert die Befunde. Fehlt in einem System die Evidenz (Lauf ohne Evidenz gerechnet),
+weist die Seite darauf hin. Filter nach Nutzer-ID, **Export XLSX/CSV/PDF**, „Prüfung löschen“. Es erscheinen nur technische User-IDs.
+
+**PDF-Bericht.** „Export PDF“ erzeugt einen Bericht im Querformat: Kopfblock (Unternehmen, Prüfungsanlass, Ersteller — optional über
+„Kopffelder“; dazu System A/B mit Stichtag, Ruleset, Datum), **Zusammenfassung**, **Methode und Aussagekraft** (Definition,
+Verknüpfung der Personen, Einschränkungen wie nicht materialisierte Queries oder fehlende Rollen-Evidenz), **Befunde je Regel**,
+**Verursachende Rollen und Profile** je System (Top 15) und die **Einzelnen Befunde** mit Klausel-Evidenz (die ersten 300; alle
+enthält der Export XLSX/CSV). Der Excel-Export enthält zusätzlich die Spalten „Rollen/Profile“ je System und ein Blatt
+„Verursachende Rollen“. Beim Löschen eines Datasets (Bereinigen) werden dessen systemübergreifende Prüfungen und Mappings mit
 entfernt.
 
 ## Konzeptvergleich
