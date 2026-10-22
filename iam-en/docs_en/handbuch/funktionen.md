@@ -39,7 +39,8 @@ from system A and system B satisfies all clauses of the rule — but **no single
 system is a normal single-system finding and is in that system's runs; only findings that need **both** systems appear here. The
 basis is the already materialized matches (one run per system, same ruleset). The flow (page `cross.html`, tabs as everywhere):
 
-1. **Systems.** Choose system A and B (different) and a **run** each (default: latest). Both runs must have the same ruleset. If
+1. **Systems.** Choose system A and B (different) and a **run** each (default: latest). Besides the dataset ID the selection shows
+   **company and client** from the system master data (`T000`), so the system can be recognized. Both runs must have the same ruleset. If
    a run was calculated with a restricted selection, its non-materialized queries are missing — matching findings cannot arise;
    the result points this out.
 2. **SoD filters.** Which rules are checked: filter by name (with `*`) and criticality, "select all (filtered)" / "clear

@@ -40,7 +40,8 @@ Konflikt innerhalb eines Systems ist ein normaler Einzelsystem-Befund und steht 
 Befunde, die **beide** Systeme brauchen. Grundlage sind die bereits materialisierten Treffer (ein Lauf je System, gleiches
 Ruleset). Der Ablauf (Seite `cross.html`, Reiter wie überall):
 
-1. **Systeme.** System A und B (verschieden) und je einen **Lauf** wählen (Standard: neuester). Beide Läufe müssen dasselbe
+1. **Systeme.** System A und B (verschieden) und je einen **Lauf** wählen (Standard: neuester). Die Auswahl zeigt zur Dataset-ID
+   auch **Firma und Mandant** aus den System-Stammdaten (`T000`), damit sich das System erkennen lässt. Beide Läufe müssen dasselbe
    Ruleset haben. Wurde ein Lauf mit eingeschränkter Auswahl gerechnet, fehlen dessen nicht materialisierte Queries —
    dazu passende Befunde können nicht entstehen; das Ergebnis weist darauf hin.
 2. **SoD-Filter.** Welche Regeln geprüft werden: Filter nach Bezeichnung (mit `*`) und Kritikalität, „alle (gefiltert)
