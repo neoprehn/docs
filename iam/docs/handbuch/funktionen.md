@@ -157,6 +157,18 @@ Datasets“** hebt den Filter auf; auf der Startseite führt dorthin der Knopf *
 (erscheint ab zwei Datasets). Der Filter wird im Browser gemerkt; beim Direktaufruf ohne Angabe gilt der zuletzt
 benutzte Wert, sonst das jüngste Dataset. Ein neu importiertes Dataset wird sofort zum aktiven Filter.
 
+**Sprache von Fehlermeldungen und Berichten.** Die Oberfläche folgt dem Sprachumschalter im Kopf der Seite
+(Deutsch/Englisch). Dieselbe Sprache gilt auch für das, was der Server liefert: **Fehlermeldungen** (z. B. „Lauf … nicht
+gefunden“) und die **Beschriftungen der Berichte** — Konsistenz-Report, Import-Evidenz, Import-Protokoll, One-Pager,
+Exception-Mappe, Ergebnis-Übersichten, Vergleichs-Export und die systemübergreifende SoD-Prüfung (PDF, Excel, CSV).
+Der Server erfährt die Sprache aus dem Parameter `?lang=de|en`, ersatzweise aus dem Header `X-Lang` bzw. dem Cookie
+`iam_lang`, das die Oberfläche beim Sprachwechsel setzt (deshalb stimmt die Sprache auch bei Downloads per Link);
+ohne Angabe gilt die Standardsprache aus den Stammdaten. Bewusst **nicht** übersetzt werden Inhalte, die aus den
+Katalogen und Daten stammen: Texte der Konsistenz-Checks, Query-/Regel-/Risikobeschreibungen, Kategorien und
+Begründungen, Tabellenbezeichnungen und technische Bezeichner (CSV-Spaltenköpfe der Ergebnis-Exporte bleiben englisch
+und maschinenlesbar). Die Exception-Mappe wird positionsbasiert wieder eingelesen und akzeptiert die Blattnamen beider
+Sprachen.
+
 **Anonymisierung.** Ein einzelner, globaler Schalter (Chip „Namen sichtbar"/„Namen anonymisiert")
 ersetzt echte Nutzernamen (aus USR02/ADRP) überall durch ein stabiles Pseudonym
 („Anonym-XXXXXX", je User-ID immer dasselbe) — die technische User-ID selbst bleibt unverändert,

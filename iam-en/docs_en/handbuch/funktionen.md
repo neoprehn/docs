@@ -152,6 +152,17 @@ button **"Evaluate all datasets together"** leads there (shown from two datasets
 browser; when opened directly without parameters the last used value applies, otherwise the newest dataset. A newly
 imported dataset immediately becomes the active filter.
 
+**Language of error messages and reports.** The interface follows the language switch in the page header
+(German/English). The same language applies to what the server returns: **error messages** (e.g. "Run … not found") and
+the **labels of the reports** — consistency report, import evidence, import log, one-pager, exception workbook, result
+overviews, comparison export and the cross-system SoD check (PDF, Excel, CSV). The server learns the language from the
+parameter `?lang=de|en`, otherwise from the header `X-Lang` or the cookie `iam_lang`, which the interface sets when the
+language is switched (so downloads via a link use the right language as well); without any of them the default language
+from the master data applies. Content that comes from the catalogs and data is deliberately **not** translated: texts of
+the consistency checks, query/rule/risk descriptions, categories and justifications, table descriptions and technical
+identifiers (CSV column headers of the result exports stay English and machine-readable). The exception workbook is read
+back by column position and accepts the sheet names of both languages.
+
 **Anonymization.** A single, global toggle (chip "names visible"/"names anonymized") replaces
 real user names (from USR02/ADRP) everywhere with a stable pseudonym ("Anonymous-XXXXXX", always
 the same for a given user ID) — the technical user ID itself remains unchanged, and
