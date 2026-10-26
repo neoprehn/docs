@@ -55,25 +55,34 @@ automatisch (oder über die Option „Quellformat“, s. [Handbuch](handbuch/fun
 
 Die SE16-Exporte (eine `.txt`/`.csv` je Tabelle, Dateiname = Tabellenname) gehören in den
 Dataset-Ordner. Der Konverter prüft das **Minimalset vor dem Import** (Quelle:
-`config/required_tables.json`) — **fehlt eine Pflicht-Tabelle, bricht er ab.** Optionale Tabellen
-reichern nur an (es erscheint lediglich ein Hinweis, wenn sie fehlen).
+`config/required_tables.json`) — **fehlt eine Pflicht-Tabelle, bricht er ab.** Pflicht sind nur Tabellen, ohne die
+die Auswertung selbst nicht möglich ist. Optionale Tabellen reichern an: Fehlen sie, läuft der Import trotzdem; bei den
+**empfohlenen** (`AGR_DEFINE`, `TSTCT`, `USOBT_C`, `T000`) zeigt die Vorprüfung eine Warnung mit den Folgen, bei den übrigen
+steht das Fehlen nur im Import-Protokoll.
 
 ### Pflicht (Minimalset)
 
 | Tabelle | Zweck |
 | --- | --- |
 | **USR02** | Benutzer-Stammsatz (Typ, Sperre, letzter Logon, Gültigkeit) |
-| **AGR_DEFINE** | Rollen-Definition (Sammelrolle über `PARENT_AGR`) |
 | **AGR_AGRS** | Sammelrolle → Einzelrollen |
 | **AGR_USERS** | Benutzer ↔ Rolle (mit Gültigkeit) |
 | **AGR_PROF** | Rolle → generiertes Profil |
 | **UST04** | Benutzer → direkt zugewiesenes Profil (z. B. `SAP_ALL`) |
 | **AGR_1251** | Rollen-Berechtigungsdaten (Objekt/Feld/Werte je Rolle) |
-| **TSTCT** | Transaktionstexte |
-| **USOBT_C** | SU24-Vorschlagswerte (TCode → Objekt/Feld; Quelle für `CHECKS`) |
 | **UST10S** | Profil-Berechtigungen (Profilinhalte) |
 | **UST12** | Berechtigungs-Feldwerte zu den Profilberechtigungen |
-| **T000** | Mandant-Stammdaten (Firma/Mandant/Ort) — Grundlage der Firma-/Mandant-/Zeitscheiben-Gliederung auf der Startseite |
+
+### Empfohlen (optional, Warnung bei Fehlen)
+
+Der Import läuft ohne diese Tabellen; die **Auswertung** (Einzelfilter, SoD) ist nicht betroffen. Die Vorprüfung warnt mit den Folgen.
+
+| Tabelle | Zweck — und was ohne sie fehlt |
+| --- | --- |
+| **AGR_DEFINE** | Rollen-Definition (Rollentext, Ersteller/Änderer, Sammel-/abgeleitete Rolle über `PARENT_AGR`). Ohne sie entstehen die Rollen trotzdem aus den Zuordnungs- und Berechtigungstabellen; Rollen-Detailseite und Rollen-Ranglisten sind eingeschränkt |
+| **TSTCT** | Transaktionstexte. Ohne sie haben TCodes keinen Klartext (Anzeige, Rollenmenü, Berichte) |
+| **USOBT_C** | SU24-Vorschlagswerte (TCode → Objekt/Feld; Quelle für `CHECKS`/`PROPOSES`). Ohne sie liefern der PFCG-Vorschlag („Aus TCode ableiten", Assistent im Aufbau-Tab) und die Konsistenzprüfung zu SU24-Prüfungen nichts |
+| **T000** | Mandant-Stammdaten (Firma/Mandant/Ort/Währung). Ohne sie bleibt die Gliederung nach Firma/Mandant auf der Startseite und der Kopf der Berichte leer |
 
 ### Optional (Anreicherung)
 

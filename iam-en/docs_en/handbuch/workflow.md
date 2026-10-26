@@ -16,9 +16,10 @@ authorizations, …).
 
 :::{admonition} Which tables are needed?
 :class: note
-**Required (minimal set):** `USR02`, `AGR_DEFINE`, `AGR_AGRS`, `AGR_USERS`, `AGR_PROF`, `UST04`,
-`AGR_1251`, `TSTCT`, `USOBT_C`, `UST10S`, `UST12`. If any of these is missing, the import aborts
-with a clear message. **Optional** (enrichment): among others `AGR_TEXTS`, `USR11`, `AGR_1252`,
+**Required (minimal set):** `USR02`, `AGR_AGRS`, `AGR_USERS`, `AGR_PROF`, `UST04`, `AGR_1251`,
+`UST10S`, `UST12`. If any of these is missing, the import aborts with a clear message. **Recommended**
+(the import runs without them, the pre-check warns with the consequences): `AGR_DEFINE`, `TSTCT`,
+`USOBT_C`, `T000`. **Optional** (enrichment): among others `AGR_TEXTS`, `USR11`, `AGR_1252`,
 `AGR_TCODES`, `AGR_1016B`. The complete list with purpose and columns is in the
 [Extraction Guide](../extraktionsleitfaden.md#which-tables-to-download). Sensitive columns
 (password hashes) are **discarded** during conversion and never reach the graph.

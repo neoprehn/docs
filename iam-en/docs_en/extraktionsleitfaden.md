@@ -53,25 +53,34 @@ automatically (or via the "Source format" option, see the [manual](handbuch/funk
 
 The SE16 exports (one `.txt`/`.csv` per table, file name = table name) belong in the dataset
 folder. The converter checks the **minimal set before import** (source:
-`config/required_tables.json`) — **if a required table is missing, it aborts.** Optional tables
-only enrich the data (only a notice appears if they are missing).
+`config/required_tables.json`) — **if a required table is missing, it aborts.** Only tables without which the
+evaluation itself is impossible are required. Optional tables enrich the data: if they are missing, the import still runs;
+for the **recommended** ones (`AGR_DEFINE`, `TSTCT`, `USOBT_C`, `T000`) the pre-check shows a warning with the consequences,
+for the others the absence only appears in the import log.
 
 ### Required (Minimal Set)
 
 | Table | Purpose |
 | --- | --- |
 | **USR02** | user master record (type, lock, last logon, validity) |
-| **AGR_DEFINE** | role definition (collective role via `PARENT_AGR`) |
 | **AGR_AGRS** | collective role → single roles |
 | **AGR_USERS** | user ↔ role (with validity) |
 | **AGR_PROF** | role → generated profile |
 | **UST04** | user → directly assigned profile (e.g., `SAP_ALL`) |
 | **AGR_1251** | role authorization data (object/field/values per role) |
-| **TSTCT** | transaction texts |
-| **USOBT_C** | SU24 suggested values (transaction code → object/field; source for `CHECKS`) |
 | **UST10S** | profile authorizations (profile contents) |
 | **UST12** | authorization field values for the profile authorizations |
-| **T000** | client master data (company/client/location) — basis for the company/client/time-slice grouping on the start page |
+
+### Recommended (optional, warning if missing)
+
+The import runs without these tables; the **evaluation** (single filters, SoD) is not affected. The pre-check warns with the consequences.
+
+| Table | Purpose — and what is missing without it |
+| --- | --- |
+| **AGR_DEFINE** | role definition (role text, creator/changer, collective/derived role via `PARENT_AGR`). Without it the roles are still created from the assignment and authorization tables; the role detail page and role rankings are limited |
+| **TSTCT** | transaction texts. Without it TCodes have no plain text (display, role menu, reports) |
+| **USOBT_C** | SU24 suggested values (transaction code → object/field; source for `CHECKS`/`PROPOSES`). Without it the PFCG proposal ("Derive from TCode", assistant in the structure tab) and the consistency check on SU24 checks return nothing |
+| **T000** | client master data (company/client/location/currency). Without it the grouping by company/client on the start page and the header of the reports stay empty |
 
 ### Optional (Enrichment)
 
