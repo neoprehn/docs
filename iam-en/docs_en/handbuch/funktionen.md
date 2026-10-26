@@ -376,8 +376,25 @@ profile, and sleeping days are then already ticked and remain adjustable.
    the browser does not need to stay open. Queued runs are listed at the top of the dialog and can
    be cancelled. Optionally the server also stores the **consistency report** (CSV, or PDF with
    header block) after the run; it is listed under "Generated reports" in the same dialog for
-   download (stored locally under `backups/reports/`). The plan lives in the backend's memory: restarting the container before the start
-   discards it.
+   download (stored locally under `backups/reports/`).
+
+   **Import as the first phase.** If the data is already in `data/import/<dataset>`, the **import (step ①)** can be
+   scheduled as well: tick "Run the import (step ①) first, at the scheduled time" in the dialog (choose the source
+   format, optionally "Clear the dataset first") — or pick "⏱ Schedule import → scoping" right in **step ①** of the
+   assistant: it then goes straight to scoping (the dataset does not have to be loaded yet), and "Run everything /
+   schedule…" plans import, evaluation and optionally the report as **one chain**. At the scheduled time the phases run
+   one after the other; if one fails, the evaluation does not start.
+
+   **Continue from the phase.** A phase that has completed is not repeated: "Continue" resumes at the first phase that is
+   not complete, using that phase's own checkpoint (import from the last load step, evaluation from the saved run state).
+   If the import is done and the evaluation fails, only the evaluation runs again.
+
+   **Schedule log (image).** The "Schedule log (image)…" button in the dialog shows each chain's phases as a graphic with
+   status (open/running/done/error/cancelled), start, end, duration, attempts and the error message. "Save as image (PNG)"
+   stores it as a file; "Continue" — or "Start now" for a chain that is still waiting — resumes the chain. The log is kept in
+   `data/logs/chains/` and **survives a restart** of the backend: a chain that is no longer running at its time shows as
+   "interrupted (restart)" and can be continued. The waiting plan itself still lives only in memory — after a restart it
+   does not start by itself but only via "Start now".
 
 ### Further Parameters
 

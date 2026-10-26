@@ -387,8 +387,27 @@ Sleeping-Tage sind danach bereits angehakt und bleiben anpassbar.
    z. B. über Nacht — der Browser muss nicht offen bleiben. Vorgemerkte Läufe stehen oben im
    Dialog und lassen sich abbrechen. Optional legt der Server **nach dem Lauf den Konsistenz-Bericht**
    (CSV oder PDF mit Kopfblock) ab; er steht im selben Dialog unter „Erzeugte Berichte" zum
-   Download (Ablage lokal unter `backups/reports/`). Der Plan liegt im Speicher des Backends: ein Neustart des
-   Containers vor dem Start verwirft ihn.
+   Download (Ablage lokal unter `backups/reports/`).
+
+   **Import als erste Phase.** Liegen die Daten schon unter `data/import/<Dataset>`, lässt sich auch der
+   **Import (Schritt ①)** zeitgesteuert ausführen: im Dialog „Import (Schritt ①) zuerst zeitgesteuert ausführen"
+   anhaken (Quellformat wählen, optional „Dataset vorher leeren") — oder gleich in **Schritt ①** des Assistenten
+   „⏱ Import planen → Scoping" wählen: dann geht es direkt zum Scoping (das Dataset muss noch nicht geladen sein), und
+   „Gesamtlauf starten / planen…" plant Import, Auswertung und optional den Bericht als **eine Kette**. Zum Zeitpunkt
+   laufen die Phasen nacheinander; bricht eine ab, startet die Auswertung nicht.
+
+   **Fortsetzen ab der Phase.** Eine vollständig durchgelaufene Phase wird nicht wiederholt: „Fortsetzen" macht bei
+   der ersten nicht abgeschlossenen Phase weiter, und zwar mit deren eigenem Checkpoint (Import ab dem letzten
+   Ladeschritt, Auswertung ab dem gespeicherten Lauf-Stand). Ist der Import fertig und die Auswertung scheitert,
+   läuft also nur die Auswertung erneut.
+
+   **Zeitplan-Protokoll (Bild).** Der Knopf „Zeitplan-Protokoll (Bild)…" im Dialog zeigt je Kette die Phasen als Grafik
+   mit Status (offen/läuft/fertig/Fehler/abgebrochen), Start, Ende, Dauer, Versuchen und der Fehlermeldung. „Als Bild
+   speichern (PNG)" legt sie als Datei ab; „Fortsetzen" bzw. bei einer noch wartenden Kette „Jetzt starten" setzt die
+   Kette fort. Das Protokoll liegt unter `data/logs/chains/` und **überlebt einen Neustart** des Backends: eine zum
+   Zeitpunkt nicht mehr laufende Kette steht dort als „unterbrochen (Neustart)" und lässt sich fortsetzen. Der
+   wartende Plan selbst liegt weiterhin nur im Speicher — nach einem Neustart startet er nicht von allein, sondern
+   erst per „Jetzt starten".
 
 ### Weitere Parameter
 
