@@ -99,7 +99,7 @@ can **revoke it individually** and can **re-certify all computers** — this is 
 If access is denied (key revoked), the period shortens to **7 days** after the first denied access. After that the **application locks
 itself**: all pages redirect to *Management → Configuration → License*, the only place where a new key can be stored. From 30 days of
 remaining time on, or after a detected revocation, the start page shows a notice bar. Network problems and configuration errors (e.g. an
-unknown host key) do **not** count as revocation. The contact log lives under `C:\ProgramData\iam\license` and is writable only by SYSTEM and administrators; a user without admin rights can neither edit nor delete it. This is an organisational control on the user's computer, not copy protection.
+unknown host key) do **not** count as revocation. This is an organisational control on the user's computer, not copy protection.
 
 **What a revocation does — and what it does not.** It ends the updates for that computer and triggers the lock after 7 days; the
 already installed application keeps running until then. It removes nothing from the computer.
