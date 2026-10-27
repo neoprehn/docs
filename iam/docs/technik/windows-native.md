@@ -142,7 +142,7 @@ möglich (`karma-admin.ps1 -Action recertify -OutDir <Ordner> -DryRun`).
 
 KARMA Admin braucht ein GitHub-Token: *fine-grained*, nur für dieses Repository, Berechtigung **Administration: Read and write**
 (Deploy-Keys verwalten). Es wird mit der Windows-Benutzerverschlüsselung im eigenen Profil abgelegt (nie im Repo, nie in der
-`.exe`). Wer die Admin-Anwendung weitergibt, gibt damit **kein** Token weiter — jeder Nutzer trägt sein eigenes ein.
+`.exe`). Wer die Admin-Anwendung weitergibt, gibt damit **kein** Token weiter — jeder Nutzer trägt sein eigenes ein. Die Anwendung enthält unter **Hilfe** eine Schritt-für-Schritt-Anleitung zum Anlegen eines neuen Tokens und warnt **10 Tage vor Ablauf**; empfohlene Laufzeit: 90 Tage. Ein abgelaufenes Token betrifft nur die Admin-Anwendung, nicht die Drittrechner.
 
 ## Details, Troubleshooting, Deinstallation
 

@@ -137,7 +137,7 @@ happen within 7 days lock themselves. A dry run is available on the command line
 
 KARMA Admin needs a GitHub token: *fine-grained*, for this repository only, permission **Administration: Read and write** (manage deploy
 keys). It is stored encrypted with the Windows user encryption in the user's own profile (never in the repo, never in the `.exe`). Whoever
-passes on the admin application does **not** pass on a token — every user enters their own.
+passes on the admin application does **not** pass on a token — every user enters their own. The application contains a step-by-step guide for creating a new token under **Help** and warns **10 days before expiry**; recommended lifetime: 90 days. An expired token affects only the admin application, not the third-party computers.
 
 ## Details, Troubleshooting, Uninstallation
 
