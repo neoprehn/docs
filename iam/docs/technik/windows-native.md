@@ -101,7 +101,7 @@ auf **180 Tage**. Wird der Zugriff verweigert (Schlüssel widerrufen), verkürzt
 verweigerten Zugriff. Danach **sperrt sich die Anwendung**: Alle Seiten leiten auf *Management → Konfiguration → Lizenz* um,
 nur dort lässt sich ein neuer Schlüssel hinterlegen. Ab 30 Tagen Restlaufzeit bzw. nach einem erkannten Widerruf zeigt die
 Startseite einen Hinweisbalken. Netzwerkprobleme und Konfigurationsfehler (z. B. unbekannter Host-Key) zählen **nicht** als
-Widerruf. Das ist eine organisatorische Steuerung auf dem Rechner des Anwenders, kein Kopierschutz.
+Widerruf. Das Kontakt-Protokoll liegt unter `C:\ProgramData\iam\license` und ist nur für SYSTEM und Administratoren beschreibbar; ein Anwender ohne Adminrechte kann es weder ändern noch löschen. Das ist eine organisatorische Steuerung auf dem Rechner des Anwenders, kein Kopierschutz.
 
 **Was ein Widerruf bewirkt — und was nicht.** Er beendet die Updates für diesen Rechner und löst nach 7 Tagen die Sperre aus;
 die bereits installierte Anwendung läuft bis dahin weiter. Er entfernt nichts vom Rechner.
