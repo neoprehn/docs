@@ -106,6 +106,51 @@ Widerruf. Das ist eine organisatorische Steuerung auf dem Rechner des Anwenders,
 **Was ein Widerruf bewirkt — und was nicht.** Er beendet die Updates für diesen Rechner und löst nach 7 Tagen die Sperre aus;
 die bereits installierte Anwendung läuft bis dahin weiter. Er entfernt nichts vom Rechner.
 
+### Ablauf auf einen Blick
+
+**Einmalig (Betreiber)**
+
+1. GitHub-Token anlegen (Schritt für Schritt unten, Abschnitt „GitHub-Token der Admin-Anwendung“) und in KARMA Admin eintragen.
+
+**Für jeden Drittrechner**
+
+2. In KARMA Admin **Neuer Rechner …** — Name eintragen (z. B. der Name des Kollegen), Übergabeordner wählen. Ergebnis: ein Eintrag in der
+   Liste und die Datei `karma-<name>-<Datum>.key`.
+3. Die `.key`-Datei **über einen sicheren Kanal** an den Empfänger geben (nicht unverschlüsselt per Mail). Sie ist der Zugang zum Code.
+4. Empfänger hinterlegt den Schlüssel: bei einer **neuen Installation** neben `install.exe` legen, bei einer **bestehenden** unter
+   *Management → Konfiguration → Lizenz* einfügen. Danach die Datei beim Empfänger löschen.
+5. Kontrolle in KARMA Admin (**Aktualisieren**): sobald der Rechner Updates geholt hat, steht bei dem Schlüssel ein Datum unter
+   *ZuletztGenutzt*.
+
+**Laufend**
+
+6. Jeder erfolgreiche Update-Kontakt des Rechners setzt dessen Lizenz auf 180 Tage zurück — der Anwender muss nichts tun.
+   Urlaub oder ein ausgeschalteter Rechner sind unkritisch.
+7. KARMA Admin warnt **10 Tage vor Ablauf des GitHub-Tokens**; dann ein neues Token anlegen (Abschnitt unten, auch unter **Hilfe**).
+
+**Bei Bedarf**
+
+8. *Rotation* (turnusmäßig oder bei Verlust), *Widerruf* (Kollege scheidet aus) oder *Rezertifizierung aller Rechner* — siehe die Abschnitte
+   weiter unten. Ein Widerruf wird nicht an den Rechner gesendet; er merkt ihn beim nächsten Update-Lauf, ab dann laufen 7 Tage.
+
+![KARMA Admin: Liste der Schlüssel mit „zuletzt genutzt“ und Token-Hinweis](../_static/zugriff/admin-01-fenster.png)
+
+*Orange Zeilen: Schlüssel, die lange oder nie genutzt wurden. Die rote Leiste erscheint 10 Tage vor Ablauf des Tokens. Alle Namen im Bild sind Beispiele.*
+
+**Was der Anwender sieht**
+
+- Lizenz in Ordnung: *Management → Konfiguration → Lizenz* zeigt den letzten Kontakt, die verbleibenden Tage und den hinterlegten Schlüssel.
+
+  ![Lizenz-Seite in KARMA](../_static/zugriff/lizenz-01-konfiguration.png)
+
+- Nach einem Widerruf bzw. ab 30 Tagen Restlaufzeit erscheint oben ein Hinweis mit der Restzeit:
+
+  ![Hinweisleiste nach einem Widerruf](../_static/zugriff/lizenz-02-widerrufen.png)
+
+- Nach Fristablauf ist nur noch die Lizenz-Seite erreichbar, dort wird ein neuer Schlüssel eingefügt und mit **Schlüssel speichern** geprüft:
+
+  ![Gesperrte Anwendung: Seite Lizenz](../_static/zugriff/lizenz-03-gesperrt.png)
+
 ### Rechner anlegen
 
 1. In KARMA Admin **Neuer Rechner …**, Namen eintragen (z. B. `rechner-a`) und einen Ordner für die Übergabe wählen.
@@ -141,8 +186,28 @@ möglich (`karma-admin.ps1 -Action recertify -OutDir <Ordner> -DryRun`).
 ### GitHub-Token der Admin-Anwendung
 
 KARMA Admin braucht ein GitHub-Token: *fine-grained*, nur für dieses Repository, Berechtigung **Administration: Read and write**
-(Deploy-Keys verwalten). Es wird mit der Windows-Benutzerverschlüsselung im eigenen Profil abgelegt (nie im Repo, nie in der
-`.exe`). Wer die Admin-Anwendung weitergibt, gibt damit **kein** Token weiter — jeder Nutzer trägt sein eigenes ein. Die Anwendung enthält unter **Hilfe** eine Schritt-für-Schritt-Anleitung zum Anlegen eines neuen Tokens und warnt **10 Tage vor Ablauf**; empfohlene Laufzeit: 90 Tage. Ein abgelaufenes Token betrifft nur die Admin-Anwendung, nicht die Drittrechner.
+(Deploy-Keys verwalten). GitHub kennt für Deploy-Keys keine kleinere Berechtigung; sie umfasst auch Repository-Einstellungen und
+Mitarbeiter — deshalb nur für dieses eine Repository und mit kurzer Laufzeit (empfohlen: 90 Tage).
+
+**Token anlegen oder erneuern — Schritt für Schritt** (derselbe Text steht in KARMA Admin unter **Hilfe**):
+
+1. Bei GitHub anmelden (Konto mit Administratorrechten auf dem Repository).
+2. Profilbild → *Settings* → ganz unten *Developer settings* → *Personal access tokens* → *Fine-grained tokens* → *Generate new token*.
+3. *Token name*: z. B. `karma-admin`. *Expiration*: 90 days.
+4. *Repository access*: *Only select repositories* → nur dieses Repository wählen.
+5. *Permissions → Repository permissions → Administration*: **Read and write**. Alle anderen Berechtigungen bleiben auf *No access*.
+6. *Generate token*. Das Token beginnt mit `github_pat_` und wird nur **einmal** angezeigt — kopieren.
+7. In KARMA Admin **GitHub-Token …** klicken, das Token einfügen, OK.
+8. Das alte Token bei GitHub löschen (falls nicht ohnehin abgelaufen).
+
+![KARMA Admin: Hilfe mit der Anleitung zum Token](../_static/zugriff/admin-02-hilfe.png)
+
+**Ablauf des Tokens.** Die Anwendung liest das Ablaufdatum bei jedem GitHub-Aufruf und zeigt **10 Tage vorher** (und danach) eine rote
+Leiste und eine Meldung beim Start. Ein abgelaufenes Token betrifft nur KARMA Admin — die Drittrechner arbeiten unverändert weiter.
+Notfalls lässt sich ein Schlüssel auch ohne Token direkt bei GitHub entfernen (*Repository → Settings → Deploy keys → Delete*).
+**Aufbewahrung.** Das Token wird mit der Windows-Benutzerverschlüsselung im eigenen Profil abgelegt (nie im Repo, nie in der `.exe`).
+Wer die Admin-Anwendung weitergibt, gibt damit **kein** Token weiter — jeder Nutzer trägt sein eigenes ein.
+
 
 ## Details, Troubleshooting, Deinstallation
 

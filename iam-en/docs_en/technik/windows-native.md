@@ -104,6 +104,51 @@ unknown host key) do **not** count as revocation. This is an organisational cont
 **What a revocation does — and what it does not.** It ends the updates for that computer and triggers the lock after 7 days; the
 already installed application keeps running until then. It removes nothing from the computer.
 
+### Process at a Glance
+
+**Once (operator)**
+
+1. Create a GitHub token (step by step below, section "GitHub token of the admin application") and enter it in KARMA Admin.
+
+**For each third-party computer**
+
+2. In KARMA Admin choose **New computer …** — enter a name (e.g. the colleague's name) and a hand-over folder. Result: an entry in the
+   list and the file `karma-<name>-<date>.key`.
+3. Give the `.key` file to the recipient **through a secure channel** (not as an unencrypted e-mail). It grants access to the code.
+4. The recipient stores the key: for a **new installation** place it next to `install.exe`, for an **existing** one paste it under
+   *Management → Configuration → License*. Afterwards the file is deleted at the recipient.
+5. Check in KARMA Admin (**Refresh**): as soon as the computer has fetched updates, the key shows a date under *ZuletztGenutzt*
+   ("last used").
+
+**Ongoing**
+
+6. Every successful update contact of the computer resets its license to 180 days — the user does not have to do anything.
+   Vacation or a switched-off computer are uncritical.
+7. KARMA Admin warns **10 days before the GitHub token expires**; then create a new token (section below, also under **Help**).
+
+**When needed**
+
+8. *Rotation* (periodically or on loss), *revocation* (a colleague leaves) or *re-certification of all computers* — see the sections
+   further below. A revocation is not sent to the computer; it notices at the next update run, from then on 7 days apply.
+
+![KARMA Admin: list of keys with "last used" and token notice](../_static/zugriff/admin-01-fenster.png)
+
+*Orange rows: keys that were used long ago or never. The red bar appears 10 days before the token expires. All names in the picture are examples. The admin application itself is available in German only.*
+
+**What the user sees**
+
+- License in order: *Management → Configuration → License* shows the last contact, the remaining days and the stored key.
+
+  ![License page in KARMA](../_static/zugriff/lizenz-01-konfiguration-en.png)
+
+- After a revocation, or from 30 days of remaining time on, a notice with the remaining time appears at the top:
+
+  ![Notice bar after a revocation](../_static/zugriff/lizenz-02-widerrufen-en.png)
+
+- After the period has expired only the License page is reachable; paste a new key there and verify it with **Save key**:
+
+  ![Locked application: License page](../_static/zugriff/lizenz-03-gesperrt-en.png)
+
 ### Adding a computer
 
 1. In KARMA Admin choose **New computer …**, enter a name (e.g. `computer-a`) and a folder for the hand-over. A key pair of its own is
@@ -136,8 +181,28 @@ happen within 7 days lock themselves. A dry run is available on the command line
 ### GitHub token of the admin application
 
 KARMA Admin needs a GitHub token: *fine-grained*, for this repository only, permission **Administration: Read and write** (manage deploy
-keys). It is stored encrypted with the Windows user encryption in the user's own profile (never in the repo, never in the `.exe`). Whoever
-passes on the admin application does **not** pass on a token — every user enters their own. The application contains a step-by-step guide for creating a new token under **Help** and warns **10 days before expiry**; recommended lifetime: 90 days. An expired token affects only the admin application, not the third-party computers.
+keys). GitHub has no smaller permission for deploy keys; it also covers repository settings and collaborators — hence only for this one
+repository and with a short lifetime (recommended: 90 days).
+
+**Creating or renewing the token — step by step** (the same text is available in KARMA Admin under **Hilfe**/Help):
+
+1. Sign in to GitHub (an account with administrator rights on the repository).
+2. Profile picture → *Settings* → at the bottom *Developer settings* → *Personal access tokens* → *Fine-grained tokens* → *Generate new token*.
+3. *Token name*: e.g. `karma-admin`. *Expiration*: 90 days.
+4. *Repository access*: *Only select repositories* → choose only this repository.
+5. *Permissions → Repository permissions → Administration*: **Read and write**. All other permissions stay at *No access*.
+6. *Generate token*. The token starts with `github_pat_` and is shown only **once** — copy it.
+7. In KARMA Admin click **GitHub-Token …**, paste the token, OK.
+8. Delete the old token at GitHub (if it has not expired anyway).
+
+![KARMA Admin: Help window with the token guide](../_static/zugriff/admin-02-hilfe.png)
+
+**Token expiry.** The application reads the expiry date at every GitHub call and shows a red bar and a message at start **10 days before**
+(and after). An expired token affects only KARMA Admin — the third-party computers keep working. In an emergency a key can also be removed
+at GitHub without a token (*Repository → Settings → Deploy keys → Delete*).
+**Storage.** The token is stored encrypted with the Windows user encryption in the user's own profile (never in the repo, never in the
+`.exe`). Whoever passes on the admin application does **not** pass on a token — every user enters their own.
+
 
 ## Details, Troubleshooting, Uninstallation
 
