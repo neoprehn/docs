@@ -89,6 +89,56 @@ a Docker Compose change there would not trigger an automatic update either.
 **What takes effect when after an update** — and why the "Update code (Git Pull)" button does not do
 everything — is explained in the user manual under [Updates: What Needs a Restart?](../handbuch/updates.md).
 
+## Controlling Access: Keys, License, Revocation, Re-certification
+
+A third-party computer's access to KARMA depends on **its own key** (a read-only GitHub deploy key). The operator issues it,
+can **revoke it individually** and can **re-certify all computers** — this is done with the separate application **KARMA Admin**
+(`admin/karma-admin.exe`, see `admin/README.md`), not with the KARMA app.
+
+**Time limits.** Every successful update contact (daily update run or the "Update code" button) extends the license to **180 days**.
+If access is denied (key revoked), the period shortens to **7 days** after the first denied access. After that the **application locks
+itself**: all pages redirect to *Management → Configuration → License*, the only place where a new key can be stored. From 30 days of
+remaining time on, or after a detected revocation, the start page shows a notice bar. Network problems and configuration errors (e.g. an
+unknown host key) do **not** count as revocation. This is an organisational control on the user's computer, not copy protection.
+
+**What a revocation does — and what it does not.** It ends the updates for that computer and triggers the lock after 7 days; the
+already installed application keeps running until then. It removes nothing from the computer.
+
+### Adding a computer
+
+1. In KARMA Admin choose **New computer …**, enter a name (e.g. `computer-a`) and a folder for the hand-over. A key pair of its own is
+   created; the public part is registered at GitHub as a read-only deploy key titled `karma-<computer>-<date>`, the private part is
+   stored as `karma-<computer>-<date>.key` (plus `…-uebergabe.txt`) in the chosen folder.
+2. **New installation:** put the `.key` file next to `install.exe` and run `install.exe` — the installer takes it over (protected under
+   `C:\ProgramData\iam\ssh`).
+3. **Existing installation:** paste the file content into KARMA under *Management → Configuration → License* and click **Save key**.
+   The page verifies the key with GitHub and resets the period. Afterwards delete the `.key` file at the recipient.
+
+### Rotating a key (e.g. suspected loss, periodically)
+
+1. In KARMA Admin select the computer and choose **Renew key …** — an **additional** new key is created, the old one stays active for now
+   (no downtime).
+2. Store the new key on the computer as above (*License* page).
+3. In the list check that the **new** key shows as "last used", then remove the **old** one with **Revoke**.
+
+### Withdrawing access
+
+In KARMA Admin select the computer's key and click **Revoke**. The computer receives no more updates; its next update run reports
+"access denied", from then on the period is 7 days. The list shows when each key was last used — keys without contact for a long time
+are marked orange (the license expires after 180 days without contact anyway).
+
+### Re-certifying all computers
+
+**Re-certify all …** issues a new key for every managed computer and **then revokes all previous ones** (including the former shared key
+`iam-rechner-deploy`). Hand the new key files to the computers and store them there under *License*; computers where that does not
+happen within 7 days lock themselves. A dry run is available on the command line (`karma-admin.ps1 -Action recertify -OutDir <folder> -DryRun`).
+
+### GitHub token of the admin application
+
+KARMA Admin needs a GitHub token: *fine-grained*, for this repository only, permission **Administration: Read and write** (manage deploy
+keys). It is stored encrypted with the Windows user encryption in the user's own profile (never in the repo, never in the `.exe`). Whoever
+passes on the admin application does **not** pass on a token — every user enters their own.
+
 ## Details, Troubleshooting, Uninstallation
 
 Fully documented in [`deploy/windows-native/README.md`][repo-deploy] in the repo — among other

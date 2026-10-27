@@ -90,6 +90,60 @@ wie eine Docker-Compose-Änderung dort auch kein automatisches Update auslöst.
 **Was nach einem Update wann wirksam wird** — und warum der Knopf „Code aktualisieren (Git Pull)“ nicht
 alles erledigt — steht im Benutzerhandbuch unter [Updates: Was braucht einen Neustart?](../handbuch/updates.md).
 
+## Zugriff steuern: Schlüssel, Lizenz, Widerruf, Rezertifizierung
+
+Der Zugriff eines Drittrechners auf KARMA hängt an **seinem eigenen Schlüssel** (ein nur lesender GitHub-Deploy-Key). Der
+Betreiber stellt ihn aus, kann ihn **einzeln widerrufen** und kann **alle Rechner neu zertifizieren** — das läuft über die
+separate Anwendung **KARMA Admin** (`admin/karma-admin.exe`, Beschreibung in `admin/README.md`), nicht über die KARMA-App.
+
+**Fristen.** Jeder erfolgreiche Update-Kontakt (täglicher Update-Lauf oder Knopf „Code aktualisieren“) verlängert die Lizenz
+auf **180 Tage**. Wird der Zugriff verweigert (Schlüssel widerrufen), verkürzt sich die Frist auf **7 Tage** nach dem ersten
+verweigerten Zugriff. Danach **sperrt sich die Anwendung**: Alle Seiten leiten auf *Management → Konfiguration → Lizenz* um,
+nur dort lässt sich ein neuer Schlüssel hinterlegen. Ab 30 Tagen Restlaufzeit bzw. nach einem erkannten Widerruf zeigt die
+Startseite einen Hinweisbalken. Netzwerkprobleme und Konfigurationsfehler (z. B. unbekannter Host-Key) zählen **nicht** als
+Widerruf. Das ist eine organisatorische Steuerung auf dem Rechner des Anwenders, kein Kopierschutz.
+
+**Was ein Widerruf bewirkt — und was nicht.** Er beendet die Updates für diesen Rechner und löst nach 7 Tagen die Sperre aus;
+die bereits installierte Anwendung läuft bis dahin weiter. Er entfernt nichts vom Rechner.
+
+### Rechner anlegen
+
+1. In KARMA Admin **Neuer Rechner …**, Namen eintragen (z. B. `rechner-a`) und einen Ordner für die Übergabe wählen.
+   Erzeugt wird ein eigenes Schlüsselpaar; der öffentliche Teil wird als nur lesender Deploy-Key mit dem Titel
+   `karma-<rechner>-<Datum>` bei GitHub eingetragen, der private Teil liegt als `karma-<rechner>-<Datum>.key` (plus
+   `…-uebergabe.txt`) im gewählten Ordner.
+2. **Neue Installation:** die `.key`-Datei neben `install.exe` legen und `install.exe` ausführen — der Installer übernimmt sie
+   (geschützt unter `C:\ProgramData\iam\ssh`).
+3. **Bestehende Installation:** den Dateiinhalt in KARMA unter *Management → Konfiguration → Lizenz* einfügen und
+   **Schlüssel speichern**. Die Seite prüft den Schlüssel gegen GitHub und setzt die Laufzeit zurück. Danach die `.key`-Datei
+   beim Empfänger löschen.
+
+### Schlüssel rotieren (z. B. Verdacht auf Verlust, turnusmäßig)
+
+1. In KARMA Admin den Rechner markieren und **Schlüssel erneuern …** — es entsteht ein **zusätzlicher** neuer Schlüssel, der alte
+   bleibt zunächst aktiv (kein Ausfall).
+2. Neuen Schlüssel wie oben auf dem Rechner hinterlegen (Seite *Lizenz*).
+3. In der Liste prüfen, dass der **neue** Schlüssel als „zuletzt genutzt“ erscheint, dann den **alten** per **Widerrufen** entfernen.
+
+### Zugriff entziehen
+
+In KARMA Admin den Schlüssel des Rechners markieren und **Widerrufen**. Der Rechner erhält keine Updates mehr; sein nächster
+Update-Lauf meldet „Zugriff verweigert“, die Frist beträgt ab dann 7 Tage. Die Liste zeigt je Schlüssel, wann er zuletzt genutzt
+wurde — Schlüssel ohne Kontakt über längere Zeit sind orange markiert (die Lizenz läuft nach 180 Tagen ohne Kontakt ohnehin ab).
+
+### Alle Rechner rezertifizieren
+
+**Alle rezertifizieren …** stellt für jeden verwalteten Rechner einen neuen Schlüssel aus und **widerruft anschließend alle bisherigen**
+(auch den früheren gemeinsamen Schlüssel `iam-rechner-deploy`). Die neuen Schlüsseldateien werden an die Rechner übergeben und dort
+unter *Lizenz* hinterlegt; Rechner, bei denen das binnen 7 Tagen ausbleibt, sperren sich. Ein Probelauf ist auf der Kommandozeile
+möglich (`karma-admin.ps1 -Action recertify -OutDir <Ordner> -DryRun`).
+
+### GitHub-Token der Admin-Anwendung
+
+KARMA Admin braucht ein GitHub-Token: *fine-grained*, nur für dieses Repository, Berechtigung **Administration: Read and write**
+(Deploy-Keys verwalten). Es wird mit der Windows-Benutzerverschlüsselung im eigenen Profil abgelegt (nie im Repo, nie in der
+`.exe`). Wer die Admin-Anwendung weitergibt, gibt damit **kein** Token weiter — jeder Nutzer trägt sein eigenes ein.
+
 ## Details, Troubleshooting, Deinstallation
 
 Vollständig in [`deploy/windows-native/README.md`][repo-deploy] im Repo — u. a. Verwaltung über
