@@ -156,7 +156,9 @@ already installed application keeps running until then. It removes nothing from 
    stored as `karma-<computer>-<date>.key` (plus `…-uebergabe.txt`) in the chosen folder.
 2. **New installation:** put the `.key` file next to `install.exe` and run `install.exe` — the installer takes it over (protected under
    `C:\ProgramData\iam\ssh`).
-3. **Existing installation:** paste the file content into KARMA under *Management → Configuration → License* and click **Save key**.
+3. **Existing installation:** in KARMA under *Management → Configuration → License* load the `.key` file with **Choose key file …** (or paste
+   the content) and click **Save key**. A warning then appears: the file must now be deleted from the computer (also recycle bin, Downloads)
+   and from every hand-over medium — the browser cannot do that itself.
    The page verifies the key with GitHub and resets the period. Afterwards delete the `.key` file at the recipient.
 
 ### Rotating a key (e.g. suspected loss, periodically)

@@ -159,8 +159,9 @@ die bereits installierte Anwendung läuft bis dahin weiter. Er entfernt nichts v
    `…-uebergabe.txt`) im gewählten Ordner.
 2. **Neue Installation:** die `.key`-Datei neben `install.exe` legen und `install.exe` ausführen — der Installer übernimmt sie
    (geschützt unter `C:\ProgramData\iam\ssh`).
-3. **Bestehende Installation:** den Dateiinhalt in KARMA unter *Management → Konfiguration → Lizenz* einfügen und
-   **Schlüssel speichern**. Die Seite prüft den Schlüssel gegen GitHub und setzt die Laufzeit zurück. Danach die `.key`-Datei
+3. **Bestehende Installation:** in KARMA unter *Management → Konfiguration → Lizenz* mit **Schlüsseldatei wählen …** die `.key`-Datei
+   laden (oder den Inhalt einfügen) und **Schlüssel speichern** klicken. Danach erscheint eine Warnung: Die Datei muss jetzt vom Rechner
+   (auch Papierkorb, Downloads) und von allen Übergabemedien gelöscht werden — der Browser kann das nicht selbst tun. Die Seite prüft den Schlüssel gegen GitHub und setzt die Laufzeit zurück. Danach die `.key`-Datei
    beim Empfänger löschen.
 
 ### Schlüssel rotieren (z. B. Verdacht auf Verlust, turnusmäßig)
