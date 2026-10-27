@@ -51,6 +51,16 @@ automatisch (oder über die Option „Quellformat“, s. [Handbuch](handbuch/fun
 - Der Extraktor protokolliert je Tabelle die **Zeilenzahl der Quelle** (`…_RECORDCOUNT_…`); sie lässt sich gegen das
   Import-Protokoll halten.
 
+## Excel-Extraktor (`CSI_Tabellen.xlsm`)
+
+Für den SAP-Download liegt ein **Excel-Extraktor** bei: `data/extractors/CSI_Tabellen.xlsm` (Reiter „Extractor" mit
+VBA-Makro, Reiter „Stammdaten" mit der Tabellen- und Feldliste). Er kommt mit der Installation bzw. dem täglichen
+Update auf den Rechner; die Makros müssen in Excel einmalig zugelassen werden. Die Liste im Reiter „Stammdaten" wird aus
+`config/required_tables.json` erzeugt (`python data/extractors/generate_csi_stammdaten.py`) und enthält je Tabelle, ob sie
+Pflicht oder optional ist — **nach jeder Änderung an der Tabellenliste neu erzeugen**, damit der Extraktor nicht von der
+App-Prüfung abweicht. Die Datei enthält bewusst keine Verbindungsdaten (Systemname, Zugangsdaten) — vor dem Einchecken
+einer geänderten Fassung prüfen, dass beim Speichern keine hinzugekommen sind.
+
 ## Welche Tabellen herunterladen?
 
 Die SE16-Exporte (eine `.txt`/`.csv` je Tabelle, Dateiname = Tabellenname) gehören in den

@@ -49,6 +49,16 @@ automatically (or via the "Source format" option, see the [manual](handbuch/funk
   if needed together with `V_USERNAME`, `USREFUS` and `USR06`.
 - The extractor logs the **source row count** per table (`…_RECORDCOUNT_…`); it can be held against the import log.
 
+## Excel extractor (`CSI_Tabellen.xlsm`)
+
+An **Excel extractor** for the SAP download is included: `data/extractors/CSI_Tabellen.xlsm` (sheet "Extractor" with a VBA
+macro, sheet "Stammdaten" with the table and field list). It arrives with the installation or the daily update; the macros
+have to be enabled once in Excel. The list in the "Stammdaten" sheet is generated from `config/required_tables.json`
+(`python data/extractors/generate_csi_stammdaten.py`) and states per table whether it is required or optional —
+**regenerate it after every change to the table list** so that the extractor does not deviate from the app's check. The file
+deliberately contains no connection data (system name, credentials) — before checking in a changed version, verify that none
+were added when saving.
+
 ## Which Tables to Download?
 
 The SE16 exports (one `.txt`/`.csv` per table, file name = table name) belong in the dataset
