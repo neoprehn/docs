@@ -1,7 +1,7 @@
 # Pseudonymisation of Personal Data
 
 Some clients only release extracts if **user names, last names and first names** are not included in clear text. The same applies to test data.
-For this there is the standalone tool **KARMA Pseudo** (folder `pseudo/` in the repository). It replaces the personal columns with tokens and runs
+For this there is the standalone tool **KARMA Pseudo** (folder `data/pseudo/` in the repository, including `karma-pseudo.exe`; it is distributed with the update like the extractors). It replaces the personal columns with tokens and runs
 entirely locally without network access, so it can be handed to the client. KARMA itself converts the tokens back as soon as the matching key is
 stored.
 

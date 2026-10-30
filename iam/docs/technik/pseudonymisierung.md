@@ -1,7 +1,7 @@
 # Pseudonymisierung personenbezogener Daten
 
 Manche Mandanten geben Extrakte nur heraus, wenn **Usernamen, Namen und Vornamen** nicht im Klartext enthalten sind. Für Testdaten gilt dasselbe.
-Dafür gibt es das eigenständige Werkzeug **KARMA Pseudo** (Ordner `pseudo/` im Repository). Es ersetzt die personenbezogenen Spalten durch
+Dafür gibt es das eigenständige Werkzeug **KARMA Pseudo** (Ordner `data/pseudo/` im Repository, inklusive `karma-pseudo.exe`; es wird wie die Extraktoren mit dem Update verteilt). Es ersetzt die personenbezogenen Spalten durch
 Token und läuft rein lokal ohne Netzwerkzugriff, kann also dem Mandanten übergeben werden. KARMA selbst entschlüsselt die Token wieder,
 sobald der zugehörige Schlüssel hinterlegt ist.
 
