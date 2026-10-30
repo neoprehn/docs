@@ -157,7 +157,7 @@ die bereits installierte Anwendung läuft bis dahin weiter. Er entfernt nichts v
 1. In KARMA Admin **Neuer Rechner …**, Namen eintragen (z. B. `rechner-a`) und einen Ordner für die Übergabe wählen.
    Erzeugt wird ein eigenes Schlüsselpaar; der öffentliche Teil wird als nur lesender Deploy-Key mit dem Titel
    `karma-<rechner>-<Datum>` bei GitHub eingetragen, der private Teil liegt als `karma-<rechner>-<Datum>.key` (plus
-   `…-uebergabe.txt`) im gewählten Ordner.
+   `…-uebergabe.txt`) im gewählten Ordner. Dazu gibt es einen zweiten, optionalen Schlüssel für die Statusmeldung (s. u.).
 2. **Neue Installation:** die `.key`-Datei neben `install.exe` legen und `install.exe` ausführen — der Installer übernimmt sie
    (geschützt unter `C:\ProgramData\iam\ssh`).
 3. **Bestehende Installation:** in KARMA unter *Management → Konfiguration → Lizenz* mit **Schlüsseldatei wählen …** die `.key`-Datei
@@ -188,19 +188,36 @@ Nutzung meldet (grob, kann Tage nachlaufen) — Schlüssel ohne Kontakt über 15
 unter *Lizenz* hinterlegt; Rechner, bei denen das binnen 7 Tagen ausbleibt, sperren sich. Ein Probelauf ist auf der Kommandozeile
 möglich (`karma-admin.ps1 -Action recertify -OutDir <Ordner> -DryRun`).
 
+### Statusmeldung der Rechner (optional)
+
+GitHubs Angabe „zuletzt genutzt“ ist grob (s. oben). Für einen verlässlichen Überblick kann jeder Rechner nach jedem Update-Lauf eine
+kleine Statusdatei in ein **eigenes, privates Repository** (`karma-license`) schreiben:
+
+- **Zweiter Schlüssel je Rechner:** Beim Anlegen entsteht zusätzlich `karma-status-<rechner>-<Datum>.key`. Er ist ein Deploy-Key mit
+  Schreibrecht **nur auf `karma-license`** — nie auf den Code — und hat auf die **Lizenz keinen Einfluss**: Die Frist wird weiter allein
+  aus dem Update-Kontakt berechnet.
+- **Hinterlegen:** wie der Lizenzschlüssel, aber unter *Management → Konfiguration → Lizenz → Statusmeldung*. Danach die Datei löschen.
+  Ohne Status-Schlüssel läuft alles unverändert; ein Fehler bei der Meldung bricht nie ein Update ab.
+- **Inhalt:** Rechnername, Zeit, Git-Stand, Ergebnis des Laufs und die Lizenzkontakt-Zeitpunkte — **keine** Dataset-Namen und keine Zahlen
+  über den Datenbestand. Je Rechner gibt es einen eigenen Zweig `machine-<name>` mit einer Datei `status.json`, die jeder Lauf ersetzt.
+- **Anzeige:** In KARMA Admin zeigen die Spalten *Rechner meldet*, *Stand* und *Lizenz laut Meldung* den Zustand (Kommandozeile:
+  `-Action status`). Die Zeit ist die Uhrzeit des Rechners; es bleibt eine Selbstauskunft, die keinen Schutz ersetzt.
+- **Bestehende Rechner:** Zeile markieren → **Status-Schlüssel …** (Kommandozeile: `-Action addstatus -Name … -OutDir …`), Datei übergeben und
+  hinterlegen lassen. **Widerrufen** entfernt den Status-Schlüssel mit demselben Datum mit.
+
 ### GitHub-Token der Admin-Anwendung
 
-KARMA Admin braucht ein GitHub-Token: *fine-grained*, nur für dieses Repository, Berechtigung **Administration: Read and write**
-(Deploy-Keys verwalten). GitHub kennt für Deploy-Keys keine kleinere Berechtigung; sie umfasst auch Repository-Einstellungen und
-Mitarbeiter — deshalb nur für dieses eine Repository und mit kurzer Laufzeit (empfohlen: 90 Tage).
+KARMA Admin braucht ein GitHub-Token: *fine-grained*, nur für diese beiden Repositories (Code und `karma-license`), Berechtigung
+**Administration: Read and write** (Deploy-Keys verwalten) und **Contents: Read-only** (Statusmeldungen lesen). GitHub kennt für Deploy-Keys keine kleinere Berechtigung; sie umfasst auch Repository-Einstellungen und
+Mitarbeiter — deshalb nur für diese beiden Repositories und mit kurzer Laufzeit (empfohlen: 90 Tage).
 
 **Token anlegen oder erneuern — Schritt für Schritt** (derselbe Text steht in KARMA Admin unter **Hilfe**):
 
 1. Bei GitHub anmelden (Konto mit Administratorrechten auf dem Repository).
 2. Profilbild → *Settings* → ganz unten *Developer settings* → *Personal access tokens* → *Fine-grained tokens* → *Generate new token*.
 3. *Token name*: z. B. `karma-admin`. *Expiration*: 90 days.
-4. *Repository access*: *Only select repositories* → nur dieses Repository wählen.
-5. *Permissions → Repository permissions → Administration*: **Read and write**. Alle anderen Berechtigungen bleiben auf *No access*.
+4. *Repository access*: *Only select repositories* → nur den Code und `karma-license` wählen.
+5. *Permissions → Repository permissions → Administration*: **Read and write** und *Contents*: **Read-only**. Alle anderen Berechtigungen bleiben auf *No access*.
 6. *Generate token*. Das Token beginnt mit `github_pat_` und wird nur **einmal** angezeigt — kopieren.
 7. In KARMA Admin **GitHub-Token …** klicken, das Token einfügen, OK.
 8. Das alte Token bei GitHub löschen (falls nicht ohnehin abgelaufen).
