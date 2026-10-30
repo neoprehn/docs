@@ -134,7 +134,7 @@ already installed application keeps running until then. It removes nothing from 
 
 ![KARMA Admin: list of keys with "last used" and token notice](../_static/zugriff/admin-01-fenster.png)
 
-*Orange rows: keys that GitHub reports as used long ago or never. The red bar appears 10 days before the token expires. All names in the picture are examples. The admin application itself is available in German only.*
+*The card at the top shows at a glance whether everything is fine (green check mark) or needs attention. Orange rows: keys that GitHub reports as used long ago or never. The red bar appears 10 days before the token expires. All names in the picture are examples. The admin application itself is available in German only.*
 
 **What the user sees**
 

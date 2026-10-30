@@ -136,7 +136,7 @@ die bereits installierte Anwendung läuft bis dahin weiter. Er entfernt nichts v
 
 ![KARMA Admin: Liste der Schlüssel mit „zuletzt genutzt“ und Token-Hinweis](../_static/zugriff/admin-01-fenster.png)
 
-*Orange Zeilen: Schlüssel, die laut GitHub lange oder nie genutzt wurden. Die rote Leiste erscheint 10 Tage vor Ablauf des Tokens. Alle Namen im Bild sind Beispiele.*
+*Die Karte oben zeigt auf einen Blick, ob alles in Ordnung ist (grüner Haken) oder etwas Aufmerksamkeit braucht. Orange Zeilen: Schlüssel, die laut GitHub lange oder nie genutzt wurden. Die rote Leiste erscheint 10 Tage vor Ablauf des Tokens. Alle Namen im Bild sind Beispiele.*
 
 **Was der Anwender sieht**
 
