@@ -59,6 +59,9 @@ have to be enabled once in Excel. The list in the "Stammdaten" sheet is generate
 deliberately contains no connection data (system name, credentials) — before checking in a changed version, verify that none
 were added when saving.
 
+Everything under `data/extractors/` is distributed as well, including the extraction definition `NEO-CSI.xml` (generated from
+`config/required_tables.json` with `python data/extractors/generate_extraction_xml.py`; it contains only table and field lists).
+
 ## Which Tables to Download?
 
 The SE16 exports (one `.txt`/`.csv` per table, file name = table name) belong in the dataset

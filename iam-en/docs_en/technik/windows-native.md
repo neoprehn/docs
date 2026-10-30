@@ -154,8 +154,8 @@ already installed application keeps running until then. It removes nothing from 
 
 1. In KARMA Admin choose **New computer …**, enter a name (e.g. `computer-a`) and a folder for the hand-over. A key pair of its own is
    created; the public part is registered at GitHub as a read-only deploy key titled `karma-<computer>-<date>`, the private part is
-   stored as `karma-<computer>-<date>.key` (plus `…-uebergabe.txt`) in the chosen folder. A second, optional key for the status report is
-   issued as well (see below).
+   stored as `karma-<computer>-<date>.key` (plus `…-uebergabe.txt`) in the chosen folder. A second key for the status report is
+   always issued as well (see below); if issuing it fails, nothing is handed out.
 2. **New installation:** put the `.key` file next to `install.exe` and run `install.exe` — the installer takes it over (protected under
    `C:\ProgramData\iam\ssh`).
 3. **Existing installation:** in KARMA under *Management → Configuration → License* load the `.key` file with **Choose key file …** (or paste
@@ -183,7 +183,7 @@ never used are marked orange (the license expires after 180 days without contact
 `iam-rechner-deploy`). Hand the new key files to the computers and store them there under *License*; computers where that does not
 happen within 7 days lock themselves. A dry run is available on the command line (`karma-admin.ps1 -Action recertify -OutDir <folder> -DryRun`).
 
-### Status report of the computers (optional)
+### Status report of the computers
 
 GitHub's "last used" figure is rough (see above). For a reliable overview each computer can write a small status file to a **separate
 private repository** (`karma-license`) after every update run:
@@ -192,7 +192,7 @@ private repository** (`karma-license`) after every update run:
   with write permission **only on `karma-license`** — never on the code — and has **no influence on the license**: the period is still
   calculated solely from the update contact.
 - **Storing it:** like the license key, but under *Management → Configuration → License → Status report*. Delete the file afterwards.
-  Without a status key everything works unchanged; an error while reporting never aborts an update.
+  Both keys (code and status) are always handed over together. An error while reporting never aborts an update.
 - **Content:** computer name, time, Git version, result of the run and the license contact times — **no** dataset names and no figures about
   the data volume. Each computer has its own branch `machine-<name>` with a file `status.json` that every run replaces.
 - **Display:** in KARMA Admin the columns *Rechner meldet*, *Stand* and *Lizenz laut Meldung* show the state (command line: `-Action status`).

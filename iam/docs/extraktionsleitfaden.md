@@ -61,6 +61,9 @@ Pflicht oder optional ist — **nach jeder Änderung an der Tabellenliste neu er
 App-Prüfung abweicht. Die Datei enthält bewusst keine Verbindungsdaten (Systemname, Zugangsdaten) — vor dem Einchecken
 einer geänderten Fassung prüfen, dass beim Speichern keine hinzugekommen sind.
 
+Alles unter `data/extractors/` wird mit verteilt, darunter die Extraktionsdefinition `NEO-CSI.xml` (aus `config/required_tables.json`
+erzeugt mit `python data/extractors/generate_extraction_xml.py`; sie enthält nur Tabellen- und Feldlisten).
+
 ## Welche Tabellen herunterladen?
 
 Die SE16-Exporte (eine `.txt`/`.csv` je Tabelle, Dateiname = Tabellenname) gehören in den

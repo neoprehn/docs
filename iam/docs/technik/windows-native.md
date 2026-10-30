@@ -157,7 +157,7 @@ die bereits installierte Anwendung läuft bis dahin weiter. Er entfernt nichts v
 1. In KARMA Admin **Neuer Rechner …**, Namen eintragen (z. B. `rechner-a`) und einen Ordner für die Übergabe wählen.
    Erzeugt wird ein eigenes Schlüsselpaar; der öffentliche Teil wird als nur lesender Deploy-Key mit dem Titel
    `karma-<rechner>-<Datum>` bei GitHub eingetragen, der private Teil liegt als `karma-<rechner>-<Datum>.key` (plus
-   `…-uebergabe.txt`) im gewählten Ordner. Dazu gibt es einen zweiten, optionalen Schlüssel für die Statusmeldung (s. u.).
+   `…-uebergabe.txt`) im gewählten Ordner. Dazu gibt es einen zweiten Schlüssel für die Statusmeldung (Pflicht, s. u.); scheitert dessen Ausstellung, wird nichts ausgegeben.
 2. **Neue Installation:** die `.key`-Datei neben `install.exe` legen und `install.exe` ausführen — der Installer übernimmt sie
    (geschützt unter `C:\ProgramData\iam\ssh`).
 3. **Bestehende Installation:** in KARMA unter *Management → Konfiguration → Lizenz* mit **Schlüsseldatei wählen …** die `.key`-Datei
@@ -188,7 +188,7 @@ Nutzung meldet (grob, kann Tage nachlaufen) — Schlüssel ohne Kontakt über 15
 unter *Lizenz* hinterlegt; Rechner, bei denen das binnen 7 Tagen ausbleibt, sperren sich. Ein Probelauf ist auf der Kommandozeile
 möglich (`karma-admin.ps1 -Action recertify -OutDir <Ordner> -DryRun`).
 
-### Statusmeldung der Rechner (optional)
+### Statusmeldung der Rechner
 
 GitHubs Angabe „zuletzt genutzt“ ist grob (s. oben). Für einen verlässlichen Überblick kann jeder Rechner nach jedem Update-Lauf eine
 kleine Statusdatei in ein **eigenes, privates Repository** (`karma-license`) schreiben:
@@ -197,7 +197,7 @@ kleine Statusdatei in ein **eigenes, privates Repository** (`karma-license`) sch
   Schreibrecht **nur auf `karma-license`** — nie auf den Code — und hat auf die **Lizenz keinen Einfluss**: Die Frist wird weiter allein
   aus dem Update-Kontakt berechnet.
 - **Hinterlegen:** wie der Lizenzschlüssel, aber unter *Management → Konfiguration → Lizenz → Statusmeldung*. Danach die Datei löschen.
-  Ohne Status-Schlüssel läuft alles unverändert; ein Fehler bei der Meldung bricht nie ein Update ab.
+  Beide Schlüssel (Code und Status) werden immer gemeinsam übergeben. Ein Fehler bei der Meldung bricht nie ein Update ab.
 - **Inhalt:** Rechnername, Zeit, Git-Stand, Ergebnis des Laufs und die Lizenzkontakt-Zeitpunkte — **keine** Dataset-Namen und keine Zahlen
   über den Datenbestand. Je Rechner gibt es einen eigenen Zweig `machine-<name>` mit einer Datei `status.json`, die jeder Lauf ersetzt.
 - **Anzeige:** In KARMA Admin zeigen die Spalten *Rechner meldet*, *Stand* und *Lizenz laut Meldung* den Zustand (Kommandozeile:
