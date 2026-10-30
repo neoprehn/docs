@@ -117,8 +117,9 @@ already installed application keeps running until then. It removes nothing from 
 3. Give the `.key` file to the recipient **through a secure channel** (not as an unencrypted e-mail). It grants access to the code.
 4. The recipient stores the key: for a **new installation** place it next to `install.exe`, for an **existing** one paste it under
    *Management → Configuration → License*. Afterwards the file is deleted at the recipient.
-5. Check in KARMA Admin (**Refresh**): as soon as the computer has fetched updates, the key shows a date under *ZuletztGenutzt*
-   ("last used").
+5. Check: on the computer, *Management → Configuration → License* shows the name of the stored key and the last update contact — that is
+   the reliable view. In KARMA Admin (**Refresh**) the key additionally shows GitHub's figure *zuletzt (grob)* ("last used, rough"); GitHub does
+   not update it on every access, it can lag behind by days and is only an indication.
 
 **Ongoing**
 
@@ -133,7 +134,7 @@ already installed application keeps running until then. It removes nothing from 
 
 ![KARMA Admin: list of keys with "last used" and token notice](../_static/zugriff/admin-01-fenster.png)
 
-*Orange rows: keys that were used long ago or never. The red bar appears 10 days before the token expires. All names in the picture are examples. The admin application itself is available in German only.*
+*Orange rows: keys that GitHub reports as used long ago or never. The red bar appears 10 days before the token expires. All names in the picture are examples. The admin application itself is available in German only.*
 
 **What the user sees**
 
@@ -166,13 +167,14 @@ already installed application keeps running until then. It removes nothing from 
 1. In KARMA Admin select the computer and choose **Renew key …** — an **additional** new key is created, the old one stays active for now
    (no downtime).
 2. Store the new key on the computer as above (*License* page).
-3. In the list check that the **new** key shows as "last used", then remove the **old** one with **Revoke**.
+3. Check that the computer uses the **new** key (*License* page on the computer: key name and current contact; GitHub's figure in the list
+   can lag), then remove the **old** one with **Revoke**. If the new key was forgotten, the computer only locks 7 days after the first denied access.
 
 ### Withdrawing access
 
 In KARMA Admin select the computer's key and click **Revoke**. The computer receives no more updates; its next update run reports
-"access denied", from then on the period is 7 days. The list shows when each key was last used — keys without contact for a long time
-are marked orange (the license expires after 180 days without contact anyway).
+"access denied", from then on the period is 7 days. The list shows what GitHub reports as the last use of each key (rough, can lag by days) — keys without contact for more than 150 days or
+never used are marked orange (the license expires after 180 days without contact anyway).
 
 ### Re-certifying all computers
 

@@ -119,8 +119,9 @@ die bereits installierte Anwendung läuft bis dahin weiter. Er entfernt nichts v
 3. Die `.key`-Datei **über einen sicheren Kanal** an den Empfänger geben (nicht unverschlüsselt per Mail). Sie ist der Zugang zum Code.
 4. Empfänger hinterlegt den Schlüssel: bei einer **neuen Installation** neben `install.exe` legen, bei einer **bestehenden** unter
    *Management → Konfiguration → Lizenz* einfügen. Danach die Datei beim Empfänger löschen.
-5. Kontrolle in KARMA Admin (**Aktualisieren**): sobald der Rechner Updates geholt hat, steht bei dem Schlüssel ein Datum unter
-   *ZuletztGenutzt*.
+5. Kontrolle: Am Rechner zeigt *Management → Konfiguration → Lizenz* den Namen des hinterlegten Schlüssels und den letzten Update-Kontakt —
+   das ist die verlässliche Sicht. In KARMA Admin (**Aktualisieren**) steht bei dem Schlüssel zusätzlich GitHubs Angabe *zuletzt (grob)*;
+   GitHub führt sie nicht bei jedem Zugriff nach, sie kann Tage hinterherhinken und ist nur ein Hinweis.
 
 **Laufend**
 
@@ -135,7 +136,7 @@ die bereits installierte Anwendung läuft bis dahin weiter. Er entfernt nichts v
 
 ![KARMA Admin: Liste der Schlüssel mit „zuletzt genutzt“ und Token-Hinweis](../_static/zugriff/admin-01-fenster.png)
 
-*Orange Zeilen: Schlüssel, die lange oder nie genutzt wurden. Die rote Leiste erscheint 10 Tage vor Ablauf des Tokens. Alle Namen im Bild sind Beispiele.*
+*Orange Zeilen: Schlüssel, die laut GitHub lange oder nie genutzt wurden. Die rote Leiste erscheint 10 Tage vor Ablauf des Tokens. Alle Namen im Bild sind Beispiele.*
 
 **Was der Anwender sieht**
 
@@ -169,13 +170,16 @@ die bereits installierte Anwendung läuft bis dahin weiter. Er entfernt nichts v
 1. In KARMA Admin den Rechner markieren und **Schlüssel erneuern …** — es entsteht ein **zusätzlicher** neuer Schlüssel, der alte
    bleibt zunächst aktiv (kein Ausfall).
 2. Neuen Schlüssel wie oben auf dem Rechner hinterlegen (Seite *Lizenz*).
-3. In der Liste prüfen, dass der **neue** Schlüssel als „zuletzt genutzt“ erscheint, dann den **alten** per **Widerrufen** entfernen.
+3. Prüfen, dass der Rechner den **neuen** Schlüssel nutzt (Seite *Lizenz* am Rechner: Name des Schlüssels und aktueller Kontakt; GitHubs Angabe in
+   der Liste kann nachlaufen), dann den **alten** per **Widerrufen** entfernen. Wurde der neue Schlüssel vergessen, sperrt sich der Rechner erst
+   7 Tage nach dem ersten verweigerten Zugriff.
 
 ### Zugriff entziehen
 
 In KARMA Admin den Schlüssel des Rechners markieren und **Widerrufen**. Der Rechner erhält keine Updates mehr; sein nächster
-Update-Lauf meldet „Zugriff verweigert“, die Frist beträgt ab dann 7 Tage. Die Liste zeigt je Schlüssel, wann er zuletzt genutzt
-wurde — Schlüssel ohne Kontakt über längere Zeit sind orange markiert (die Lizenz läuft nach 180 Tagen ohne Kontakt ohnehin ab).
+Update-Lauf meldet „Zugriff verweigert“, die Frist beträgt ab dann 7 Tage. Die Liste zeigt je Schlüssel, was GitHub als letzte
+Nutzung meldet (grob, kann Tage nachlaufen) — Schlüssel ohne Kontakt über 150 Tage oder ohne jede Nutzung sind orange markiert (die Lizenz läuft nach
+180 Tagen ohne Kontakt ohnehin ab).
 
 ### Alle Rechner rezertifizieren
 
