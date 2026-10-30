@@ -22,8 +22,8 @@ steht unter [Updates: Was braucht einen Neustart?](updates.md).
 - **Genug Arbeitsspeicher.** Neo4j hält die Graphdaten im Speicher; große SAP-Extrakte brauchen viel. Das
   Docker-Setup reserviert standardmäßig 8 GB Heap und 4 GB Seitencache, die native Installation 16 GB Heap und
   8 GB Seitencache (ausgelegt für einen Rechner mit 32 GB RAM). Auf kleineren Rechnern die Werte senken (s. u.).
-- **Zugang zum Repository.** Das Repository ist privat. Die Zugangsdaten bzw. der Deploy-Schlüssel kommen vom
-  Betreiber.
+- **Zugang zum Repository.** Das Repository ist privat. Der Betreiber stellt für jeden Rechner **zwei Schlüsseldateien**
+  aus (Code-Schlüssel und Status-Schlüssel, s. Schritt 2).
 - **Internetzugang bei der ersten Installation** (Programmpakete und Neo4j werden heruntergeladen).
 - **Kein OneDrive-Ordner als Zielort.** Der Installationsordner enthält SAP-Extrakte und Backups, also
   Mandantendaten, die die Maschine nicht verlassen dürfen — ein synchronisierter Ordner würde sie in die Cloud
@@ -87,18 +87,26 @@ diesem Ordner auf.
 
 ### 2 · Zugangsschlüssel neben `install.exe` legen
 
-Der Programmcode wird aus dem privaten Repository per SSH geladen. Der **Deploy-Schlüssel** (Datei
-`iam-deploy-key`) kommt **getrennt vom Paket** vom Betreiber — aus Sicherheitsgründen nicht in der ZIP. Lege die Datei
-**in den entpackten Ordner, direkt neben `install.exe`**, **bevor** du die Installation startest.
+Der Betreiber stellt für **jeden Rechner einen eigenen Schlüssel** aus. Er kommt **getrennt vom Paket** — aus
+Sicherheitsgründen nicht in der ZIP — und besteht aus **zwei Dateien**:
 
-`install.exe` prüft beim Start, ob der Schlüssel dort (oder in `%USERPROFILE%\.ssh\`) liegt, und übernimmt ihn in einen
-geschützten Ordner (`C:\ProgramData\iam\ssh`), den auch der Update-Task nutzen kann. Eine manuelle Bestätigung der
-GitHub-Verbindung (`ssh -T …`) ist **nicht** mehr nötig. Fehlt der Schlüssel bei der Erstinstallation, bricht die
-Installation sofort mit einem klaren Hinweis ab.
+| Datei | Wofür | Wohin |
+| --- | --- | --- |
+| `karma-<rechner>-<datum>.key` | **Code-Schlüssel:** nur lesender Zugriff auf den Programmcode (Installation und tägliches Update) | **in den entpackten Ordner, direkt neben `install.exe`**, **bevor** du die Installation startest |
+| `karma-status-<rechner>-<datum>.key` | **Status-Schlüssel:** meldet nach jedem Update-Lauf Zeit, Programmstand und Lizenzkontakt an ein privates Status-Repository des Betreibers (keine Daten über Datasets) | **nicht** neben `install.exe`, sondern nach der Installation in KARMA (Schritt 6) |
+
+`install.exe` prüft beim Start, ob der Code-Schlüssel dort (oder in `%USERPROFILE%\.ssh\`) liegt, und übernimmt ihn in einen
+geschützten Ordner (`C:\ProgramData\iam\ssh`), den auch der Update-Task nutzen kann. Eine Datei `karma-status-…` wird dabei
+bewusst übergangen. Eine manuelle Bestätigung der GitHub-Verbindung (`ssh -T …`) ist **nicht** nötig. Fehlt der Schlüssel bei
+der Erstinstallation, bricht die Installation sofort mit einem klaren Hinweis ab.
 
 - **Update durch erneutes Starten von `install.exe`:** Der Schlüssel muss nicht erneut dabei liegen, wenn er schon
   eingerichtet ist; andernfalls erscheint eine Warnung.
-- **Danach:** Die Schlüsseldatei im Paketordner kann gelöscht werden, die Installation hat eine geschützte Kopie.
+- **Danach:** Beide Schlüsseldateien (auch im Papierkorb und in „Downloads“) **löschen**, sobald sie hinterlegt sind — die
+  Installation hat eine geschützte Kopie.
+- **Frist:** Mit jedem erfolgreichen Update-Lauf verlängert sich die Lizenz auf 180 Tage. Ein widerrufener Schlüssel
+  sperrt KARMA nach 7 Tagen; ein neuer Schlüssel wird dann unter *Management → Konfiguration → Lizenz* hinterlegt
+  (s. [Native Windows-Installation](../technik/windows-native.md)).
 
 ### 3 · `install.exe` starten
 
@@ -145,6 +153,10 @@ Nach der Installation sind erreichbar:
 
 Über die Desktop-Verknüpfung **„IAM verwalten“** (Fenster mit Start, Stop, „Neu starten“, „Jetzt
 aktualisieren“, „Web-App öffnen“ und den Protokollen) lässt sich der Zustand jederzeit ansehen.
+
+Zusätzlich den **Status-Schlüssel** hinterlegen: *Management → Konfiguration → Lizenz → Statusmeldung* — mit
+**Schlüsseldatei wählen …** die Datei `karma-status-….key` laden und **Status-Schlüssel speichern** klicken, danach die
+Datei löschen. Die Seite prüft den Schlüssel; ab dem nächsten Update-Lauf meldet der Rechner seinen Status.
 
 ### 7 · Einmalig verifizieren
 
@@ -223,7 +235,7 @@ Wie es weitergeht (Auswertung starten, Ergebnisse lesen, Konsistenzchecks, Siche
 | Das Backend startet nicht und meldet einen Importfehler | Es fehlt ein Python-Paket oder eine Datei, meist nach einem Update. **Docker:** `docker compose up -d --build`. **Nativ:** „Jetzt aktualisieren“ (s. [Updates](updates.md)). |
 | Neo4j startet nicht oder antwortet nicht | **Docker:** `docker compose logs neo4j`. **Nativ:** „Neo4j-Log anzeigen“ im Verwaltungsfenster; beim allerersten Start kann der Dienst bis zu einer Minute brauchen. |
 | Import bricht mit einem Speicherfehler (`OutOfMemory`) ab | Dem Neo4j mehr Speicher geben (Docker: Werte in `docker-compose.yml`; nativ: „Speicher setzen + Neo4j neu starten“). Der Import ist fortsetzbar. |
-| Bei der nativen Installation: „Zugangsschlüssel nicht gefunden“ oder „Host key verification failed“ | Die Datei `iam-deploy-key` **neben `install.exe`** legen (alternativ nach `%USERPROFILE%\.ssh\`) und `install.exe` erneut starten. |
+| Bei der nativen Installation: „Zugangsschlüssel nicht gefunden“ oder „Host key verification failed“ | Die Datei `karma-<rechner>-<datum>.key` (Code-Schlüssel, **nicht** `karma-status-…`) **neben `install.exe`** legen (alternativ nach `%USERPROFILE%\.ssh\`) und `install.exe` erneut starten. |
 | Fehlermeldung beim Ändern oder Laden eines Regelwerks | Den Schritt „Verifizieren“ (oben) ausführen. |
 
 Weitere Details, Deinstallation und Verwaltung der Windows-Installation:

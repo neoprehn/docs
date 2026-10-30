@@ -114,9 +114,9 @@ already installed application keeps running until then. It removes nothing from 
 
 2. In KARMA Admin choose **New computer …** — enter a name (e.g. the colleague's name) and a hand-over folder. Result: an entry in the
    list and the file `karma-<name>-<date>.key`.
-3. Give the `.key` file to the recipient **through a secure channel** (not as an unencrypted e-mail). It grants access to the code.
-4. The recipient stores the key: for a **new installation** place it next to `install.exe`, for an **existing** one paste it under
-   *Management → Configuration → License*. Afterwards the file is deleted at the recipient.
+3. Give **both** `.key` files (code key and `karma-status-…`) to the recipient **through a secure channel** (not as an unencrypted e-mail). The code key grants access to the code.
+4. The recipient stores the keys: for a **new installation** place the code key next to `install.exe`, for an **existing** one load it under
+   *Management → Configuration → License*; the status key always goes under *License → Statusmeldung*. Afterwards both files are deleted at the recipient.
 5. Check: on the computer, *Management → Configuration → License* shows the name of the stored key and the last update contact — that is
    the reliable view. In KARMA Admin (**Refresh**) the key additionally shows GitHub's figure *zuletzt (grob)* ("last used, rough"); GitHub does
    not update it on every access, it can lag behind by days and is only an indication.

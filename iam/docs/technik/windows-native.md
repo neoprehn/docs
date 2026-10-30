@@ -116,9 +116,9 @@ die bereits installierte Anwendung läuft bis dahin weiter. Er entfernt nichts v
 
 2. In KARMA Admin **Neuer Rechner …** — Name eintragen (z. B. der Name des Kollegen), Übergabeordner wählen. Ergebnis: ein Eintrag in der
    Liste und die Datei `karma-<name>-<Datum>.key`.
-3. Die `.key`-Datei **über einen sicheren Kanal** an den Empfänger geben (nicht unverschlüsselt per Mail). Sie ist der Zugang zum Code.
-4. Empfänger hinterlegt den Schlüssel: bei einer **neuen Installation** neben `install.exe` legen, bei einer **bestehenden** unter
-   *Management → Konfiguration → Lizenz* einfügen. Danach die Datei beim Empfänger löschen.
+3. **Beide** `.key`-Dateien (Code-Schlüssel und `karma-status-…`) **über einen sicheren Kanal** an den Empfänger geben (nicht unverschlüsselt per Mail). Der Code-Schlüssel ist der Zugang zum Code.
+4. Empfänger hinterlegt die Schlüssel: den Code-Schlüssel bei einer **neuen Installation** neben `install.exe` legen, bei einer **bestehenden** unter
+   *Management → Konfiguration → Lizenz* laden; den Status-Schlüssel immer unter *Lizenz → Statusmeldung*. Danach beide Dateien beim Empfänger löschen.
 5. Kontrolle: Am Rechner zeigt *Management → Konfiguration → Lizenz* den Namen des hinterlegten Schlüssels und den letzten Update-Kontakt —
    das ist die verlässliche Sicht. In KARMA Admin (**Aktualisieren**) steht bei dem Schlüssel zusätzlich GitHubs Angabe *zuletzt (grob)*;
    GitHub führt sie nicht bei jedem Zugriff nach, sie kann Tage hinterherhinken und ist nur ein Hinweis.
