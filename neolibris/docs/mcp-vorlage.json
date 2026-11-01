@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "neolibris": {
+      "command": "D:/Entwicklung/neolibris/.venv/Scripts/python.exe",
+      "args": ["-m", "kg.mcp_server"]
+    }
+  }
+}

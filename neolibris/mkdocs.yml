@@ -1,0 +1,18 @@
+site_name: Neolibris
+site_description: Lokaler Wissensgraph über die Fachbibliothek
+docs_dir: docs
+theme:
+  name: material
+  language: de
+plugins:
+  - search:
+      lang: de
+  - include-markdown
+nav:
+  - Start: index.md
+  - Konzept: konzept.md
+  - Ergänzung 01 – Nachnutzung und UI: ergaenzung-01-nachnutzung-themen-ui.md
+  - Erfahrungsprotokoll: erfahrungen.md
+  - Hardware: hardware.md
+  - Graph Builder: graph-builder.md
+  - MCP-Vergleich: mcp-vergleich.md
