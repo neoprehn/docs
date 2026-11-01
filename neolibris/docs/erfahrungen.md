@@ -116,3 +116,17 @@ Chronologisch, Struktur gemäß KONZEPT.md Kap. 10a.
 - Was ein Nutzer bei einem neuen Thema selbst entscheiden muss: Nichts; der Graph Builder ist themenneutral.
 - Was automatisch laufen kann: Start und Stopp der Dienste, Setzen der Zusatzeigenschaften nach jedem Ingest.
 - Abnahme: Mirko hat die Oberfläche geprüft. „Generated Graph“ zeigt das Buch mit 50 Chunks je Ansicht, verbunden über `PART_OF`, dazwischen die `NEXT_CHUNK`-Kette. Die Knoten sind mit dem relativen Pfad beschriftet, der in der Ansicht abgeschnitten wird.
+
+## [01.11.2026] Schritt 1.5 – Abnahme und Doku-Veröffentlichung
+
+- Was getan: Abnahme von Schritt 1.5 in einer frischen Claude-Code-Sitzung; `.mcp.json` freigegeben, Server `neolibris` steht unter „Project“ auf „Connected“. Außerdem die Doku über ein öffentliches Doku-Repo auf Read the Docs veröffentlicht.
+- Was funktioniert hat: `search_chunks` mit übersetzten Formulierungen und Stichwörtern („segregation of duties“, „SoD“) liefert die einschlägigen Chunks des IAM-Buchs mit Titel und gedruckter Seite (S. 489–494, 516–517). Ein Schreibversuch über `read_cypher` (`CREATE`) wird abgelehnt, danach existiert kein Testknoten.
+- Probleme und Lösung:
+  - Read the Docs (Community) kann nicht aus privaten Repos bauen; der Build bricht nach 2 s mit „Unknown problem“ ab. Lösung wie bei IAM: GitHub Action spiegelt den Doku-Stand nach `neoprehn/docs` (Ordner `neolibris/`), dort baut RTD mit Konfigurationspfad `neolibris`.
+  - RTD löst Pfade in der Konfigurationsdatei relativ zum Repo-Root auf; der Workflow schreibt sie deshalb auf `neolibris/…` um. `KONZEPT.md` liegt außerhalb von `docs/` und wird beim Spiegeln als `docs/konzept.md` eingesetzt, weil das Elternverzeichnis im Doku-Repo fehlt.
+  - Das Secret `DOCS_MIRROR_TOKEN` gilt je Repo und muss in jedem spiegelnden Repo neu eingetragen werden.
+- Entscheidungen (mit Begründung): Spiegel-Repo statt Veröffentlichung des Code-Repos, damit Quellcode und Verlauf privat bleiben; es wird nur der aktuelle Snapshot der Doku kopiert.
+- Aufwand: eine Sitzung, keine API-Kosten.
+- Was ein Nutzer bei einem neuen Thema selbst entscheiden muss: Welche Dokumente öffentlich sein dürfen (der Spiegel veröffentlicht alles unter `docs/`, auch `mcp-vorlage.json` mit lokalem Pfad); Ablaufdatum des Tokens im Blick behalten.
+- Was automatisch laufen kann: Spiegeln bei jedem Push auf `main`, Bauen auf Read the Docs.
+

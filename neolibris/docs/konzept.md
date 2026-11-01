@@ -252,7 +252,7 @@ Jeder Schritt endet erst, wenn das Abnahmekriterium erfüllt ist. **Status:** `[
 | [x] | 1.2 | Ingestion und Chunking, Test mit **dem IAM-Buch** | Chunks mit korrekten Seitenzahlen; Stichprobe von 5 Chunks gegen PDF geprüft |
 | [x] | 1.3 | Embedding über Ollama | Semantische Testabfrage („Rezertifizierung“) findet passende Chunks, auch englische |
 | [x] | 1.4 | Spike Graph-Builder-Kompatibilität (optional starten) | Graph Builder zeigt das IAM-Buch mit Chunks an |
-| [~] | 1.5 | Eigener lesender MCP-Server `kg.mcp_server` (Hybridsuche, Kontext, Cypher) mit Volltextindex, Einbindung über `.mcp.json` in Claude Code | Claude Code beantwortet eine deutsche Frage aus dem Graphen mit Seitenangabe; Schreibzugriff ist technisch ausgeschlossen |
+| [x] | 1.5 | Eigener lesender MCP-Server `kg.mcp_server` (Hybridsuche, Kontext, Cypher) mit Volltextindex, Einbindung über `.mcp.json` in Claude Code | Claude Code beantwortet eine deutsche Frage aus dem Graphen mit Seitenangabe; Schreibzugriff ist technisch ausgeschlossen |
 | [ ] | 1.6 | Ingestion und Embedding der gesamten Bibliothek | Alle Dokumente erfasst; Bericht über gescannte/fehlerhafte PDFs |
 | [ ] | 1.6a | Ontologie v0.1 erstellen nach Kap. 7.0 (O1–O6) | Kompetenzfragen, `ontology/iam.yaml` mit Definitionen und Beispielen; Probeextraktion von 2–3 Seiten beantwortet mindestens die Hälfte der Kompetenzfragen |
 | [ ] | 1.6b | Provider-Abstraktion `src/kg/llm/` und Auswahl des lokalen Scout-Modells | Alle Adapter mit Testaufruf; Vergleich von 2–3 Scout-Kandidaten an 50 gelabelten Chunks dokumentiert |
