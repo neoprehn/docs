@@ -254,6 +254,8 @@ Jeder Schritt endet erst, wenn das Abnahmekriterium erfüllt ist. **Status:** `[
 | [x] | 1.4 | Spike Graph-Builder-Kompatibilität (optional starten) | Graph Builder zeigt das IAM-Buch mit Chunks an |
 | [x] | 1.5 | Eigener lesender MCP-Server `kg.mcp_server` (Hybridsuche, Kontext, Cypher) mit Volltextindex, Einbindung über `.mcp.json` in Claude Code | Claude Code beantwortet eine deutsche Frage aus dem Graphen mit Seitenangabe; Schreibzugriff ist technisch ausgeschlossen |
 | [ ] | 1.6 | Ingestion und Embedding der gesamten Bibliothek | Alle Dokumente erfasst; Bericht über gescannte/fehlerhafte PDFs |
+| [~] | 1.6-OCR | OCR für Seiten ohne Textlayer (Tesseract, `ocr:` in `config.yaml`), Gütewert je Dokument | IAM-Buch: 199 von 200 Bildseiten mit Text im Graphen, Qualitätsscore je Dokument und Seite, Stichprobe gegen PDF geprüft |
+| [ ] | 1.6c | Abbildungen beschreiben (Vorschlag, Kap. 14 Nr. 6): Vision-Modell mit Kontext, Beschreibung als durchsuchbarer Chunk | Probelauf an Figur 2.1 und 3.5 des IAM-Buchs, Stichprobe durch Mirko, Kosten hochgerechnet |
 | [ ] | 1.6a | Ontologie v0.1 erstellen nach Kap. 7.0 (O1–O6) | Kompetenzfragen, `ontology/iam.yaml` mit Definitionen und Beispielen; Probeextraktion von 2–3 Seiten beantwortet mindestens die Hälfte der Kompetenzfragen |
 | [ ] | 1.6b | Provider-Abstraktion `src/kg/llm/` und Auswahl des lokalen Scout-Modells | Alle Adapter mit Testaufruf; Vergleich von 2–3 Scout-Kandidaten an 50 gelabelten Chunks dokumentiert |
 | [ ] | 1.7 | Thema IAM anlegen, Scout | IAM-Chunks markiert; Stichprobe von 30 Zuordnungen durch Mirko geprüft |
@@ -340,3 +342,10 @@ literatur-kg/
 3. Graph Builder in Phase 1 nutzen oder erst nach Schritt 1.9.
 4. Budgetrahmen für die IAM-Extraktion.
 5. OpenAI zusätzlich nutzen (Empfehlung: für den Prüfer) oder zunächst nur Claude.
+6. Abbildungen auswerten (Vorschlag vom 01.11.2026, von Mirko mitgetragen, Umsetzung als Schritt 1.6c):
+   - **Eingabe je Abbildung:** Seitenbild (bei Bedarf zugeschnitten), Bildunterschrift mit Figurennummer, Abschnittspfad und gedruckte Seite, Text vor und nach der Abbildung, bereits extrahierter Text aus dem Bild.
+   - **Ausgabe:** strukturiert, nicht frei: Typ (Konzeptbild, Prozess, Architektur, Tabelle, Kurve, Screenshot), Thema, Aussage in 1–3 Sätzen, Elemente und Beziehungen, `confidence`, Belegzitat aus der Unterschrift.
+   - **Annahme von Mirko:** Im Fließtext der Artikel und Bücher gibt es fast immer einen Verweis auf die Abbildung oder eine Beschreibung ihres Inhalts. Dieser Text trägt die Beschreibung; das Bild ergänzt sie.
+   - **Qualitätsscore:** Liefert der umgebende Text zu wenig (kein Verweis, keine Unterschrift, kaum Bildtext), sinkt der Score; die Beschreibung wird als unsicher markiert und für die Stichprobe vorgemerkt.
+   - **Speicherung:** Knoten `Figure` (verbunden mit `Document` und dem benachbarten `Chunk`; Seite, Figurennummer, Typ, Score) und die Beschreibung als durchsuchbarer Chunk mit Embedding. Neuer Knotentyp: erst nach Mirkos Freigabe der Ontologie.
+   - **Vorgaben:** Prompt versioniert unter `prompts/`, Modell nur in `config.yaml`, Provenance (`run_id`, `confidence`), vor dem Massenlauf `--dry-run` und Kostenhochrechnung; nur Seiten mit Abbildungen verarbeiten.

@@ -130,3 +130,18 @@ Chronologisch, Struktur gemäß KONZEPT.md Kap. 10a.
 - Was ein Nutzer bei einem neuen Thema selbst entscheiden muss: Welche Dokumente öffentlich sein dürfen (der Spiegel veröffentlicht alles unter `docs/`, auch `mcp-vorlage.json` mit lokalem Pfad); Ablaufdatum des Tokens im Blick behalten.
 - Was automatisch laufen kann: Spiegeln bei jedem Push auf `main`, Bauen auf Read the Docs.
 
+## [01.11.2026] Schritt 1.6-OCR – Texterkennung für Bildseiten
+
+- Was getan: Seiten ohne Textlayer werden beim Einlesen per OCR gelesen (`ocr:` in `config.yaml`, Code in `src/kg/ingest/reader.py`). Tesseract 5.4 per `winget install UB-Mannheim.TesseractOCR`; die Sprachdaten `deu`, `eng`, `osd` liegen in `.tessdata/` (nicht im Git). PyMuPDF bringt die Erkennung selbst mit und braucht nur diesen Ordner, die Tesseract-Installation dient zusätzlich der Kommandozeile.
+- Was funktioniert hat: IAM-Buch mit `--force` neu erfasst: 199 von 200 Bildseiten erhalten Text (rund 1 s je Seite bei 300 dpi), mittlere Güte 0,962, Chunks von 352 auf 461. Die Anhänge mit den Implementierungsleitfäden sind damit durchsuchbar.
+- Probleme und Lösung:
+  - Dokumentierte Befunde bleiben getrennt: `pages_without_text` meint weiterhin „kein Textlayer“, neu sind `pages_ocr`, `ocr_quality` und `pages_ocr_low_quality` am Dokument. So bleibt sichtbar, was gelesen und was erkannt wurde.
+  - Die Güte (Anteil Buchstaben und Ziffern an allen Zeichen) ist nur ein grobes Maß: Punktlinien im Inhaltsverzeichnis erzeugen Buchstabenmüll (z. B. „sccscczscc…“), der die Güte nicht senkt. Bessere Filter sind offen.
+  - Die Sprachwahl `deu+eng` gilt für alle Dokumente; eine Spracherkennung je Dokument fehlt noch.
+  - `--force` löscht die Chunks samt Embeddings, die neuen Chunk-IDs verschieben sich; danach muss `kg embed` alles neu berechnen (rund 11 Minuten für 461 Chunks).
+- Entscheidungen (mit Begründung): OCR läuft beim Einlesen und nicht als eigener Schritt, damit jeder Chunk dieselbe Herkunft und Seitenangabe hat; die Seitenzahlen bleiben unverändert. Abbildungen werden getrennt als Schritt 1.6c behandelt (KONZEPT.md Kap. 14 Nr. 6), weil OCR Diagramminhalt nicht versteht.
+- Finale Parameter: 300 dpi, Sprachen `deu+eng`, Mindestgüte 0,6.
+- Aufwand: eine Sitzung, keine API-Kosten.
+- Was ein Nutzer bei einem neuen Thema selbst entscheiden muss: Ob gescannte Dokumente per OCR gelesen werden und mit welchen Sprachen; Tesseract und Sprachdaten einmal je Rechner installieren.
+- Was automatisch laufen kann: Erkennung der Bildseiten, OCR, Gütewert und Bericht am Ende von `kg ingest`.
+
