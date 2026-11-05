@@ -33,7 +33,10 @@ SoD-Regeln wie im normalen Assistenten; **③ Zeitpunkt & Bericht** — der Plan
 und optionalem Konsistenz-Bericht. Zum geplanten Zeitpunkt läuft die Kette: **Konvertierung nach CSV, Vorprüfung und
 Laden** (genau wie beim normalen Import), danach die Auswertung und der Bericht. Das Dataset muss vorher nicht
 geladen sein; das Ergebnis steht danach unter „Berechtigungskonzepte". Liegt der Importordner schon mit Dateien vor,
-fragt „Daten ablegen" vor dem Ersetzen nach.
+fragt „Daten ablegen" vor dem Ersetzen nach. **Direkt nach dem Ablegen** (bzw. beim Wählen eines vorhandenen Ordners)
+prüft eine Namensprobe, ob alle Pflicht-Tabellen des Minimalsets da sind; fehlt eine, steht sie als Fehler in Schritt ①
+und der Assistent geht nicht weiter — beim Extraktor-Paket darf der Benutzerstamm (USR02) fehlen. Auch „Planen"
+lehnt einen unvollständigen Ordner ab, damit ein Fehler nicht erst nach dem Start auffällt.
 
 **Vergleichen.** Checkbox je Dataset-Karte wählt bis zu zwei Datasets **innerhalb derselben
 Mandant-Gruppe** aus — eine Karte = eine Checkbox, ein Vergleich eines Datasets gegen sich selbst

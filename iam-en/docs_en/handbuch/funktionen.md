@@ -32,7 +32,11 @@ format, as-of date and optionally "Clear the dataset first"; **② Scoping** —
 normal assistant; **③ Time & report** — the scheduling dialog with start time, org variants and an optional consistency
 report. At the scheduled time the chain runs: **conversion to CSV, pre-check and loading** (exactly like the normal
 import), then the evaluation and the report. The dataset does not have to be loaded beforehand; the result then appears
-under "Authorization concepts". If the import folder already contains files, "Store data" asks before replacing them.
+under "Authorization concepts". If the import folder already contains files, "Store data" asks before replacing them. **Right after storing** (or when
+picking an existing folder) a name check verifies that all required tables of the minimum set are present; if one is
+missing it is shown as an error in step ① and the assistant does not continue — for an extractor package the user
+master (USR02) may be missing. Scheduling also rejects an incomplete folder, so a problem does not only show up after
+the start.
 
 **Compare.** A checkbox on each dataset card selects up to two datasets **within the same client
 group** — one card means one checkbox, so comparing a dataset against itself is structurally
