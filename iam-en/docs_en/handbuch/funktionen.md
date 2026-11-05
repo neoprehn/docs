@@ -13,7 +13,7 @@ reflect whichever run is currently selected in the dropdown. Datasets without an
 imported, not evaluated) show a hint instead of the badges. **Open** jumps straight into the
 analysis (`analysis.html`) for the selected run.
 
-**Ribbon on the home page.** Above the tabs the functions are in four groups: **1 · Data** (Import, Guided import), **2 · Analysis**
+**Ribbon on the home page.** Above the tabs the functions are in four groups: **1 · Data** (Import, Guided import, Guided import (scheduled)), **2 · Analysis**
 (All together — from two datasets; Compare — as soon as two datasets are selected; Cross-system), **3 · Backup** (Backup / Restore) and
 **4 · Manage** (Delete). **Backup / Restore** creates a backup of the selected dataset (optionally "clear afterwards") and lists existing
 backups with "Restore" (re-import) and "Download"; run backups stay in the analysis. **Delete** removes the selected dataset including its
@@ -24,6 +24,15 @@ confirmation word.
 immediately starts the 7-step assistant there at step ① Import — which shows an
 overview of existing datasets before the actual upload, to avoid exactly the mix-up described in
 the user finding below.
+
+**Guided import (scheduled).** A separate function next to the normal assistant (ribbon "1 · Data"): click through
+everything once, the rest then runs without you. Three steps: **① Data** — upload a ZIP (extractor package, SE16
+`.txt` or `.csv`; the data is only **stored** in `data/import/<dataset>`) or pick an existing import folder, plus source
+format, as-of date and optionally "Clear the dataset first"; **② Scoping** — individual filters and SoD rules as in the
+normal assistant; **③ Time & report** — the scheduling dialog with start time, org variants and an optional consistency
+report. At the scheduled time the chain runs: **conversion to CSV, pre-check and loading** (exactly like the normal
+import), then the evaluation and the report. The dataset does not have to be loaded beforehand; the result then appears
+under "Authorization concepts". If the import folder already contains files, "Store data" asks before replacing them.
 
 **Compare.** A checkbox on each dataset card selects up to two datasets **within the same client
 group** — one card means one checkbox, so comparing a dataset against itself is structurally
@@ -380,10 +389,9 @@ profile, and sleeping days are then already ticked and remain adjustable.
 
    **Import as the first phase.** If the data is already in `data/import/<dataset>`, the **import (step ①)** can be
    scheduled as well: tick "Run the import (step ①) first, at the scheduled time" in the dialog (choose the source
-   format, optionally "Clear the dataset first") — or pick "⏱ Schedule import → scoping" right in **step ①** of the
-   assistant: it then goes straight to scoping (the dataset does not have to be loaded yet), and "Run everything /
-   schedule…" plans import, evaluation and optionally the report as **one chain**. At the scheduled time the phases run
-   one after the other; if one fails, the evaluation does not start.
+   format, optionally "Clear the dataset first"). The separate function **"Guided import (scheduled)"** (see below) is
+   more convenient. At the scheduled time the phases run one after the other; if one fails, the evaluation does not
+   start.
 
    **Continue from the phase.** A phase that has completed is not repeated: "Continue" resumes at the first phase that is
    not complete, using that phase's own checkpoint (import from the last load step, evaluation from the saved run state).

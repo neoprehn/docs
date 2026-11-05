@@ -13,7 +13,7 @@ Dropdown zur Lauf-Auswahl (Standard: neuester Lauf) — Badges **Findings**/**Re
 Datasets ganz ohne Lauf (frischer Import, noch nicht ausgewertet) zeigen nur einen Hinweis statt
 der Badges. **Öffnen** springt direkt in die Auswertung (`analysis.html`) zum gewählten Lauf.
 
-**Ribbon auf der Startseite.** Über den Reitern stehen die Funktionen in vier Gruppen: **1 · Daten** (Import, Geführter Import),
+**Ribbon auf der Startseite.** Über den Reitern stehen die Funktionen in vier Gruppen: **1 · Daten** (Import, Geführter Import, Geführter Import (zeitgesteuert)),
 **2 · Auswertung** (Alle gemeinsam — ab zwei Datasets; Vergleichen — sobald zwei Datasets gewählt sind; Systemübergreifend),
 **3 · Sichern** (Backup / Restore) und **4 · Verwalten** (Löschen). **Backup / Restore** erstellt ein Backup des gewählten Datasets
 (optional „danach leeren“) und listet vorhandene Backups mit „Wiederherstellen“ (Re-Import) und „Herunterladen“; Lauf-Backups bleiben in
@@ -24,6 +24,16 @@ der Auswertung. **Löschen** entfernt das gewählte Dataset samt Läufen und sys
 Geführter Import“ startet dort sofort den 7-Schritte-Assistenten bei Schritt ①
 Import — der zeigt vor dem eigentlichen Hochladen eine Übersicht vorhandener Datasets, um genau
 die Verwechslung aus dem Nutzer-Fund unten zu vermeiden.
+
+**Geführter Import (zeitgesteuert).** Eigene Funktion neben dem normalen Assistenten (Ribbon „1 · Daten"): einmal
+alles durchklicken, danach läuft der Rest ohne Sie. Drei Schritte: **① Daten** — ZIP hochladen (Extraktor-Paket,
+SE16-`.txt` oder `.csv`; die Daten werden nur nach `data/import/<Dataset>` **abgelegt**) oder einen vorhandenen
+Importordner wählen, dazu Quellformat, Stichtag und optional „Dataset vorher leeren"; **② Scoping** — Einzelfilter und
+SoD-Regeln wie im normalen Assistenten; **③ Zeitpunkt & Bericht** — der Planungsdialog mit Startzeit, Org-Varianten
+und optionalem Konsistenz-Bericht. Zum geplanten Zeitpunkt läuft die Kette: **Konvertierung nach CSV, Vorprüfung und
+Laden** (genau wie beim normalen Import), danach die Auswertung und der Bericht. Das Dataset muss vorher nicht
+geladen sein; das Ergebnis steht danach unter „Berechtigungskonzepte". Liegt der Importordner schon mit Dateien vor,
+fragt „Daten ablegen" vor dem Ersetzen nach.
 
 **Vergleichen.** Checkbox je Dataset-Karte wählt bis zu zwei Datasets **innerhalb derselben
 Mandant-Gruppe** aus — eine Karte = eine Checkbox, ein Vergleich eines Datasets gegen sich selbst
@@ -391,10 +401,9 @@ Sleeping-Tage sind danach bereits angehakt und bleiben anpassbar.
 
    **Import als erste Phase.** Liegen die Daten schon unter `data/import/<Dataset>`, lässt sich auch der
    **Import (Schritt ①)** zeitgesteuert ausführen: im Dialog „Import (Schritt ①) zuerst zeitgesteuert ausführen"
-   anhaken (Quellformat wählen, optional „Dataset vorher leeren") — oder gleich in **Schritt ①** des Assistenten
-   „⏱ Import planen → Scoping" wählen: dann geht es direkt zum Scoping (das Dataset muss noch nicht geladen sein), und
-   „Gesamtlauf starten / planen…" plant Import, Auswertung und optional den Bericht als **eine Kette**. Zum Zeitpunkt
-   laufen die Phasen nacheinander; bricht eine ab, startet die Auswertung nicht.
+   anhaken (Quellformat wählen, optional „Dataset vorher leeren"). Bequemer ist die eigene Funktion
+   **„Geführter Import (zeitgesteuert)"** (siehe unten). Zum Zeitpunkt laufen die Phasen nacheinander; bricht eine ab,
+   startet die Auswertung nicht.
 
    **Fortsetzen ab der Phase.** Eine vollständig durchgelaufene Phase wird nicht wiederholt: „Fortsetzen" macht bei
    der ersten nicht abgeschlossenen Phase weiter, und zwar mit deren eigenem Checkpoint (Import ab dem letzten
