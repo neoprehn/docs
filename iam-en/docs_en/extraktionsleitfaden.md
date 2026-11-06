@@ -37,8 +37,10 @@ Instead of an SE16 list export, a SAP extractor can deliver the tables as a **pa
 automatically (or via the "Source format" option, see the [manual](handbuch/funktionen.md)):
 
 - **Container:** outer ZIP → one folder per extraction run → one ZIP per table `<prefix>_<TABLE>_<NNNN>.ZIP` with a
-  `.TXT` of the same name (parts `_0001`, `_0002`, … for large tables). Log files (`…_<date>_<time>.TXT`), images and
-  XML descriptions are ignored.
+  `.TXT` of the same name (parts `_0001`, `_0002`, … for large tables). Newer versions also store the parts as several
+  `.TXT` **inside one** table ZIP (`…_0001_001.TXT`, `…_002.TXT`); every part carries the header line, and the parts are
+  assembled into one table. The prefix may contain underscores (`XY_26_<TABLE>_0001.ZIP`); the table name is resolved
+  against the tables the import knows. Log files (`…_<date>_<time>.TXT`), images and XML descriptions are ignored.
 - **Content:** UTF-8 (usually with BOM), LF line endings, delimiter **`#|#`**, first line = SAP field names (as in the
   SE16 export), dates `YYYYMMDD` (`00000000` = empty, `99991231` = unlimited) — the converter rewrites them to
   `DD.MM.YYYY`.
@@ -112,7 +114,7 @@ The import runs without these tables; the **evaluation** (single filters, SoD) i
 | **AGR_TCODES** | role menu (transaction codes of the role) |
 | **AGR_1016** | profile generation status of roles (`GENERATED`/`PSTATE`, see section 22 below — **not** `AGR_1016B`) |
 | **AGR_1016B** | profile assignment per role (`AGR_NAME`/`PROFILE`) — content-wise redundant with `AGR_PROF`, currently without its own loader |
-| **USORG** | registry of org-relevant authorization fields, basis of the org dimension (used by loader `23`) — without it, org-field detection is lost |
+| **USORG** | registry of org-relevant authorization fields, basis of the org dimension (used by loader `23`) — without it, KARMA uses the standard list of SAP org fields (`config/org_fields_default.json`); the evaluation stays complete, only customer-specific org fields are not detected |
 | **AGR_FLAGS** | role flags/switches — usefulness for can-do still to be clarified, currently without a loader |
 | **AGR_1250** | manually maintained (not via SU24 suggestion) authorizations per role — a potential deviation/risk indicator, currently without a loader |
 | **USR06** | license type per user (`User.licenseType`, loader `31`) — basis of consistency checks **B8** (active dialog users without license type) and **B9** (license type overview). Validity fields (`VONDAT`/`BISDAT`) are often `00.00.0000` in exports and are not loaded |

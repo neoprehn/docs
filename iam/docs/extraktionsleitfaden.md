@@ -38,7 +38,10 @@ Statt eines SE16-Listenexports kann ein SAP-Extraktor die Tabellen als **Paket**
 automatisch (oder über die Option „Quellformat“, s. [Handbuch](handbuch/funktionen.md)):
 
 - **Container:** äußere ZIP → ein Ordner je Extraktionslauf → je Tabelle eine ZIP `<Präfix>_<TABELLE>_<NNNN>.ZIP` mit
-  einer gleichnamigen `.TXT` (Teile `_0001`, `_0002`, … bei großen Tabellen). Protokolldateien (`…_<Datum>_<Uhrzeit>.TXT`),
+  einer gleichnamigen `.TXT` (Teile `_0001`, `_0002`, … bei großen Tabellen). Neuere Versionen legen die Teile auch als
+  mehrere `.TXT` **in einer** Tabellen-ZIP ab (`…_0001_001.TXT`, `…_002.TXT`); jeder Teil trägt die Kopfzeile, die Teile
+  werden zu einer Tabelle zusammengesetzt. Das Präfix darf Unterstriche enthalten (`XY_26_<TABELLE>_0001.ZIP`); der
+  Tabellenname wird gegen die dem Import bekannten Tabellen aufgelöst. Protokolldateien (`…_<Datum>_<Uhrzeit>.TXT`),
   Bilder und XML-Beschreibungen werden ignoriert.
 - **Inhalt:** UTF-8 (meist mit BOM), Zeilenende LF, Trennzeichen **`#|#`**, erste Zeile = SAP-Feldnamen (wie beim
   SE16-Export), Datumswerte `JJJJMMTT` (`00000000` = leer, `99991231` = unbegrenzt) — der Konverter schreibt sie auf
@@ -114,7 +117,7 @@ Der Import läuft ohne diese Tabellen; die **Auswertung** (Einzelfilter, SoD) is
 | **AGR_TCODES** | Rollenmenü (TCodes der Rolle) |
 | **AGR_1016** | Profil-Generierungsstatus der Rollen (`GENERATED`/`PSTATE`, s. Abschnitt 22 unten — **nicht** `AGR_1016B`) |
 | **AGR_1016B** | Profilzuordnung je Rolle (`AGR_NAME`/`PROFILE`) — inhaltlich redundant zu `AGR_PROF`, aktuell ohne eigenen Loader |
-| **USORG** | Registry der org-relevanten Berechtigungsfelder, Grundlage der Org-Dimension (genutzt von Loader `23`) — ohne sie entfällt die Org-Feld-Erkennung |
+| **USORG** | Registry der org-relevanten Berechtigungsfelder, Grundlage der Org-Dimension (genutzt von Loader `23`) — ohne sie verwendet KARMA die Standardliste der SAP-Org-Felder (`config/org_fields_default.json`); die Auswertung bleibt vollständig, nur kundeneigene Org-Felder werden nicht erkannt |
 | **AGR_FLAGS** | Rollen-Flags/-Schalter — Nutzen für Can-Do noch zu klären, aktuell ohne Loader |
 | **AGR_1250** | Manuell (nicht per SU24-Vorschlag) gepflegte Berechtigungen je Rolle — potenzieller Abweichungs-/Risikoindikator, aktuell ohne Loader |
 | **USR06** | Lizenztyp je Nutzer (`User.licenseType`, Loader `31`) — Grundlage der Konsistenzchecks **B8** (aktive Dialog-User ohne Lizenztyp) und **B9** (Lizenztyp-Übersicht). Gültigkeitsfelder (`VONDAT`/`BISDAT`) liegen in Exporten häufig als `00.00.0000` vor und werden nicht geladen |
