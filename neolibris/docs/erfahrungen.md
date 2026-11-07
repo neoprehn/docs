@@ -145,3 +145,17 @@ Chronologisch, Struktur gemäß KONZEPT.md Kap. 10a.
 - Was ein Nutzer bei einem neuen Thema selbst entscheiden muss: Ob gescannte Dokumente per OCR gelesen werden und mit welchen Sprachen; Tesseract und Sprachdaten einmal je Rechner installieren.
 - Was automatisch laufen kann: Erkennung der Bildseiten, OCR, Gütewert und Bericht am Ende von `kg ingest`.
 
+
+## [07.11.2026] Schritt 1.6 – Literatur einlesen (Ordner `Literatur`), Protokoll, Word/PowerPoint
+
+- Was getan: Alle PDF in `Literatur` mit OCR eingelesen, danach Word (`.docx`) und PowerPoint (`.pptx`) als weitere Formate. Jeder Lauf schreibt ein Protokoll nach `reports/ingest-<Zeit>.md` und `.jsonl` (nicht im Git, enthält Dateinamen): Fehler, Duplikate, nicht gelesene Dateien, Seiten ohne Text, OCR mit niedriger Güte, verworfene Chunks und Randblöcke, übersprungene bekannte Dateien.
+- Zahlen: PDF 1.397 neu erfasst (107.340 Chunks, 138.400 Seiten, davon 7.116 ohne Textlayer), 97 Duplikate, 0 Fehler, rund 1,5 Stunden. Office: 250 Dateien neu (23.187 Chunks), 132 Duplikate (meist .docx und PDF desselben Dokuments), 0 Fehler. Embedding: rund 1,3 s je Chunk, etwa 29 Stunden für den Rest.
+- Probleme und Lösung:
+  - Randfilter entfernte echten Text (Überschriften, Satzenden am Seitenrand), das zeigte erst das Protokoll. Jetzt wird ein Randblock nur entfernt, wenn er Seitenzahl oder Interpunktion ist oder sich ohne Ziffern auf mindestens `margin_min_repeats` Seiten wiederholt.
+  - Dateinamen mit zerlegten Umlauten brachen die Ausgabe in der Windows-Konsole ab; Ausgabe jetzt UTF-8.
+  - Ein PDF mit kaputter Schriftkodierung lieferte Zeichensalat mit NUL-Zeichen; Ollama antwortete mit 413, der ganze Embedding-Lauf brach ab. Jetzt zählen Blöcke mit NUL als nicht lesbar (OCR springt ein), NUL wird vor dem Senden entfernt, und ein defekter Chunk wird einzeln isoliert und mit `embedding_error` markiert, statt den Lauf zu beenden. Salat ohne NUL wird weiterhin nicht erkannt.
+  - Eine `.pptx` war in Wirklichkeit ein PDF; das Format wird am Dateikopf erkannt, nicht an der Endung. Zwei `.docx` hatten beschädigte Bilder im Archiv; sie werden ohne diese Teile gelesen.
+- Entscheidungen (mit Begründung): Word hat keine gedruckte Seite; Beleg ist Überschriftenpfad plus „Abschn. n“ (oberste Überschriftenebene mit mindestens drei Vorkommen), bei PowerPoint die Folie. Tabellen zeilenweise mit wiederholter Kopfzeile. Zu kurze Chunk-Reste werden an den vorherigen Chunk desselben Abschnitts gehängt statt verworfen. `.doc`, `.ppt` (Legacy) und Excel bleiben draußen und werden im Protokoll gezählt; Excel-Kontrollkataloge eignen sich später als Struktur (Knoten statt Text), nicht als Fließtext.
+- Was ein Nutzer bei einem neuen Thema selbst entscheiden muss: Welche Dateitypen einbezogen werden (Office, Excel) und ob ein Beleg „Abschn. n“ statt Seite genügt; das Protokoll nach dem ersten Lauf ansehen, bevor der ganze Bestand läuft.
+- Was automatisch laufen kann: Einlesen, OCR, Duplikaterkennung, Protokoll, Embedding (fortsetzbar).
+- Offen: OCR-Salat und zerstörte Tabellen (Güte erkennt Punktlinien nicht) für Schritt 1.6c und den Prüfer (1.8); Spracherkennung je Dokument; Durchsatz des Embeddings (Batchgröße/Parallelität in Ollama nicht getestet).
