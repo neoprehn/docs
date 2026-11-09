@@ -158,6 +158,38 @@ Fields per table (identical to `config/required_tables.json` → `rfcTrust.field
 **Blocker:** there is currently no test system/dataset to verify this extension against real data
 and build a loader — prepared purely as documentation until a suitable system becomes available.
 
+## S/4HANA Extension (planned, no loader yet)
+
+Datasets from an **S/4HANA system** (ruleset `sap_s4`) need additional tables to check sham controls, the release
+and business-partner master data. The extension is planned in
+[ROADMAP-V2.md, Phase 5](https://github.com/neoprehn/iam/blob/main/ROADMAP-V2.md) (steps S4-3 and S4-3b); the
+functional derivation is in `SAP_S4_Vorüberlegungen.md` (German).
+
+:::{admonition} Planned — as of 2026-11-07
+:class: note
+Not implemented yet: neither the import dialog nor the extractors know the S/4 tables. Field lists still have to be
+defined and verified against a real S/4 system.
+:::
+
+**Intended flow**
+
+- The **import dialog asks** for an S/4 import ("S/4HANA system?", plus Fiori yes/no and further questions about
+  release and front-end server). If "yes", the S/4 tables are **mandatory for this import**.
+- **KAAP extractor:** a dedicated definition `NEO_S4_CSI.xml` with the S/4 tables (alongside `NEO-CSI.xml`).
+- **Excel extractor:** `CSI_Tabellen.xlsm` gets an additional "S/4" option.
+
+| Table | Purpose |
+| --- | --- |
+| `USOBAUTHINACTIVE` | evidence whether start objects such as `S_START` are actually checked in the system |
+| `TOBJ_CD` | globally deactivated authorization objects (sham controls) |
+| `CVERS` / `PRDVERS` | release and component level |
+| `USOBHASH` | resolves `S_SERVICE` hashes to plain names (only needed for display) |
+| `BUT000`, `BUT100`, `BUT050`, `TB003` / `TB003T` | business partner: population, roles in use, relationships, role catalog |
+| `CVI_CUST_LINK`, `CVI_VEND_LINK` | completeness of customer/vendor integration (every customer/vendor has a business partner) |
+
+An **S/4 consistency check** is added to the evaluations; when running with `sap_s4`, the evaluation points out
+that it should be run as well.
+
 ## Did-Do: Obtaining Usage Data (STAD/ST03N) (optional, no loader yet)
 
 Deliberately **not** part of Required/Optional above — data basis for the planned Did-Do analysis

@@ -162,6 +162,38 @@ Felder je Tabelle (identisch zu `config/required_tables.json` → `rfcTrust.fiel
 verifizieren und einen Loader zu bauen — rein dokumentarisch vorbereitet, bis ein passendes
 System verfügbar ist.
 
+## S/4HANA-Erweiterung (geplant, noch kein Loader)
+
+Für Datasets aus einem **S/4HANA-System** (Ruleset `sap_s4`) werden zusätzliche Tabellen gebraucht, mit denen
+sich Scheinkontrollen, das Release und die Geschäftspartner-Stammdaten prüfen lassen. Die Erweiterung ist in
+[ROADMAP-V2.md, Phase 5](https://github.com/neoprehn/iam/blob/main/ROADMAP-V2.md) geplant (Schritte S4-3 und
+S4-3b); Details zur fachlichen Herleitung stehen in `SAP_S4_Vorüberlegungen.md`.
+
+:::{admonition} Geplant — Stand 2026-11-07
+:class: note
+Noch nicht umgesetzt: Weder der Importdialog noch die Extraktoren kennen die S/4-Tabellen. Feldlisten sind
+noch festzulegen und gegen ein reales S/4-System zu verifizieren.
+:::
+
+**Vorgesehener Ablauf**
+
+- Der **Importdialog fragt** bei einem S/4-Import ab („S/4HANA-System?", dazu Fiori ja/nein und weitere Fragen
+  zu Release und Frontend-Server). Bei „Ja" gelten die S/4-Tabellen **für diesen Import als Pflicht**.
+- **KAAP-Extraktor:** eigene Definition `NEO_S4_CSI.xml` mit den S/4-Tabellen (neben `NEO-CSI.xml`).
+- **Excel-Extraktor:** `CSI_Tabellen.xlsm` bekommt eine weitere Option „S/4".
+
+| Tabelle | Zweck |
+| --- | --- |
+| `USOBAUTHINACTIVE` | Nachweis, ob Startobjekte wie `S_START` im System tatsächlich geprüft werden |
+| `TOBJ_CD` | global deaktivierte Berechtigungsobjekte (Scheinkontrollen) |
+| `CVERS` / `PRDVERS` | Release- und Komponentenstand |
+| `USOBHASH` | Auflösung der `S_SERVICE`-Hashes in Klartextnamen (nur für die Anzeige nötig) |
+| `BUT000`, `BUT100`, `BUT050`, `TB003` / `TB003T` | Geschäftspartner: Grundgesamtheit, Rollen im Einsatz, Beziehungen, Rollenkatalog |
+| `CVI_CUST_LINK`, `CVI_VEND_LINK` | Vollständigkeit der Kunden-/Lieferanten-Integration (jeder Debitor/Kreditor hat einen Geschäftspartner) |
+
+Dazu kommt ein **S/4-Konsistenzcheck** in den Auswertungen; bei einer Prüfung mit `sap_s4` weist die
+Auswertung darauf hin, ihn mit durchzuführen.
+
 ## Did-Do: Nutzungsdaten (STAD/ST03N) beschaffen (optional, noch kein Loader)
 
 Eigene, bewusst **nicht** Teil von Pflicht/Optional oben — Datengrundlage für die geplante
