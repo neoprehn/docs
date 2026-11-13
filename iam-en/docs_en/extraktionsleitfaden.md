@@ -61,6 +61,14 @@ have to be enabled once in Excel. The list in the "Stammdaten" sheet is generate
 deliberately contains no connection data (system name, credentials) — before checking in a changed version, verify that none
 were added when saving.
 
+<!-- Screenshots (placeholders): put the PNGs into docs_en/_static/extraktoren/, then remove the comment markers.
+     No client, system or path names may appear in the images (trust boundary).
+![Extractor sheet with mode selection](_static/extraktoren/excel-01-extractor-modus.png)
+![Mode dropdown: Schnell, Ausfuehrlich, S4](_static/extraktoren/excel-02-modus-dropdown.png)
+![Start the macro and output folder](_static/extraktoren/excel-03-makro-start.png)
+![Stammdaten sheet with the table list](_static/extraktoren/excel-04-stammdaten.png)
+-->
+
 **Mode** (sheet "Extractor", cell "Modus"): the choice controls which tables the list contains.
 
 | Mode | Tables |

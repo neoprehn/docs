@@ -64,6 +64,14 @@ Pflicht oder optional ist — **nach jeder Änderung an der Tabellenliste neu er
 App-Prüfung abweicht. Die Datei enthält bewusst keine Verbindungsdaten (Systemname, Zugangsdaten) — vor dem Einchecken
 einer geänderten Fassung prüfen, dass beim Speichern keine hinzugekommen sind.
 
+<!-- Screenshots (Platzhalter): PNG nach docs/_static/extraktoren/ legen, dann die Kommentarzeichen entfernen.
+     Auf den Bildern darf kein Mandanten-, System- oder Pfadname stehen (Vertrauensgrenze).
+![Reiter Extractor mit Moduswahl](_static/extraktoren/excel-01-extractor-modus.png)
+![Modus-Dropdown: Schnell, Ausfuehrlich, S4](_static/extraktoren/excel-02-modus-dropdown.png)
+![Makro starten und Ausgabeordner](_static/extraktoren/excel-03-makro-start.png)
+![Reiter Stammdaten mit der Tabellenliste](_static/extraktoren/excel-04-stammdaten.png)
+-->
+
 **Modus** (Reiter „Extractor“, Zelle „Modus“): Die Auswahl steuert, welche Tabellen die Liste enthält.
 
 | Modus | Tabellen |
