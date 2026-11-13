@@ -61,8 +61,24 @@ have to be enabled once in Excel. The list in the "Stammdaten" sheet is generate
 deliberately contains no connection data (system name, credentials) — before checking in a changed version, verify that none
 were added when saving.
 
-Everything under `data/extractors/` is distributed as well, including the extraction definition `NEO-CSI.xml` (generated from
-`config/required_tables.json` with `python data/extractors/generate_extraction_xml.py`; it contains only table and field lists).
+**Mode** (sheet "Extractor", cell "Modus"): the choice controls which tables the list contains.
+
+| Mode | Tables |
+| --- | --- |
+| **Schnell** (quick) | required tables plus the **recommended** ones (see below) — the import then runs without a warning |
+| **Ausfuehrlich** (detailed) | all can-do tables (required, recommended and optional) |
+| **S4** | as detailed, plus the **S/4HANA additional tables** (see section "S/4HANA Extension") — for datasets from an S/4 system |
+
+The Excel extractor downloads **all columns** of each table via SE16; the field lists only apply to the KAAP definitions. This matters
+mainly for `BUT000` (contains name fields).
+
+Everything under `data/extractors/` is distributed as well, including the extraction definitions `NEO-CSI.xml` (generated from
+`config/required_tables.json` with `python data/extractors/generate_extraction_xml.py standalone`; it contains only table and field
+lists) and `NEO_S4_CSI.xml` (only the S/4 additional tables, `python data/extractors/generate_extraction_xml.py s4`).
+
+**Maintenance:** `python data/extractors/generate_csi_stammdaten.py` rewrites "Stammdaten", the mode selection and the mode filter in
+the macro. The script drives Excel through automation (Excel must be installed); for the macro part, "Trust access to the VBA project
+object model" must be enabled in Excel, otherwise the macro stays unchanged.
 
 ## Which Tables to Download?
 
@@ -96,6 +112,7 @@ The import runs without these tables; the **evaluation** (single filters, SoD) i
 | **TSTCT** | transaction texts. Without it TCodes have no plain text (display, role menu, reports) |
 | **USOBT_C** | SU24 suggested values (transaction code → object/field; source for `CHECKS`/`PROPOSES`). Without it the PFCG proposal ("Derive from TCode", assistant in the structure tab) and the consistency check on SU24 checks return nothing |
 | **T000** | client master data (company/client/location/currency). Without it the grouping by company/client on the start page and the header of the reports stay empty |
+| **USORG** | registry of org-relevant authorization fields, (loader `23`). Without it, KARMA uses the standard list of SAP org fields (`config/org_fields_default.json`); the evaluation stays complete, only customer-specific org fields are not detected |
 
 ### Optional (Enrichment)
 
@@ -114,7 +131,6 @@ The import runs without these tables; the **evaluation** (single filters, SoD) i
 | **AGR_TCODES** | role menu (transaction codes of the role) |
 | **AGR_1016** | profile generation status of roles (`GENERATED`/`PSTATE`, see section 22 below — **not** `AGR_1016B`) |
 | **AGR_1016B** | profile assignment per role (`AGR_NAME`/`PROFILE`) — content-wise redundant with `AGR_PROF`, currently without its own loader |
-| **USORG** | registry of org-relevant authorization fields, basis of the org dimension (used by loader `23`) — without it, KARMA uses the standard list of SAP org fields (`config/org_fields_default.json`); the evaluation stays complete, only customer-specific org fields are not detected |
 | **AGR_FLAGS** | role flags/switches — usefulness for can-do still to be clarified, currently without a loader |
 | **AGR_1250** | manually maintained (not via SU24 suggestion) authorizations per role — a potential deviation/risk indicator, currently without a loader |
 | **USR06** | license type per user (`User.licenseType`, loader `31`) — basis of consistency checks **B8** (active dialog users without license type) and **B9** (license type overview). Validity fields (`VONDAT`/`BISDAT`) are often `00.00.0000` in exports and are not loaded |
@@ -165,18 +181,20 @@ and business-partner master data. The extension is planned in
 [ROADMAP-V2.md, Phase 5](https://github.com/neoprehn/iam/blob/main/ROADMAP-V2.md) (steps S4-3 and S4-3b); the
 functional derivation is in `SAP_S4_Vorüberlegungen.md` (German).
 
-:::{admonition} Planned — as of 2026-11-07
+:::{admonition} As of 2026-11-13
 :class: note
-Not implemented yet: neither the import dialog nor the extractors know the S/4 tables. Field lists still have to be
-defined and verified against a real S/4 system.
+The **extractors** already deliver the S/4 tables (`NEO_S4_CSI.xml`, Excel mode "S4"). **Not implemented yet:** the import dialog,
+the converter check and the loaders do not know the tables. The field lists (`config/required_tables.json`, group `s4`) are **not**
+verified against a real S/4 system; where they are still missing, the definition requests all fields.
 :::
 
 **Intended flow**
 
 - The **import dialog asks** for an S/4 import ("S/4HANA system?", plus Fiori yes/no and further questions about
   release and front-end server). If "yes", the S/4 tables are **mandatory for this import**.
-- **KAAP extractor:** a dedicated definition `NEO_S4_CSI.xml` with the S/4 tables (alongside `NEO-CSI.xml`).
-- **Excel extractor:** `CSI_Tabellen.xlsm` gets an additional "S/4" option.
+- **KAAP extractor:** a dedicated definition `NEO_S4_CSI.xml` with the S/4 tables (alongside `NEO-CSI.xml`, run one after the other in
+  the same system). *Available.*
+- **Excel extractor:** `CSI_Tabellen.xlsm` has the mode "S4" (detailed plus S/4 tables). *Available.*
 
 | Table | Purpose |
 | --- | --- |

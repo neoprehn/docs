@@ -64,8 +64,24 @@ Pflicht oder optional ist — **nach jeder Änderung an der Tabellenliste neu er
 App-Prüfung abweicht. Die Datei enthält bewusst keine Verbindungsdaten (Systemname, Zugangsdaten) — vor dem Einchecken
 einer geänderten Fassung prüfen, dass beim Speichern keine hinzugekommen sind.
 
-Alles unter `data/extractors/` wird mit verteilt, darunter die Extraktionsdefinition `NEO-CSI.xml` (aus `config/required_tables.json`
-erzeugt mit `python data/extractors/generate_extraction_xml.py`; sie enthält nur Tabellen- und Feldlisten).
+**Modus** (Reiter „Extractor“, Zelle „Modus“): Die Auswahl steuert, welche Tabellen die Liste enthält.
+
+| Modus | Tabellen |
+| --- | --- |
+| **Schnell** | Pflicht-Tabellen plus die **empfohlenen** (s. u.) — damit läuft der Import ohne Warnung |
+| **Ausführlich** | alle Can-Do-Tabellen (Pflicht, empfohlen und optional) |
+| **S4** | wie Ausführlich, zusätzlich die **S/4HANA-Zusatztabellen** (s. Abschnitt „S/4HANA-Erweiterung“) — für Datasets aus einem S/4-System |
+
+Der Excel-Extraktor lädt je Tabelle per SE16 **alle Spalten**; die Feldlisten gelten nur für die KAAP-Definitionen. Das betrifft
+vor allem `BUT000` (enthält Namensfelder).
+
+Alles unter `data/extractors/` wird mit verteilt, darunter die Extraktionsdefinitionen `NEO-CSI.xml` (aus `config/required_tables.json`
+erzeugt mit `python data/extractors/generate_extraction_xml.py standalone`; sie enthält nur Tabellen- und Feldlisten) und
+`NEO_S4_CSI.xml` (nur die S/4-Zusatztabellen, `python data/extractors/generate_extraction_xml.py s4`).
+
+**Pflege:** `python data/extractors/generate_csi_stammdaten.py` schreibt „Stammdaten“, die Moduswahl und den Modus-Filter im Makro
+neu. Das Skript arbeitet über die Excel-Automation (Excel muss installiert sein); für den Makro-Teil muss in Excel „Zugriff auf das
+VBA-Projektobjektmodell vertrauen“ eingeschaltet sein, sonst bleibt das Makro unverändert.
 
 ## Welche Tabellen herunterladen?
 
@@ -99,6 +115,7 @@ Der Import läuft ohne diese Tabellen; die **Auswertung** (Einzelfilter, SoD) is
 | **TSTCT** | Transaktionstexte. Ohne sie haben TCodes keinen Klartext (Anzeige, Rollenmenü, Berichte) |
 | **USOBT_C** | SU24-Vorschlagswerte (TCode → Objekt/Feld; Quelle für `CHECKS`/`PROPOSES`). Ohne sie liefern der PFCG-Vorschlag („Aus TCode ableiten", Assistent im Aufbau-Tab) und die Konsistenzprüfung zu SU24-Prüfungen nichts |
 | **T000** | Mandant-Stammdaten (Firma/Mandant/Ort/Währung). Ohne sie bleibt die Gliederung nach Firma/Mandant auf der Startseite und der Kopf der Berichte leer |
+| **USORG** | Registry der org-relevanten Berechtigungsfelder (Loader `23`). Ohne sie verwendet KARMA die Standardliste der SAP-Org-Felder (`config/org_fields_default.json`); die Auswertung bleibt vollständig, nur kundeneigene Org-Felder werden nicht erkannt |
 
 ### Optional (Anreicherung)
 
@@ -117,7 +134,6 @@ Der Import läuft ohne diese Tabellen; die **Auswertung** (Einzelfilter, SoD) is
 | **AGR_TCODES** | Rollenmenü (TCodes der Rolle) |
 | **AGR_1016** | Profil-Generierungsstatus der Rollen (`GENERATED`/`PSTATE`, s. Abschnitt 22 unten — **nicht** `AGR_1016B`) |
 | **AGR_1016B** | Profilzuordnung je Rolle (`AGR_NAME`/`PROFILE`) — inhaltlich redundant zu `AGR_PROF`, aktuell ohne eigenen Loader |
-| **USORG** | Registry der org-relevanten Berechtigungsfelder, Grundlage der Org-Dimension (genutzt von Loader `23`) — ohne sie verwendet KARMA die Standardliste der SAP-Org-Felder (`config/org_fields_default.json`); die Auswertung bleibt vollständig, nur kundeneigene Org-Felder werden nicht erkannt |
 | **AGR_FLAGS** | Rollen-Flags/-Schalter — Nutzen für Can-Do noch zu klären, aktuell ohne Loader |
 | **AGR_1250** | Manuell (nicht per SU24-Vorschlag) gepflegte Berechtigungen je Rolle — potenzieller Abweichungs-/Risikoindikator, aktuell ohne Loader |
 | **USR06** | Lizenztyp je Nutzer (`User.licenseType`, Loader `31`) — Grundlage der Konsistenzchecks **B8** (aktive Dialog-User ohne Lizenztyp) und **B9** (Lizenztyp-Übersicht). Gültigkeitsfelder (`VONDAT`/`BISDAT`) liegen in Exporten häufig als `00.00.0000` vor und werden nicht geladen |
@@ -169,18 +185,20 @@ sich Scheinkontrollen, das Release und die Geschäftspartner-Stammdaten prüfen 
 [ROADMAP-V2.md, Phase 5](https://github.com/neoprehn/iam/blob/main/ROADMAP-V2.md) geplant (Schritte S4-3 und
 S4-3b); Details zur fachlichen Herleitung stehen in `SAP_S4_Vorüberlegungen.md`.
 
-:::{admonition} Geplant — Stand 2026-11-07
+:::{admonition} Stand 2026-11-13
 :class: note
-Noch nicht umgesetzt: Weder der Importdialog noch die Extraktoren kennen die S/4-Tabellen. Feldlisten sind
-noch festzulegen und gegen ein reales S/4-System zu verifizieren.
+Die **Extraktoren** liefern die S/4-Tabellen bereits (`NEO_S4_CSI.xml`, Excel-Modus „S4“). **Noch nicht umgesetzt:** Importdialog,
+Konverter-Prüfung und Loader kennen die Tabellen nicht. Die Feldlisten (`config/required_tables.json`, Gruppe `s4`) sind
+**nicht** an einem realen S/4-System verifiziert; wo sie noch fehlen, fordert die Definition alle Felder an.
 :::
 
 **Vorgesehener Ablauf**
 
 - Der **Importdialog fragt** bei einem S/4-Import ab („S/4HANA-System?", dazu Fiori ja/nein und weitere Fragen
   zu Release und Frontend-Server). Bei „Ja" gelten die S/4-Tabellen **für diesen Import als Pflicht**.
-- **KAAP-Extraktor:** eigene Definition `NEO_S4_CSI.xml` mit den S/4-Tabellen (neben `NEO-CSI.xml`).
-- **Excel-Extraktor:** `CSI_Tabellen.xlsm` bekommt eine weitere Option „S/4".
+- **KAAP-Extraktor:** eigene Definition `NEO_S4_CSI.xml` mit den S/4-Tabellen (neben `NEO-CSI.xml`, im selben System nacheinander
+  laufen lassen). *Vorhanden.*
+- **Excel-Extraktor:** `CSI_Tabellen.xlsm` hat den Modus „S4“ (Ausführlich plus S/4-Tabellen). *Vorhanden.*
 
 | Tabelle | Zweck |
 | --- | --- |
