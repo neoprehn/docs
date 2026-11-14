@@ -62,12 +62,9 @@ deliberately contains no connection data (system name, credentials) — before c
 were added when saving.
 
 ![Extractor sheet with mode selection](_static/extraktoren/excel-01-extractor-modus.png)
+![Mode dropdown: Schnell, Ausfuehrlich, S4](_static/extraktoren/excel-02-modus-dropdown.png)
 ![Start the macro and output folder](_static/extraktoren/excel-03-makro-start.png)
 ![Stammdaten sheet with the table list](_static/extraktoren/excel-04-stammdaten.png)
-
-<!-- Still open: dropdown screenshot (put the PNG into docs_en/_static/extraktoren/, remove the comment):
-![Mode dropdown: Schnell, Ausfuehrlich, S4](_static/extraktoren/excel-02-modus-dropdown.png)
--->
 
 **Mode** (sheet "Extractor", cell "Modus"): the choice controls which tables the list contains.
 

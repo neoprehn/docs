@@ -65,12 +65,9 @@ App-Prüfung abweicht. Die Datei enthält bewusst keine Verbindungsdaten (System
 einer geänderten Fassung prüfen, dass beim Speichern keine hinzugekommen sind.
 
 ![Reiter Extractor mit Moduswahl](_static/extraktoren/excel-01-extractor-modus.png)
+![Modus-Dropdown: Schnell, Ausfuehrlich, S4](_static/extraktoren/excel-02-modus-dropdown.png)
 ![Makro starten und Ausgabeordner](_static/extraktoren/excel-03-makro-start.png)
 ![Reiter Stammdaten mit der Tabellenliste](_static/extraktoren/excel-04-stammdaten.png)
-
-<!-- Noch offen: Dropdown-Screenshot (PNG nach docs/_static/extraktoren/ legen, Kommentar entfernen):
-![Modus-Dropdown: Schnell, Ausfuehrlich, S4](_static/extraktoren/excel-02-modus-dropdown.png)
--->
 
 **Modus** (Reiter „Extractor“, Zelle „Modus“): Die Auswahl steuert, welche Tabellen die Liste enthält.
 
