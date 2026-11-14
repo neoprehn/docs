@@ -220,6 +220,18 @@ geladen, weil keine andere Auswahl bestand). Ohne aktiven Resume-Zustand und ohn
 fragt die App auch hier vor dem Senden nach. Für ein **neues** Dataset immer den oberen
 ZIP-/Ordner-Upload-Bereich nutzen.
 
+**Nachlieferung (Add-on).** Fehlt dem Extrakt eine optionale Tabelle (z. B. `V_USERNAME` für die Klarnamen), kann sie
+nachgeliefert werden: dasselbe Set (oder nur die neue Tabelle) erneut einspielen und **„Nachlieferung (Add-on)“** anhaken.
+Der Import vergleicht jede angelieferte Tabelle über den **SHA-256-Hash der Quelldatei** (nicht über den Namen) mit dem, was
+das Dataset aus früheren Importen schon kennt: **gleicher Hash** → bereits geladen, wird übersprungen; **neue Tabelle** →
+wird geladen; **gleicher Name, anderer Inhalt** → der Import **stoppt** vor dem Laden und nennt die Tabellen (ein gewollter
+Austausch läuft als normaler Import mit „Vorher leeren“). Geladen werden nur die Schritte der neuen Tabellen plus die
+Abschluss-Schritte (Org-Level, Subtyp-Labels, GRANTS, Validierung). Tabellen aus Altimporten ohne gespeicherten Hash gelten
+als „nicht vergleichbar“ und werden sicherheitshalber erneut geladen (harmlos, die Loader arbeiten idempotent). Das
+Import-Protokoll führt die Lieferung als eigenen Eintrag („Nachlieferung“); die Nachweise der übersprungenen Tabellen werden
+aus dem Vorgänger übernommen. Nicht mit „Vorher leeren“ kombinierbar. Sind alle Tabellen schon geladen, meldet der Import
+„nichts verändert“.
+
 **Vorprüfung des Extrakts.** Bevor etwas geladen oder gelöscht wird, prüft der Import den Extrakt automatisch
 (Schritt „Extrakt vorprüfen“): Pflichttabellen und -spalten, Trennzeichen, leere Tabellen, ungültige Datumswerte und
 Datumswerte in einem nicht umgewandelten Format, unbekannte Benutzertypen, Kodierungsfehler. **Fehler stoppen den

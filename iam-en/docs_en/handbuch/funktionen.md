@@ -212,6 +212,17 @@ reloading the one existing folder because no other option was listed). Without a
 state and without "clear first", the app asks for confirmation here too before sending. For a
 **new** dataset, always use the upload section above.
 
+**Supplementary delivery (add-on).** If the extract lacked an optional table (e.g. `V_USERNAME` for the real names), it
+can be delivered later: import the same set (or just the new table) again and tick **"Supplementary delivery (add-on)"**.
+The import compares every delivered table by the **SHA-256 hash of its source file** (not by name) with what the dataset
+already knows from earlier imports: **same hash** → already loaded, skipped; **new table** → loaded; **same name, different
+content** → the import **stops** before loading and names the tables (a deliberate replacement is a normal import with
+"clear first"). Only the load steps of the new tables run, plus the closing steps (org levels, subtype labels, GRANTS,
+validation). Tables from older imports without a stored hash count as "not comparable" and are reloaded to be safe
+(harmless, the loaders are idempotent). The import protocol lists the delivery as its own entry ("Nachlieferung"); the
+evidence of the skipped tables is carried over from the predecessor. Cannot be combined with "clear first". If all tables are
+already loaded, the import reports "nothing changed".
+
 **Pre-check of the extract.** Before anything is loaded or deleted, the import checks the extract automatically (step
 "Pre-check extract"): required tables and columns, separator, empty tables, invalid dates and dates in a format that was
 not converted, unknown user types, encoding errors. **Errors stop the import** — the existing graph stays unchanged
