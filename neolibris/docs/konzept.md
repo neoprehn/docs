@@ -256,7 +256,7 @@ Jeder Schritt endet erst, wenn das Abnahmekriterium erfüllt ist. **Status:** `[
 | [ ] | 1.6 | Ingestion und Embedding der gesamten Bibliothek | Alle Dokumente erfasst; Bericht über gescannte/fehlerhafte PDFs |
 | [~] | 1.6-OCR | OCR für Seiten ohne Textlayer (Tesseract, `ocr:` in `config.yaml`), Gütewert je Dokument | IAM-Buch: 199 von 200 Bildseiten mit Text im Graphen, Qualitätsscore je Dokument und Seite, Stichprobe gegen PDF geprüft |
 | [ ] | 1.6c | Abbildungen beschreiben (Vorschlag, Kap. 14 Nr. 6): Vision-Modell mit Kontext, Beschreibung als durchsuchbarer Chunk | Probelauf an Figur 2.1 und 3.5 des IAM-Buchs, Stichprobe durch Mirko, Kosten hochgerechnet |
-| [ ] | 1.6a | Ontologie v0.1 erstellen nach Kap. 7.0 (O1–O6) | Kompetenzfragen, `ontology/iam.yaml` mit Definitionen und Beispielen; Probeextraktion von 2–3 Seiten beantwortet mindestens die Hälfte der Kompetenzfragen |
+| [x] | 1.6a | Ontologie v0.1 erstellen nach Kap. 7.0 (O1–O6) | Kompetenzfragen, `ontology/iam.yaml` mit Definitionen und Beispielen; Probeextraktion von 2–3 Seiten beantwortet mindestens die Hälfte der Kompetenzfragen |
 | [ ] | 1.6b | Provider-Abstraktion `src/kg/llm/` und Auswahl des lokalen Scout-Modells | Alle Adapter mit Testaufruf; Vergleich von 2–3 Scout-Kandidaten an 50 gelabelten Chunks dokumentiert |
 | [ ] | 1.7 | Thema IAM anlegen, Scout | IAM-Chunks markiert; Stichprobe von 30 Zuordnungen durch Mirko geprüft |
 | [ ] | 1.8 | Extraktor und Prüfer, **Probelauf mit einem Kapitel** | Prüferquote und manuelle Sichtung zufriedenstellend; Ontologie ggf. auf v0.2 |

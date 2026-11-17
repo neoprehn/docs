@@ -159,3 +159,18 @@ Chronologisch, Struktur gemäß KONZEPT.md Kap. 10a.
 - Was ein Nutzer bei einem neuen Thema selbst entscheiden muss: Welche Dateitypen einbezogen werden (Office, Excel) und ob ein Beleg „Abschn. n“ statt Seite genügt; das Protokoll nach dem ersten Lauf ansehen, bevor der ganze Bestand läuft.
 - Was automatisch laufen kann: Einlesen, OCR, Duplikaterkennung, Protokoll, Embedding (fortsetzbar).
 - Offen: OCR-Salat und zerstörte Tabellen (Güte erkennt Punktlinien nicht) für Schritt 1.6c und den Prüfer (1.8); Spracherkennung je Dokument; Durchsatz des Embeddings (Batchgröße/Parallelität in Ollama nicht getestet).
+
+## [17.11.2026] Schritt 1.6a – Ontologie v0.1 (O3–O6)
+
+- Was getan: Typen (O3), Beziehungen (O4) und Typregeln (O5) im Dialog mit Mirko festgelegt, danach drei Probeextraktionen (O6) an echten Seiten (IAM-Buch, NIST SP 800-53, 800-162, 800-63B, 800-116) gegen die 15 Kompetenzfragen. Ergebnis: `ontology/core.yaml` (10 Typen, 17 Beziehungen) und `ontology/iam.yaml` (5 Typen, 6 Beziehungen), Gesamtfreigabe am 17.11.2026.
+- Was funktioniert hat: Zwei Durchläufe vorab zeigten die größten Lücken früh (fehlende Beziehungen `REFERENCES`, `EQUIVALENT_TO` mit Stärke, `SUPPORTS` von Component). Der dritte schloss Threat und `COUNTERS`/`CONTRADICTS` ab. Antwort je Frage: 6 von 15 voll, 9 teilweise, keine unbeantwortbar.
+- Probleme und Lösung:
+  - Tabellen in Standards (Mapping-Tabellen, Bedrohung/Maßnahme) werden beim Einlesen zerlegt; Beziehungen daraus sind geraten. Vorerst niedrige `confidence` und besondere Prüfung, Lösung in Schritt 1.6c.
+  - Verbindungen über mehrere Quellen (K5, `SATISFIES`) entstehen bei Extraktion je Chunk nicht; Zusammenführung bleibt „erst bei Bedarf“ (Beobachtung in 1.7/1.8).
+  - Drei Beziehungen (`SATISFIES`, `ENFORCES`, `INCLUDES_CONTROL`) kamen in keiner Probe vor, `THREATENS` kaum. Sie bleiben und werden in 1.7 an passenden Kapiteln geprüft.
+- Entscheidungen (mit Begründung): Hauptname englisch, Aliasse in beiden Sprachen (Quellen in DE und EN fallen auf denselben Knoten). Produkte nur als eigene Component, wenn die Quelle sie selbst behandelt (sonst viele Knoten). Methoden vorerst als Concept. Nur benannte Controls (Allgemeines als `note`). Gleiche Sache anders benannt = `EQUIVALENT_TO`, gleicher Name andere Bedeutung = `CONTRADICTS`.
+- Finale Parameter: 15 Typen (über der Faustregel 8–12, bewusst), 23 Beziehungen; Prüfung auf Streichung erst nach Kalibrierung 1.7.
+- Aufwand: mehrere Sitzungen, keine API-Kosten (Probeextraktion von Hand mit der Suche über den MCP).
+- Was ein Nutzer bei einem neuen Thema selbst entscheiden muss: Kompetenzfragen (O1) und Begriffsliste (O2) neu; Typen und Beziehungen nur um das Neue erweitern; Grenzfälle (Control gegen Process, Risk gegen Threat, Produkt gegen Component) bewusst festlegen; Probeseiten auswählen oder bestätigen und das Ergebnis freigeben.
+- Was automatisch laufen kann: Begriffssammlung aus Inhaltsverzeichnis und Glossar, Entwurf von Typen und Regeln, Suche nach Probeseiten, Auswertung gegen die Kompetenzfragen.
+- Offen: Einarbeitung der Ergänzung 01 in `KONZEPT.md`; Ontologie-Prüfung (O7) nach der Kalibrierung 1.7.
