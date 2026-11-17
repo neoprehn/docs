@@ -607,7 +607,7 @@ weighted value, so the derivation stays traceable). Below are four colored tabs 
 as in the management area): **User** (master record: name, type, user group, status/lock reason, last
 login, sleeping, validity period, password data; as far as the USR02 fields are loaded into the graph),
 **Roles & composite roles** (directly assigned roles with validity; for composite roles the contained single
-roles, for single roles the composite role they also arrive through), **Single filters** and **SoD**. The
+roles, for single roles the composite role they also arrive through; switchable between **List** and **Graph**: user → roles/composite roles → contained single roles, clicking a role opens its details), **Single filters** and **SoD**. The
 last two show the same table as the results view (user, rule, description, criticality, type, root cause)
 with a criticality filter; clicking the rule jumps to the filtered result list, the "root cause" button to
 the matching query or rule root cause. "Back" returns to where you came from (result list or root-cause
