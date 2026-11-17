@@ -344,6 +344,36 @@ Whether the analysis is restricted to organizational levels (e.g., company code)
 > purchasing org). What is evaluated are the users' **actual authorization values** (from the
 > role/profile auths), not SU24 suggestions. The chosen mode/filter is logged on the run.
 
+#### "Cross-org" in detail
+
+"Standard" asks: *can the user perform the function at all?* "Cross-org" asks more strictly: *can they do it **without
+restriction**, i.e. in all organizational units?*
+
+- **Org fields** (from USORG; without USORG the shipped default list applies) must carry a **real `*`** in the authorization.
+  A user who only has company code `1000` does not count here; a user with `*` does. If the org field is not populated at all,
+  the user does not count either (in "Standard" they do).
+- **All other fields** (activity, program name, authorization group, …) are checked as in "Standard".
+- **The mode decides, not the notation in the query:** for org fields "Cross-org" always requires a real `*`, whether the query
+  says `*`, `$` or `$*`.
+- **Only queries with at least one org field run.** Without an org reference there is no "cross-org" question; such queries are
+  not evaluated and not shown in this variant. For **SoD rules** this means: if a clause consists only of queries without an org
+  reference, the rule cannot be violated in this variant.
+- The result is always a **subset** of "Standard".
+
+| User has in the org field … | Standard | Cross-org |
+| --- | --- | --- |
+| `*` | counts | counts |
+| `1000` | counts | does **not** count |
+| `1000`–`2000` (range) | counts | does **not** count |
+| (field not populated) | counts | does **not** count |
+
+**Typical use:** the audit question *"Who has this authorization without org restriction?"* — usually a much shorter list and
+therefore good for prioritizing. Best create "Standard" and "Cross-org" **in one step** (multi-select in the "New run" dialog)
+and compare the results.
+
+**Limit:** group and type fields such as `BRGRU`, `BLART`, `BEGRU` or `VGRUP` are not org fields. "Cross-org" does not
+distinguish there; they are checked as in "Standard".
+
 ### Individual Filter Scope
 
 Which queries of the ruleset materialization even considers (`(:User)-[:MATCHES]->(:Query)` — the
@@ -855,10 +885,21 @@ filters), below it three **tabs**:
   rules. Rare `audit`/`stad` flags on lines that were not touched are preserved on save, even
   though the plain text format does not surface them.
 
-  **Asterisk in values:** `*` means *any value* (the authorization only has to populate the field, e.g.
-  "any program"). If the authorization itself must carry a real `*` (unrestricted), write `$` or `$*` (`$` is the legacy notation of the shipped filters); a real `$` is
-  `$$`, everything else (e.g. `$BUKRS`) stays literal. This applies to all fields. **Prefix patterns** such as `SE3*` mean `SE3` plus at least one more character (matches `SE38`, not `SE3`), in the filter as well as in the authorization; ranges (`SE34..SE39`) are compared character by character. For organizational fields the
-  run's org variant additionally applies ("Cross-org" always requires a real `*`).
+  **Writing values — asterisks, patterns, ranges.** The notation applies to all fields (and to transactions):
+
+  | Notation | Meaning | Example |
+  | --- | --- | --- |
+  | `*` | **any value** — the authorization only has to populate the field, with anything (including a real `*`) | `OBJNAME = *`: "any program" |
+  | `$` or `$*` | **real asterisk** — the authorization itself must carry `*` (unrestricted). `$` is the legacy notation of the shipped filters | `DICBERCLS = $`: "unrestricted table maintenance" |
+  | `$$` | a real `$` | |
+  | `$BUKRS` etc. | stays **literal** (org placeholder) | |
+  | `SE3*` | **prefix pattern:** `SE3` plus **at least one** more character — matches `SE37`, `SE38`; not `SE3`, not `SE48` | TCode `SE3*` |
+  | `SE34..SE39` | **range** in the **authorization** (role): all values in between, compared character by character. Ranges are not provided in the **filter** — write single values or prefix patterns there | a role with `SE34..SE39` finds a filter on `SE37` |
+
+  Prefix patterns work **in both directions:** if a role has `SE3*`, filters on `SE37` or `SE38` find that role; if the filter has
+  `SE3*`, every matching value of the role hits. For **transactions** a single `*` means: no TCode check. **Org fields:** the run's
+  org variant additionally applies; "Cross-org" always requires a real `*` there, regardless of the notation in the filter.
+  **AND/OR** applies per row: with OR one value is enough, with AND all values must be present.
 
   **Assistant** (button in edit mode, above the two editors) — guided selection of the
   authorization objects and values for **one** TCode instead of typing everything as text. If the

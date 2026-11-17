@@ -357,6 +357,36 @@ Ob die Auswertung auf Organisationsebenen (z. B. Buchungskreis) eingeschränkt w
 > Einkaufsorg). Bewertet werden die **echten Berechtigungswerte** der Nutzer (aus den Rollen-/
 > Profil-Auths), nicht SU24-Vorschläge. Der gewählte Modus/Filter wird am Lauf protokolliert.
 
+#### „Übergreifend“ im Detail
+
+„Standard“ fragt: *kann der Benutzer die Funktion überhaupt?* „Übergreifend“ fragt strenger: *kann er sie **uneingeschränkt**,
+also in allen Organisationseinheiten?*
+
+- **Org-Felder** (aus USORG; ohne USORG gilt die mitgelieferte Standardliste) müssen in der Berechtigung ein **echtes `*`**
+  tragen. Ein Benutzer, der nur Buchungskreis `1000` hat, zählt hier nicht; ein Benutzer mit `*` zählt. Ist das Org-Feld gar nicht
+  belegt, zählt er ebenfalls nicht (in „Standard“ schon).
+- **Alle anderen Felder** (Aktivität, Programmname, Berechtigungsgruppe …) werden wie in „Standard“ geprüft.
+- **Bestimmend ist der Modus, nicht die Schreibweise in der Query:** Bei Org-Feldern verlangt „Übergreifend“ immer ein echtes `*`,
+  gleich ob in der Query `*`, `$` oder `$*` steht.
+- **Es laufen nur Queries mit mindestens einem Org-Feld.** Ohne Org-Bezug gibt es keine „übergreifende“ Frage; solche Queries werden
+  in dieser Variante nicht ausgewertet und nicht angezeigt. Bei **SoD-Regeln** hat das zur Folge: Besteht eine Klausel nur aus
+  Queries ohne Org-Bezug, kann die Regel in dieser Variante nicht verletzt werden.
+- Das Ergebnis ist immer eine **Teilmenge** von „Standard“.
+
+| Benutzer hat im Org-Feld … | Standard | Übergreifend |
+| --- | --- | --- |
+| `*` | zählt | zählt |
+| `1000` | zählt | zählt **nicht** |
+| `1000`–`2000` (Bereich) | zählt | zählt **nicht** |
+| (Feld nicht belegt) | zählt | zählt **nicht** |
+
+**Typische Verwendung:** die Audit-Frage *„Wer hat diese Berechtigung ohne Org-Einschränkung?“* — meist eine deutlich kürzere Liste
+und damit gut zum Priorisieren. Am besten „Standard“ und „Übergreifend“ in **einem Schritt** anlegen (Mehrfachauswahl im Dialog „Neuer
+Lauf“) und die Ergebnisse vergleichen.
+
+**Grenze:** Gruppen- und Typfelder wie `BRGRU`, `BLART`, `BEGRU` oder `VGRUP` sind keine Org-Felder. „Übergreifend“ unterscheidet
+dort nicht; sie werden wie in „Standard“ geprüft.
+
 ### Einzelfilter-Umfang
 
 Welche Queries des Rulesets die Materialisierung überhaupt betrachtet (`(:User)-[:MATCHES]->(:Query)`
@@ -876,12 +906,21 @@ darunter drei **Tabs**:
   bei SoD-Regeln. Seltene `audit`/`stad`-Sonderflags unver&auml;ndert gebliebener Zeilen bleiben
   beim Speichern erhalten, auch wenn die Zeile selbst nicht angefasst wurde.
 
-  **Sternchen in den Werten:** `*` bedeutet *beliebiger Wert* (die Berechtigung muss das Feld nur belegen,
-  z.&nbsp;B. „irgendein Programm“). Soll die Berechtigung selbst ein echtes `*` tragen (uneingeschränkt),
-  schreibt man `$` oder `$*` (`$` ist die alte Schreibweise der mitgelieferten Filter); ein echtes `$` ist `$$`, alles andere
-  (z.&nbsp;B. `$BUKRS`) bleibt wörtlich. Das gilt für alle
-  Felder. **Präfix-Muster** wie `SE3*` stehen für `SE3` plus mindestens ein weiteres Zeichen (trifft `SE38`, nicht `SE3`), sowohl im
-  Filter als auch in der Berechtigung; Bereiche (`SE34..SE39`) werden zeichenweise geprüft. Bei Org-Feldern wirkt zusätzlich die Org-Variante des Laufs („Übergreifend“ verlangt immer ein echtes `*`).
+  **Werte schreiben — Sternchen, Muster, Bereiche.** Die Schreibweise gilt für alle Felder (und für Transaktionen):
+
+  | Schreibweise | Bedeutung | Beispiel |
+  | --- | --- | --- |
+  | `*` | **beliebiger Wert** — die Berechtigung muss das Feld nur belegen, egal womit (auch mit einem echten `*`) | `OBJNAME = *`: „irgendein Programm“ |
+  | `$` oder `$*` | **echtes Sternchen** — die Berechtigung muss selbst `*` tragen (uneingeschränkt). `$` ist die alte Schreibweise der mitgelieferten Filter | `DICBERCLS = $`: „Tabellenpflege uneingeschränkt“ |
+  | `$$` | ein echtes `$` | |
+  | `$BUKRS` u. ä. | bleibt **wörtlich** (Org-Platzhalter) | |
+  | `SE3*` | **Präfix-Muster:** `SE3` plus **mindestens ein** weiteres Zeichen — trifft `SE37`, `SE38`; nicht `SE3`, nicht `SE48` | TCode `SE3*` |
+  | `SE34..SE39` | **Bereich** in der **Berechtigung** (Rolle): alle Werte dazwischen, zeichenweise verglichen. Im **Filter** sind Bereiche nicht vorgesehen — dort einzelne Werte oder Präfix-Muster schreiben | Rolle mit `SE34..SE39` findet einen Filter auf `SE37` |
+
+  Präfix-Muster wirken **in beide Richtungen:** Hat eine Rolle `SE3*`, finden Filter auf `SE37` oder `SE38` diese Rolle; hat der Filter
+  `SE3*`, trifft jeder passende Wert der Rolle. Bei **Transaktionen** bedeutet ein einzelnes `*`: keine TCode-Prüfung. **Org-Felder:**
+  Zusätzlich wirkt die Org-Variante des Laufs; „Übergreifend“ verlangt dort immer ein echtes `*`, unabhängig von der Schreibweise im Filter.
+  **UND/ODER** gilt je Zeile: bei ODER genügt ein Wert, bei UND müssen alle Werte vorhanden sein.
 
   **Assistent** (Button im Bearbeiten-Modus, über den beiden Editoren) — geführte Auswahl der
   Berechtigungsobjekte und -werte zu **einem** TCode, statt alles als Text zu tippen. Enthält die
