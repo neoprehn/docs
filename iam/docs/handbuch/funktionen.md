@@ -621,7 +621,7 @@ Darunter vier farbige Reiter (der aktive ist höher, wie im Management-Bereich):
 **Benutzer** (Stammsatz: Name, Typ, Benutzergruppe, Status/Sperrgrund, letzter Login, Sleeping,
 Gültigkeitszeitraum, Passwort-Daten; soweit die USR02-Felder im Graphen geladen sind),
 **Rollen & Sammelrollen** (direkt zugewiesene Rollen mit Gültigkeit; bei Sammelrollen die enthaltenen
-Einzelrollen, bei Einzelrollen die Sammelrolle, über die sie ebenfalls ankommen; umschaltbar zwischen **Liste** und **Graph**: User → Rollen/Sammelrollen → enthaltene Einzelrollen, Klick auf eine Rolle öffnet deren Details), **Einzelfilter** und
+Einzelrollen, bei Einzelrollen die Sammelrolle, über die sie ebenfalls ankommen; umschaltbar zwischen **Liste** und **Graph**: User → Rollen/Sammelrollen → enthaltene Einzelrollen, Klick auf eine Rolle öffnet deren Details; der Graph ist animiert im Stil von Neo4j Bloom — Kraft-Layout, schwebende Knoten, per Ziehen verschiebbar — und hat ein **Vollbild**), **Einzelfilter** und
 **SoD**. Die beiden letzten zeigen dieselbe Tabelle wie die Ergebnisansicht (User, Regel, Bezeichnung,
 Kritikalität, Typ, Root-Cause) mit Kritikalitäts-Filter; ein Klick auf die Regel springt in die gefilterte
 Ergebnisliste, der „Root-Cause"-Button zum passenden Query- bzw. Regel-Root-Cause. „Zurück" führt dorthin
