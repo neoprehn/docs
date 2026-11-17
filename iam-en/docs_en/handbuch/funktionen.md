@@ -855,6 +855,11 @@ filters), below it three **tabs**:
   rules. Rare `audit`/`stad` flags on lines that were not touched are preserved on save, even
   though the plain text format does not surface them.
 
+  **Asterisk in values:** `*` means *any value* (the authorization only has to populate the field, e.g.
+  "any program"). If the authorization itself must carry a real `*` (unrestricted), write `$*`; a real `$` is
+  `$$`, every other `$` (e.g. `$TMP`) stays literal. This applies to all fields. For organizational fields the
+  run's org variant additionally applies ("Cross-org" always requires a real `*`).
+
   **Assistant** (button in edit mode, above the two editors) — guided selection of the
   authorization objects and values for **one** TCode instead of typing everything as text. If the
   query contains several TCodes, a choice is offered first; with exactly one, the same dialog as

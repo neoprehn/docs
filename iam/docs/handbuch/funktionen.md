@@ -876,6 +876,11 @@ darunter drei **Tabs**:
   bei SoD-Regeln. Seltene `audit`/`stad`-Sonderflags unver&auml;ndert gebliebener Zeilen bleiben
   beim Speichern erhalten, auch wenn die Zeile selbst nicht angefasst wurde.
 
+  **Sternchen in den Werten:** `*` bedeutet *beliebiger Wert* (die Berechtigung muss das Feld nur belegen,
+  z.&nbsp;B. „irgendein Programm“). Soll die Berechtigung selbst ein echtes `*` tragen (uneingeschränkt),
+  schreibt man `$*`; ein echtes `$` ist `$$`, alle anderen `$` (z.&nbsp;B. `$TMP`) bleiben wörtlich. Das gilt für alle
+  Felder. Bei Org-Feldern wirkt zusätzlich die Org-Variante des Laufs („Übergreifend“ verlangt immer ein echtes `*`).
+
   **Assistent** (Button im Bearbeiten-Modus, über den beiden Editoren) — geführte Auswahl der
   Berechtigungsobjekte und -werte zu **einem** TCode, statt alles als Text zu tippen. Enthält die
   Query mehrere TCodes, erscheint vorab eine Auswahl; bei genau einem öffnet sich direkt derselbe
