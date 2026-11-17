@@ -857,7 +857,7 @@ filters), below it three **tabs**:
 
   **Asterisk in values:** `*` means *any value* (the authorization only has to populate the field, e.g.
   "any program"). If the authorization itself must carry a real `*` (unrestricted), write `$` or `$*` (`$` is the legacy notation of the shipped filters); a real `$` is
-  `$$`, everything else (e.g. `$BUKRS`) stays literal. This applies to all fields. For organizational fields the
+  `$$`, everything else (e.g. `$BUKRS`) stays literal. This applies to all fields. **Prefix patterns** such as `SE3*` mean `SE3` plus at least one more character (matches `SE38`, not `SE3`), in the filter as well as in the authorization; ranges (`SE34..SE39`) are compared character by character. For organizational fields the
   run's org variant additionally applies ("Cross-org" always requires a real `*`).
 
   **Assistant** (button in edit mode, above the two editors) — guided selection of the

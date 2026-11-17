@@ -880,7 +880,8 @@ darunter drei **Tabs**:
   z.&nbsp;B. „irgendein Programm“). Soll die Berechtigung selbst ein echtes `*` tragen (uneingeschränkt),
   schreibt man `$` oder `$*` (`$` ist die alte Schreibweise der mitgelieferten Filter); ein echtes `$` ist `$$`, alles andere
   (z.&nbsp;B. `$BUKRS`) bleibt wörtlich. Das gilt für alle
-  Felder. Bei Org-Feldern wirkt zusätzlich die Org-Variante des Laufs („Übergreifend“ verlangt immer ein echtes `*`).
+  Felder. **Präfix-Muster** wie `SE3*` stehen für `SE3` plus mindestens ein weiteres Zeichen (trifft `SE38`, nicht `SE3`), sowohl im
+  Filter als auch in der Berechtigung; Bereiche (`SE34..SE39`) werden zeichenweise geprüft. Bei Org-Feldern wirkt zusätzlich die Org-Variante des Laufs („Übergreifend“ verlangt immer ein echtes `*`).
 
   **Assistent** (Button im Bearbeiten-Modus, über den beiden Editoren) — geführte Auswahl der
   Berechtigungsobjekte und -werte zu **einem** TCode, statt alles als Text zu tippen. Enthält die
