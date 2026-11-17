@@ -44,13 +44,14 @@ Here the backend runs **without automatic reloading**. There are three ways to f
 | --- | --- | --- | --- |
 | **Automatic, daily at 06:00** (task `IAM-Update`) | Fetches the latest state, installs packages, restarts the backend — but **only if there was a new or not yet activated state** | yes | yes |
 | **"Update now"** (window "Manage IAM", `manage.exe`) | like the daily task, immediately | yes (on a new or not yet activated state) | yes (likewise) |
-| **"Update code (Git Pull)"** (Admin menu in the app) | fetches **only the files** (`git pull`) | **no** | **no** |
+| **Configuration › Updates › "Update now"** (in the app) | starts the same `IAM-Update` task, immediately | yes (for a new or not yet activated state) | yes (likewise) |
 
 It follows that:
 
-- **The Git Pull button is the quick way for pure interface, query, catalog or rule-set changes.**
-  Afterwards, reloading the page is enough. If the update nevertheless contained Python changes, the
-  **old** backend stays active until "Update now" activates the fetched state.
+- **A plain file sync without a restart no longer exists in the app** (the former "Update code (Git Pull)"
+  button was removed). If you fetch the state by hand with `git pull` in the project folder, run "Update
+  now" afterwards: the update script detects the not yet activated state and catches up with packages
+  and restart.
 - **If an update contains Python changes**, the **old** program version keeps running until the
   backend restarts. The new interface may then call functions the old backend does not know yet —
   typical signs are messages like "Not Found", empty views or buttons that do nothing. **Remedy: click
@@ -58,7 +59,7 @@ It follows that:
 
 **The activation marker.** The update script records in `data\logs\deployed-head.txt` **for which state
 packages and restart last ran successfully**. If the code was fetched beforehand with the Git Pull
-button, "Update now" (or the daily task) sees that the fetched state is **not yet activated** and
+by hand with `git pull`, "Update now" (or the daily task) sees that the fetched state is **not yet activated** and
 **catches up** with the package installation and backend restart. The update log then says: "State …
 is already fetched …, but not yet activated — catching up on package installation and backend
 restart." If the package installation fails, the backend is deliberately **not** restarted (so it does
@@ -67,19 +68,19 @@ not start with missing packages) and the next run tries again.
 :::{admonition} Older installations
 :class: note
 If the machine still has an **older `update.ps1`** (without the activation marker), "Update now"
-reports **"Already up to date, no restart needed"** after the Git Pull button and restarts
+reports **"Already up to date, no restart needed"** after a manual `git pull` and restarts
 **nothing** — Python changes stay ineffective there until the next restart, and new Python packages
 are not installed. You can tell from the update log: the line reads "Bereits aktuell (…)" **without**
 "und aktiv". Remedy: replace the file **`update.ps1` in the installation folder** (the folder with
 `install.exe`/`manage.exe`) with the new version. `install.exe` does **not** need to be run again and
 `manage.exe` does not need to be rebuilt: the task and the window only call the file by path. Until
-then: use the Git Pull button only when you are sure there are **no** Python changes, otherwise
-"Update now" **without** pressing the button first; if that is not enough, "Restart" helps.
+then: only `git pull` by hand when you are sure there are **no** Python changes, otherwise
+"Update now" **without** a prior `git pull`; if that is not enough, "Restart" helps.
 :::
 
 - **"Restart"** restarts **Neo4j and the backend** (not just the backend).
 - New **Python packages** are installed **exclusively** by the full update (daily task or "Update
-  now") — also when the state was fetched beforehand with the Git Pull button.
+  now") — also when the state was fetched beforehand by hand with `git pull`.
 - A **restart interrupts a running run**. It can be resumed but is unnecessary — so do not schedule
   updates in the middle of an evaluation, especially not at 06:00 when a run is still going. If the
   machine follows the `main` branch, **every new commit** restarts the backend at the next update run.
@@ -87,14 +88,13 @@ then: use the Git Pull button only when you are sure there are **no** Python cha
   an update deliberately aborts if there are local changes in the installation folder instead of
   overwriting them.
 
-### Update Button in the Import Dialog
+### Updates in the Configuration
 
-The **Import** dialog has three tabs: **New dataset** (upload ZIP or folder), **Existing folder** (resume/reload) and
-**Update**. The *Update* tab (native Windows installation only) shows the installed version, checks for new changes
+Under **Management › Configuration › Updates** (native Windows installation only) the app has its update button. The section shows the installed version, checks for new changes
 (*Check for updates*) and, with **Update now**, starts the scheduled task `IAM-Update` — the same as "Update now" in
 "IAM manage": fetch the state, **install Python packages** (into the existing `.venv-win`, no additional Python
 needed), restart the backend. A plain `git pull` is not enough if `requirements.txt` or Python code changed. Neo4j and
-Java are **not** updated. The update log appears right in the tab; with Docker the tab only shows a hint.
+Java are **not** updated. The update log appears right in the section; with Docker the section only shows a hint.
 
 ## With Docker (Development Machine)
 
@@ -110,8 +110,8 @@ project folder is therefore usually enough. Exceptions:
 | **`requirements.txt`** or **`Dockerfile`** | `docker compose up -d --build` (rebuild the image). |
 | **`docker-compose.yml`** (ports, mounts, Neo4j settings) | `docker compose up -d` — containers are recreated. |
 
-The "Update code (Git Pull)" button only exists in the native Windows installation; in the container
-it reports that it is not available there.
+The "Updates" section in the Configuration only exists in the native Windows installation; in the container
+it only shows a hint.
 
 ## Updating Libraries and Docker Components (with Test and Rollback)
 

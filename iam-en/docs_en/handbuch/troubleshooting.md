@@ -19,8 +19,7 @@ A change only takes effect once the **layer that reads it has reloaded**. Almost
 
 | Action | Fetch Git state | Python packages | Restart backend | Restart Neo4j |
 | --- | :---: | :---: | :---: | :---: |
-| Update code (Git Pull), Admin menu | yes | no | no | no |
-| **Update now** (Manage) / Update tab / 06:00 task | yes | yes | yes (only for a new or not yet activated state) | no |
+| **Update now** (Manage) / Configuration › Updates / 06:00 task | yes | yes | yes (only for a new or not yet activated state) | no |
 | **Restart** (Manage) | no | no | yes | yes |
 | Rebooting the computer | no | no | yes | yes |
 | Reloading the page in the browser | no | no | no | no |
@@ -30,7 +29,7 @@ Rebooting therefore does **not** replace the update: it only reloads what is alr
 ## Symptoms and remedies
 
 **Buttons without effect, empty views, "Not Found" after an update.**
-The UI is newer than the running backend (Git Pull button fetched, backend not restarted). Remedy: **Update now**
+The UI is newer than the running backend (fetched by hand with `git pull`, backend not restarted). Remedy: **Update now**
 (activates the fetched state). The update log then says "… not yet activated — catching up package installation and
 backend restart".
 
@@ -47,7 +46,7 @@ An older `update.ps1` without the activation marker. Replace the file in the ins
 There are local changes in the repo folder. The update deliberately does not overwrite them; check
 (`git -C <repo> status`) and revert or save the changes.
 
-**Update task does not run / Update tab is greyed out.**
+**Update task does not run / the update button is greyed out.**
 The task `IAM-Update` is missing or already running (a second start is rejected). Check the state in the *Update* tab
 or in the Manage window; if the task is missing, run `install.exe` once.
 
@@ -67,7 +66,7 @@ than expected from the source. Then check the import log and the error log (Admi
 
 | Log | Location / access |
 | --- | --- |
-| Update run | `data\logs\windows-update.log` — Manage: *Show update log*, app: *Update* tab in the Import dialog |
+| Update run | `data\logs\windows-update.log` — Manage: *Show update log*, app: *Configuration › Updates* |
 | Backend | `data\logs\windows-backend.log` — Manage: *Show backend log* |
 | Neo4j | `<Neo4j folder>\logs\neo4j.log` — Manage: *Show Neo4j log* |
 | Failed jobs | app: Admin → *Error log* (survives restarts) |

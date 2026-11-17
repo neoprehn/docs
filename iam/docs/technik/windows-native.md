@@ -87,7 +87,7 @@ Ein Update-Lauf rührt **nur den Code** an — `data/`, `backups/` und `.env` bl
 Neo4j selbst (Version, Speicher-/APOC-Konfiguration) wird nicht automatisch aktualisiert, genau
 wie eine Docker-Compose-Änderung dort auch kein automatisches Update auslöst.
 
-**Was nach einem Update wann wirksam wird** — und warum der Knopf „Code aktualisieren (Git Pull)“ nicht
+**Was nach einem Update wann wirksam wird** — und warum ein reines `git pull` nicht
 alles erledigt — steht im Benutzerhandbuch unter [Updates: Was braucht einen Neustart?](../handbuch/updates.md).
 
 ## Zugriff steuern: Schlüssel, Lizenz, Widerruf, Rezertifizierung
@@ -96,7 +96,7 @@ Der Zugriff eines Drittrechners auf KARMA hängt an **seinem eigenen Schlüssel*
 Betreiber stellt ihn aus, kann ihn **einzeln widerrufen** und kann **alle Rechner neu zertifizieren** — das läuft über die
 separate Anwendung **KARMA Admin** (`admin/karma-admin.exe`, Beschreibung in `admin/README.md`), nicht über die KARMA-App.
 
-**Fristen.** Jeder erfolgreiche Update-Kontakt (täglicher Update-Lauf oder Knopf „Code aktualisieren“) verlängert die Lizenz
+**Fristen.** Jeder erfolgreiche Update-Kontakt (täglicher Update-Lauf oder Update aus der Konfiguration) verlängert die Lizenz
 auf **180 Tage**. Wird der Zugriff verweigert (Schlüssel widerrufen), verkürzt sich die Frist auf **7 Tage** nach dem ersten
 verweigerten Zugriff. Danach **sperrt sich die Anwendung**: Alle Seiten leiten auf *Management → Konfiguration → Lizenz* um,
 nur dort lässt sich ein neuer Schlüssel hinterlegen. Ab 30 Tagen Restlaufzeit bzw. nach einem erkannten Widerruf zeigt die

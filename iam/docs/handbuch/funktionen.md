@@ -229,7 +229,7 @@ Austausch läuft als normaler Import mit „Vorher leeren“). Geladen werden nu
 Abschluss-Schritte (Org-Level, Subtyp-Labels, GRANTS, Validierung). Tabellen aus Altimporten ohne gespeicherten Hash gelten
 als „nicht vergleichbar“ und werden sicherheitshalber erneut geladen (harmlos, die Loader arbeiten idempotent). Das
 Import-Protokoll führt die Lieferung als eigenen Eintrag („Nachlieferung“); die Nachweise der übersprungenen Tabellen werden
-aus dem Vorgänger übernommen. Nicht mit „Vorher leeren“ kombinierbar. Sind alle Tabellen schon geladen, meldet der Import
+aus dem Vorgänger übernommen. Das Ziel-Dataset wählen Sie selbst (Namensfeld bzw. Ordner-Dropdown); es muss bereits existieren, sonst stoppt der Import mit einer Meldung (Schutz vor Tippfehlern). Nicht mit „Vorher leeren“ kombinierbar. Sind alle Tabellen schon geladen, meldet der Import
 „nichts verändert“.
 
 **Vorprüfung des Extrakts.** Bevor etwas geladen oder gelöscht wird, prüft der Import den Extrakt automatisch

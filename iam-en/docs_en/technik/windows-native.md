@@ -86,7 +86,7 @@ window. An update run only touches **the code** — `data/`, `backups/`, and `.e
 untouched; Neo4j itself (version, memory/APOC configuration) is not automatically updated, just as
 a Docker Compose change there would not trigger an automatic update either.
 
-**What takes effect when after an update** — and why the "Update code (Git Pull)" button does not do
+**What takes effect when after an update** — and why a plain `git pull` does not do
 everything — is explained in the user manual under [Updates: What Needs a Restart?](../handbuch/updates.md).
 
 ## Controlling Access: Keys, License, Revocation, Re-certification
@@ -95,7 +95,7 @@ A third-party computer's access to KARMA depends on **its own key** (a read-only
 can **revoke it individually** and can **re-certify all computers** — this is done with the separate application **KARMA Admin**
 (`admin/karma-admin.exe`, see `admin/README.md`), not with the KARMA app.
 
-**Time limits.** Every successful update contact (daily update run or the "Update code" button) extends the license to **180 days**.
+**Time limits.** Every successful update contact (daily update run or the update from the Configuration) extends the license to **180 days**.
 If access is denied (key revoked), the period shortens to **7 days** after the first denied access. After that the **application locks
 itself**: all pages redirect to *Management → Configuration → License*, the only place where a new key can be stored. From 30 days of
 remaining time on, or after a detected revocation, the start page shows a notice bar. Network problems and configuration errors (e.g. an

@@ -38,19 +38,20 @@ werden nicht rückwirkend neu berechnet.
 
 ## Auf dem Drittrechner (native Windows-Installation)
 
-Hier läuft das Backend **ohne automatisches Nachladen**. Es gibt drei Wege, den Code zu holen:
+Hier läuft das Backend **ohne automatisches Nachladen**. Es gibt drei Zugänge zu **demselben** Update (Skript `update.ps1`):
 
 | Weg | Was passiert | Backend-Neustart? | Python-Pakete? |
 | --- | --- | --- | --- |
 | **Automatisch, täglich 06:00** (Aufgabe `IAM-Update`) | Holt den neuesten Stand, installiert Pakete, startet das Backend neu — aber **nur, wenn es neuen oder noch nicht aktivierten Stand gab** | ja | ja |
 | **„Jetzt aktualisieren“** (Fenster „IAM verwalten“, `manage.exe`) | wie die tägliche Aufgabe, sofort | ja (bei neuem oder noch nicht aktiviertem Stand) | ja (ebenso) |
-| **„Code aktualisieren (Git Pull)“** (Admin-Menü in der App) | holt **nur die Dateien** (`git pull`) | **nein** | **nein** |
+| **Konfiguration › Updates › „Jetzt aktualisieren“** (in der App) | startet dieselbe Aufgabe `IAM-Update`, sofort | ja (bei neuem oder noch nicht aktiviertem Stand) | ja (ebenso) |
 
 Daraus folgt:
 
-- **Der Git-Pull-Knopf ist der schnelle Weg für reine Oberflächen-, Abfrage-, Katalog- oder
-  Regelwerks-Änderungen.** Danach reicht es, die Seite neu zu laden. Enthielt das Update dennoch
-  Python-Änderungen, bleibt das **alte** Backend aktiv, bis „Jetzt aktualisieren“ den Stand aktiviert.
+- **Einen reinen Datei-Abgleich ohne Neustart gibt es in der App nicht mehr** (der frühere Knopf „Code
+  aktualisieren (Git Pull)“ ist entfallen). Wer den Stand von Hand mit `git pull` im Projektordner holt,
+  muss danach „Jetzt aktualisieren“ ausführen: das Update-Skript erkennt den noch nicht aktivierten Stand
+  und holt Pakete und Neustart nach.
 - **Enthält ein Update Python-Änderungen**, läuft danach die **alte** Programmversion weiter, bis das
   Backend neu startet. Dann kann die neue Oberfläche Funktionen aufrufen, die das alte Backend noch
   nicht kennt — typische Anzeichen sind Fehlermeldungen wie „Not Found“, leere Ansichten oder
@@ -59,7 +60,7 @@ Daraus folgt:
 
 **Der Aktivierungs-Marker.** Das Update-Skript merkt sich in `data\logs\deployed-head.txt`, **für welchen
 Stand Pakete und Neustart zuletzt erfolgreich durchgelaufen sind**. Wurde der Code vorher per
-Git-Pull-Knopf geholt, sieht „Jetzt aktualisieren“ (oder die tägliche Aufgabe), dass der geholte Stand
+von Hand mit `git pull` geholt, sieht „Jetzt aktualisieren“ (oder die tägliche Aufgabe), dass der geholte Stand
 noch **nicht aktiviert** ist, und holt Paketinstallation und Backend-Neustart **nach**. Im Update-Log
 steht dann: „Stand … ist bereits geholt …, aber noch nicht aktiviert — hole Paketinstallation und
 Backend-Neustart nach.“ Schlägt die Paketinstallation fehl, wird das Backend bewusst **nicht** neu
@@ -68,19 +69,19 @@ gestartet (damit es nicht mit fehlenden Paketen anläuft) und der nächste Lauf 
 :::{admonition} Ältere Installationen
 :class: note
 Hat der Rechner noch eine **ältere `update.ps1`** (ohne Aktivierungs-Marker), meldet „Jetzt
-aktualisieren“ nach dem Git-Pull-Knopf **„Bereits aktuell, kein Neustart nötig“** und startet
+aktualisieren“ nach einem manuellen `git pull` **„Bereits aktuell, kein Neustart nötig“** und startet
 **nichts** neu — dort bleiben Python-Änderungen bis zum nächsten Neustart wirkungslos, neue
 Python-Pakete werden nicht installiert. Erkennbar im Update-Log: die Zeile heißt „Bereits aktuell
 (…)“ **ohne** „und aktiv“. Abhilfe: die Datei **`update.ps1` im Installationsordner** (dem Ordner mit
 `install.exe`/`manage.exe`) durch die neue Version ersetzen. `install.exe` muss **nicht** erneut
 ausgeführt werden und `manage.exe` nicht neu gebaut: Aufgabe und Fenster rufen die Datei nur per Pfad
-auf. Bis dahin gilt: Git-Pull-Knopf nur, wenn sicher **keine** Python-Änderungen dabei sind, sonst
-„Jetzt aktualisieren“ **ohne** vorherigen Knopf; reicht das nicht, hilft „Neu starten“.
+auf. Bis dahin gilt: von Hand nur dann `git pull`, wenn sicher **keine** Python-Änderungen dabei sind, sonst
+„Jetzt aktualisieren“ **ohne** vorheriges `git pull`; reicht das nicht, hilft „Neu starten“.
 :::
 
 - **„Neu starten“** startet **Neo4j und das Backend** neu (nicht nur das Backend).
 - Neue **Python-Pakete** installiert **ausschließlich** das vollständige Update (tägliche Aufgabe oder
-  „Jetzt aktualisieren“) — auch dann, wenn der Stand vorher per Git-Pull-Knopf geholt wurde.
+  „Jetzt aktualisieren“) — auch dann, wenn der Stand vorher von Hand per `git pull` geholt wurde.
 - Ein **Neustart unterbricht einen laufenden Lauf**. Er ist fortsetzbar, aber unnötig — Updates
   deshalb nicht mitten in eine Auswertung legen, besonders nicht um 06:00 Uhr, wenn dann noch ein
   Lauf läuft. Folgt der Rechner dem Zweig `main`, startet **jeder neue Commit** beim nächsten
@@ -89,15 +90,14 @@ auf. Bis dahin gilt: Git-Pull-Knopf nur, wenn sicher **keine** Python-Änderunge
   anzeigen“); ein Update bricht bewusst ab, wenn im Installationsordner lokale Änderungen liegen,
   statt sie zu überschreiben.
 
-### Update-Knopf im Import-Dialog
+### Updates in der Konfiguration
 
-Der Dialog **Import** hat drei Reiter: **Neues Dataset** (ZIP oder Ordner hochladen), **Vorhandener Ordner**
-(fortsetzen/erneut laden) und **Update**. Der Reiter *Update* (nur native Windows-Installation) zeigt den installierten
+Unter **Management › Konfiguration › Updates** (nur native Windows-Installation) steht der Update-Knopf der App. Der Abschnitt zeigt den installierten
 Stand, prüft auf neue Änderungen (*Auf Updates prüfen*) und startet mit **Jetzt aktualisieren** den geplanten Task
 `IAM-Update` — also dasselbe wie „Jetzt aktualisieren“ in „IAM verwalten“: Stand holen, **Python-Pakete installieren**
 (im vorhandenen `.venv-win`, kein zusätzliches Python nötig), Backend neu starten. Ein `git pull` allein genügt dafür
 nicht, wenn sich `requirements.txt` oder Python-Code geändert haben. Neo4j und Java werden dabei **nicht** aktualisiert.
-Das Update-Protokoll erscheint direkt im Reiter; im Docker-Betrieb zeigt der Reiter nur einen Hinweis.
+Das Update-Protokoll erscheint direkt im Abschnitt; im Docker-Betrieb zeigt er nur einen Hinweis.
 
 ## Im Docker-Betrieb (Entwicklungsrechner)
 
@@ -113,8 +113,8 @@ sofort. Ein `git pull` im Projektordner genügt also meistens. Ausnahmen:
 | **`requirements.txt`** oder **`Dockerfile`** | `docker compose up -d --build` (Image neu bauen). |
 | **`docker-compose.yml`** (Ports, Einbindungen, Neo4j-Einstellungen) | `docker compose up -d` — Container werden neu angelegt. |
 
-Der Knopf „Code aktualisieren (Git Pull)“ gibt es nur auf der nativen Windows-Installation; im Container
-meldet er, dass er dort nicht verfügbar ist.
+Der Abschnitt „Updates“ in der Konfiguration gibt es nur auf der nativen Windows-Installation; im Container
+zeigt er nur einen Hinweis.
 
 ## Bibliotheken und Docker-Komponenten aktualisieren (mit Test und Rollback)
 

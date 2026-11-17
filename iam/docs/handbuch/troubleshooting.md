@@ -20,8 +20,7 @@ Eine Änderung wirkt erst, wenn die **Schicht, die sie liest, neu geladen** hat.
 
 | Aktion | Git-Stand holen | Python-Pakete | Backend neu | Neo4j neu |
 | --- | :---: | :---: | :---: | :---: |
-| Code aktualisieren (Git Pull), Admin-Menü | ja | nein | nein | nein |
-| **Jetzt aktualisieren** (Manage) / Update-Reiter / 06:00-Task | ja | ja | ja (nur bei neuem oder noch nicht aktiviertem Stand) | nein |
+| **Jetzt aktualisieren** (Manage) / Konfiguration › Updates / 06:00-Task | ja | ja | ja (nur bei neuem oder noch nicht aktiviertem Stand) | nein |
 | **Neu starten** (Manage) | nein | nein | ja | ja |
 | Neustart des Rechners | nein | nein | ja | ja |
 | Seite im Browser neu laden | nein | nein | nein | nein |
@@ -31,7 +30,7 @@ Ein Rechner-Neustart ersetzt das Update also **nicht**: Er lädt nur neu, was be
 ## Symptome und Abhilfe
 
 **Schaltflächen ohne Wirkung, leere Ansichten, „Not Found“ nach einem Update.**
-Die Oberfläche ist neuer als das laufende Backend (Git-Pull-Knopf geholt, Backend nicht neu gestartet).
+Die Oberfläche ist neuer als das laufende Backend (von Hand per `git pull` geholt, Backend nicht neu gestartet).
 Abhilfe: **Jetzt aktualisieren** (aktiviert den geholten Stand). Im Update-Log steht dann „… noch nicht aktiviert —
 hole Paketinstallation und Backend-Neustart nach“.
 
@@ -48,8 +47,8 @@ den Exit-Code, der nächste Lauf versucht es erneut (Netzwerk/Proxy prüfen).
 Im Repo-Ordner liegen lokale Änderungen. Das Update überschreibt sie bewusst nicht; Änderungen prüfen
 (`git -C <Repo> status`) und zurücknehmen oder sichern.
 
-**Update-Task läuft nicht / Update-Reiter ist ausgegraut.**
-Der Task `IAM-Update` fehlt oder läuft bereits (ein zweiter Start wird abgelehnt). Zustand im Reiter *Update* bzw.
+**Update-Task läuft nicht / der Update-Knopf ist ausgegraut.**
+Der Task `IAM-Update` fehlt oder läuft bereits (ein zweiter Start wird abgelehnt). Zustand unter *Konfiguration › Updates* bzw.
 im Manage-Fenster ansehen; fehlt der Task, einmalig `install.exe` ausführen.
 
 **Abfragen/Auswertungen liefern Fehler, die Seite selbst lädt.**
@@ -70,7 +69,7 @@ wiederholen.
 
 | Protokoll | Ort / Zugang |
 | --- | --- |
-| Update-Lauf | `data\logs\windows-update.log` — Manage: *Update-Log anzeigen*, App: Reiter *Update* im Import-Dialog |
+| Update-Lauf | `data\logs\windows-update.log` — Manage: *Update-Log anzeigen*, App: *Konfiguration › Updates* |
 | Backend | `data\logs\windows-backend.log` — Manage: *Backend-Log anzeigen* |
 | Neo4j | `<Neo4j-Ordner>\logs\neo4j.log` — Manage: *Neo4j-Log anzeigen* |
 | Fehlgeschlagene Jobs | App: Admin → *Fehlerprotokoll* (überlebt Neustarts) |

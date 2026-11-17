@@ -220,7 +220,7 @@ content** → the import **stops** before loading and names the tables (a delibe
 "clear first"). Only the load steps of the new tables run, plus the closing steps (org levels, subtype labels, GRANTS,
 validation). Tables from older imports without a stored hash count as "not comparable" and are reloaded to be safe
 (harmless, the loaders are idempotent). The import protocol lists the delivery as its own entry ("Nachlieferung"); the
-evidence of the skipped tables is carried over from the predecessor. Cannot be combined with "clear first". If all tables are
+evidence of the skipped tables is carried over from the predecessor. You choose the target dataset yourself (name field or folder dropdown); it must already exist, otherwise the import stops with a message (protection against typos). Cannot be combined with "clear first". If all tables are
 already loaded, the import reports "nothing changed".
 
 **Pre-check of the extract.** Before anything is loaded or deleted, the import checks the extract automatically (step
