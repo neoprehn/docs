@@ -878,7 +878,8 @@ darunter drei **Tabs**:
 
   **Sternchen in den Werten:** `*` bedeutet *beliebiger Wert* (die Berechtigung muss das Feld nur belegen,
   z.&nbsp;B. „irgendein Programm“). Soll die Berechtigung selbst ein echtes `*` tragen (uneingeschränkt),
-  schreibt man `$*`; ein echtes `$` ist `$$`, alle anderen `$` (z.&nbsp;B. `$TMP`) bleiben wörtlich. Das gilt für alle
+  schreibt man `$` oder `$*` (`$` ist die alte Schreibweise der mitgelieferten Filter); ein echtes `$` ist `$$`, alles andere
+  (z.&nbsp;B. `$BUKRS`) bleibt wörtlich. Das gilt für alle
   Felder. Bei Org-Feldern wirkt zusätzlich die Org-Variante des Laufs („Übergreifend“ verlangt immer ein echtes `*`).
 
   **Assistent** (Button im Bearbeiten-Modus, über den beiden Editoren) — geführte Auswahl der
