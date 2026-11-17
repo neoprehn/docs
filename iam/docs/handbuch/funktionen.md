@@ -615,7 +615,10 @@ Status/Sperrgrund, letzter Login, Sleeping, Gültigkeitszeitraum, Passwort-Histo
 Initialkennwort-Hinweis), darunter ein **Kritikalitätsscore**: höchste vorkommende Stufe als Badge
 plus volle Verteilung darunter (z. B. „N× very critical · M× critical · …", gezählt über
 Einzelfilter-Treffer **und** SoD-Findings zusammen — bewusst kein gewichteter Einzelwert, damit die
-Herleitung immer nachvollziehbar bleibt). Zwei Reiter darunter listen die **Einzelberechtigungen**
+Herleitung immer nachvollziehbar bleibt). Aufruf auch direkt über **Ergebnisse › Nutzer-Detail** (Suchfeld mit Vorschlägen nach User-ID oder Name).
+Vier Reiter: **Benutzer** (Stammsatz, soweit die USR02-Felder geladen sind), **Rollen & Sammelrollen**
+(direkt zugewiesene Rollen mit Gültigkeit; bei Sammelrollen die enthaltenen Einzelrollen, bei Einzelrollen
+die Sammelrolle, über die sie ebenfalls ankommen), **Einzelfilter** und **SoD**. Die beiden letzten listen die Einzelberechtigungs-
 bzw. **SoD**-Treffer dieses Users mit Kritikalitäts-Badge und je einem „Root-Cause"-Button, der
 direkt zum passenden Query- bzw. Regel-Root-Cause springt. „Zurück" führt zum Root-Cause-Graphen
 zurück (beendet zuvor sauber ein aktives Vollbild, falls offen).

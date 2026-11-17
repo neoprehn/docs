@@ -602,7 +602,10 @@ group, status/lock reason, last login, sleeping, validity period, password histo
 password notice), below it a **criticality score**: the highest occurring level as a badge, plus
 the full distribution below it (e.g., "N× very critical · M× critical · …", counted across
 individual filter hits **and** SoD findings together — deliberately no single weighted value, so
-the derivation always remains traceable). Two tabs below list this user's **individual
+the derivation always remains traceable). Also reachable directly via **Results › User detail** (search box with suggestions by user ID or name).
+Four tabs: **User** (master record, as far as the USR02 fields are loaded), **Roles & composite roles**
+(directly assigned roles with validity; for composite roles the contained single roles, for single roles
+the composite role they also arrive through), **Single filters** and **SoD**. The last two list this user's **individual
 authorization** and **SoD** hits, with a criticality badge and a "root cause" button each, which
 jumps directly to the matching query or rule root cause. "Back" returns to the root-cause graph
 (cleanly closing an active full-screen view first, if open).
