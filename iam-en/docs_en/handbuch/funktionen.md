@@ -668,28 +668,31 @@ the table and in the **graph views** (node label + hover tooltip show the same r
 reduction yields no hit for a field (e.g., because the hit only comes about via a different
 field), the display falls back to the full values instead of staying empty.
 
-**Role clickable → detail page.** Role names (table) or role nodes (graph) open a **role detail
-page** on click (the left filter/runs sidebar remains visible). At the top, always visible, are
-the **master data** (description, subtype, parent role, generated profile + generation status
-including the meaning of the profile status, creator/last changer as "name (initials)" + date,
-validity of the viewed user's assignment, number of assigned users) — analogous to the
-always-visible metadata in the query editor. Creator/changer **and** the assignment validity show
-the user name, provided the respective user is (still) present in the dataset — otherwise only the
-SAP initials (basis team accounts without dialog access, for example, are not necessarily present
-as their own user in the extract). The **number of assigned users** is clickable and opens a
-dedicated **user list** (ID · name · user type · user group · last login · sleeping) — the same
-list page as in the consistency-check drill-down (see below). Below that, as tabs: **transaction
-codes** (effective, from `S_TCODE` + role menu), **authorization objects** (with the **field values** maintained in the role per instance; an
-**instance** is one authorization (AUTH) of the object in the role — several exist e.g. for
-different org values and are not merged; values: ranges as `from..to`, `*` unchanged, long lists
-truncated with a tooltip),
-**individual authorizations** (which individual filters the role satisfies **on its own**), and
-**SoD rules** (which rules the role can trigger **on its own** — intra-role conflict); the latter
-two are **role-centric** (freshly computed, independent of the run). If a role has **no S_TCODE
-authorization of its own** (composite role, derived role, or a pure data/org authorization role),
-the **TCodes** tab shows an explanatory text instead of the lists — the emptiness then matches the
-extract, it is not an import error. A separate **generation
-date** is not contained in the SAP extract and is therefore not shown.
+**Role detail page.** Reachable by clicking a role name (table) or role node (graph), via **Results › Role
+detail**, or via the **Role detail** field in the left filter bar (search by role ID or description with
+suggestions); the left filter/runs sidebar remains visible. At the top are **KPI tiles** (assigned users,
+transactions, authorization objects, single-filter hits, SoD hits), below them five colored tabs (the active one
+is taller, as in the management area): **Role** (master data: description, subtype, parent role, generated
+profile + generation status including the meaning of the profile status, creator/last changer as "name
+(initials)" + date, validity of the viewed user's assignment, number of assigned users; switchable to a
+**graph**, see below), **Transactions** (effective, from `S_TCODE` + role menu), **Authorization objects** (with
+the **field values** maintained in the role per instance; an **instance** is one authorization (AUTH) of the
+object in the role — several exist e.g. for different org values and are not merged; values: ranges as
+`from..to`, `*` unchanged, long lists truncated with a tooltip), **Single-filter hits** (which single filters the
+role satisfies **on its own**) and **SoD hits** (which rules the role can trigger **on its own** — intra-role
+conflict); the last two are **role-centric** (freshly computed, independent of the run), with a criticality
+filter. Creator/changer **and** the assignment validity show the user name, provided the respective user is
+(still) present in the dataset — otherwise only the SAP initials (basis team accounts without dialog access, for
+example, are not necessarily present as their own user in the extract). The **assigned users** tile is clickable
+and opens a dedicated **user list** (ID · name · user type · user group · last login · sleeping) — the same list
+page as in the consistency-check drill-down (see below). If a role has **no S_TCODE authorization of its own**
+(composite role, derived role, or a pure data/org authorization role), the **Transactions** tab shows an
+explanatory text instead of the lists — the emptiness then matches the extract, it is not an import error.
+
+**Role graph.** In the *Role* tab, the **Graph** toggle shows the role's context in Bloom style (force layout,
+floating nodes, full screen): composite roles containing it, contained single roles, derivation (parent/child
+role) and assigned users (limited, the rest as "+N more users"). Clicking a node opens the role or user detail
+page. A separate **generation date** is not contained in the SAP extract and is therefore not shown.
 
 For this, the matches table shows **user · name · query · label (query's short label) ·
 criticality · root cause** — user type/status are deliberately omitted here (they may appear in

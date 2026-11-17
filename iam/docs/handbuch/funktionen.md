@@ -684,27 +684,31 @@ der Tabelle wie in den **Graph-Ansichten** (Knoten-Label + Hover-Tooltip zeigen 
 liefert die Reduktion für ein Feld keinen Treffer (z. B. weil der Treffer nur über ein anderes Feld
 zustande kommt), fällt die Anzeige auf die vollen Werte zurück statt leer zu bleiben.
 
-**Rolle anklickbar → Detailseite.** Rollennamen (Tabelle) bzw. Rollen-Knoten (Graph) öffnen per
-Klick eine **Rollen-Detailseite** (die linke Filter-/Läufe-Sidebar bleibt dabei sichtbar). Oben
-immer sichtbar die **Stammdaten** (Beschreibung, Subtyp, Elternrolle, generiertes Profil +
-Generierungsstatus inkl. Profilstatus-Bedeutung, Ersteller/letzter Änderer als „Name (Kürzel)" +
-Datum, Gültigkeit der Zuweisung des betrachteten Users, Anzahl zugewiesener User) — analog den
-immer sichtbaren Metadaten im Query-Editor. Ersteller/Änderer **und** die Zuweisungs-Gültigkeit
-zeigen den Usernamen, sofern der betreffende User (noch) im Dataset vorhanden ist — sonst nur das
-SAP-Kürzel (Basis-Team-Accounts ohne Dialog-Zugang stehen z. B. nicht zwingend als eigener User im
-Extrakt). Die **Anzahl zugewiesener User** ist anklickbar und öffnet eine eigene **Nutzerliste**
-(ID · Name · Benutzertyp · Benutzergruppe · Letzter Login · Sleeping) — dieselbe Listenseite wie
-beim Konsistenzcheck-Drilldown (s. u.). Darunter als Reiter: **TCodes** (effektiv aus
-`S_TCODE` + Rollenmenü), **Berechtigungsobjekte** (mit den in der Rolle gepflegten **Feldwerten** je Instanz; eine
-**Instanz** ist eine Berechtigung (AUTH) des Objekts in der Rolle — mehrere gibt es z. B. bei
-unterschiedlichen Org-Werten, sie werden nicht zusammengefasst; Werte: Bereiche als `von..bis`,
-`*` unverändert, lange Listen gekappt mit Tooltip), **Einzelberechtigungen**
-(welche Einzelfilter die Rolle **allein** erfüllt) und **SoD-Regeln** (welche Regeln die Rolle
-**allein** auslösen kann — Intra-Rollen-Konflikt); die letzten beiden **rollenzentrisch** (frisch
-berechnet, unabhängig vom Lauf). Hat eine Rolle selbst **keine S_TCODE-Berechtigung** (Sammelrolle,
-abgeleitete Rolle oder reine Daten-/Org-Berechtigungsrolle), steht im Reiter **TCodes** statt der Listen
-ein Erklärtext — die Leere entspricht dann dem Extrakt, es ist kein Importfehler. Ein separates **Generierungsdatum** ist im SAP-Extrakt nicht
-enthalten und wird daher nicht gezeigt.
+**Rollen-Detailseite.** Erreichbar per Klick auf einen Rollennamen (Tabelle) bzw. Rollen-Knoten (Graph), über
+**Ergebnisse › Rollen-Detail** oder über das Feld **Rollen-Detail** in der linken Filterleiste (Suche nach
+Rollen-ID oder Bezeichnung mit Vorschlägen); die linke Filter-/Läufe-Sidebar bleibt sichtbar. Oben stehen
+**KPI-Kacheln** (zugewiesene User, Transaktionen, Berechtigungsobjekte, Einzelfilter-Funde, SoD-Funde), darunter
+fünf farbige Reiter (der aktive ist höher, wie im Management-Bereich): **Rolle** (Stammdaten: Beschreibung,
+Subtyp, Elternrolle, generiertes Profil + Generierungsstatus inkl. Profilstatus-Bedeutung, Ersteller/letzter
+Änderer als „Name (Kürzel)" + Datum, Gültigkeit der Zuweisung des betrachteten Users, Anzahl zugewiesener User;
+umschaltbar auf einen **Graphen**, s. u.), **Transaktionen** (effektiv aus `S_TCODE` + Rollenmenü),
+**Berechtigungsobjekte** (mit den in der Rolle gepflegten **Feldwerten** je Instanz; eine **Instanz** ist eine
+Berechtigung (AUTH) des Objekts in der Rolle — mehrere gibt es z. B. bei unterschiedlichen Org-Werten, sie werden
+nicht zusammengefasst; Werte: Bereiche als `von..bis`, `*` unverändert, lange Listen gekappt mit Tooltip),
+**Einzelfilter-Fund** (welche Einzelfilter die Rolle **allein** erfüllt) und **SoD-Fund** (welche Regeln die Rolle
+**allein** auslösen kann — Intra-Rollen-Konflikt); die beiden letzten **rollenzentrisch** (frisch berechnet,
+unabhängig vom Lauf), mit Kritikalitäts-Filter. Ersteller/Änderer **und** die Zuweisungs-Gültigkeit zeigen den
+Usernamen, sofern der betreffende User (noch) im Dataset vorhanden ist — sonst nur das SAP-Kürzel (Basis-Team-Accounts
+ohne Dialog-Zugang stehen z. B. nicht zwingend als eigener User im Extrakt). Die **Anzahl zugewiesener User** (Kachel)
+ist anklickbar und öffnet eine eigene **Nutzerliste** (ID · Name · Benutzertyp · Benutzergruppe · Letzter Login ·
+Sleeping) — dieselbe Listenseite wie beim Konsistenzcheck-Drilldown (s. u.). Hat eine Rolle selbst **keine
+S_TCODE-Berechtigung** (Sammelrolle, abgeleitete Rolle oder reine Daten-/Org-Berechtigungsrolle), steht im Reiter
+**Transaktionen** statt der Listen ein Erklärtext — die Leere entspricht dann dem Extrakt, es ist kein Importfehler.
+
+**Rollen-Graph.** Im Reiter *Rolle* zeigt der Umschalter **Graph** das Umfeld der Rolle im Bloom-Stil (Kraft-Layout,
+schwebende Knoten, Vollbild): Sammelrollen, die sie enthalten, enthaltene Einzelrollen, Ableitung (Eltern-/Kind-Rolle)
+und zugewiesene User (begrenzt, der Rest als „+N weitere User"). Klick auf einen Knoten öffnet die Rollen- bzw.
+User-Detailseite. Ein separates **Generierungsdatum** ist im SAP-Extrakt nicht enthalten und wird daher nicht gezeigt.
 
 Die Matches-Tabelle zeigt dafür **User · Name · Query · Bezeichnung (Kurzbezeichnung der Query) ·
 Kritikalität · Root-Cause** — Nutzertyp/Status sind hier bewusst weggelassen (stehen ggf. in der
