@@ -597,18 +597,25 @@ also clickable while full screen is active (the fit/full-screen buttons are plac
 graph canvas for this reason, not in the toolbar above it — otherwise they would be unreachable in
 full screen).
 
-**User detail page.** A standalone view (not an overlay) with master record (name, type, user
-group, status/lock reason, last login, sleeping, validity period, password history/initial-
-password notice), below it a **criticality score**: the highest occurring level as a badge, plus
-the full distribution below it (e.g., "N× very critical · M× critical · …", counted across
-individual filter hits **and** SoD findings together — deliberately no single weighted value, so
-the derivation always remains traceable). Also reachable directly via **Results › User detail** (search box with suggestions by user ID or name).
-Four tabs: **User** (master record, as far as the USR02 fields are loaded), **Roles & composite roles**
-(directly assigned roles with validity; for composite roles the contained single roles, for single roles
-the composite role they also arrive through), **Single filters** and **SoD**. The last two list this user's **individual
-authorization** and **SoD** hits, with a criticality badge and a "root cause" button each, which
-jumps directly to the matching query or rule root cause. "Back" returns to the root-cause graph
-(cleanly closing an active full-screen view first, if open).
+**User detail page.** A standalone view (not an overlay). Reachable by **clicking the user** in the result
+tables, by right-clicking the user node in the root-cause graph, via **Results › User detail**, or via the
+**User detail** field in the left filter bar directly below the User dropdown (search by user ID or name with
+suggestions; while the page is open, choosing a user in the User dropdown also opens their details). At the
+top are **KPI tiles**: number of single-filter hits, number of SoD violations, and the count per occurring
+criticality level (counted across single-filter hits **and** SoD findings together — deliberately no single
+weighted value, so the derivation stays traceable). Below are four colored tabs (the active one is taller,
+as in the management area): **User** (master record: name, type, user group, status/lock reason, last
+login, sleeping, validity period, password data; as far as the USR02 fields are loaded into the graph),
+**Roles & composite roles** (directly assigned roles with validity; for composite roles the contained single
+roles, for single roles the composite role they also arrive through), **Single filters** and **SoD**. The
+last two show the same table as the results view (user, rule, description, criticality, type, root cause)
+with a criticality filter; clicking the rule jumps to the filtered result list, the "root cause" button to
+the matching query or rule root cause. "Back" returns to where you came from (result list or root-cause
+graph; an active full-screen view is closed cleanly first).
+
+*Initial password:* `PWDINITIAL = 1` shows "yes". `2` is a mixed case and appears as "probably (uncertain)"
+— but only as long as the password has not demonstrably been changed; if the change date is set and differs
+from the assignment date, it shows "no" (same rule in the "initial passwords" consistency check).
 
 **Legend + custom colors.** Below the graph, a legend shows all occurring node types together with
 their border modifiers (technical/orphaned). Clicking a color dot opens the native system color

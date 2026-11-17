@@ -610,18 +610,27 @@ zentriert die Ansicht, auch bei aktivem Vollbild klickbar (Fit-/Vollbild-Knopf l
 innerhalb des Graph-Canvas, nicht in der Werkzeugleiste darüber — sonst wären sie im Vollbild
 unerreichbar).
 
-**User-Detailseite.** Eigenständige Ansicht (kein Overlay) mit Stammsatz (Name, Typ, Benutzergruppe,
-Status/Sperrgrund, letzter Login, Sleeping, Gültigkeitszeitraum, Passwort-Historie/
-Initialkennwort-Hinweis), darunter ein **Kritikalitätsscore**: höchste vorkommende Stufe als Badge
-plus volle Verteilung darunter (z. B. „N× very critical · M× critical · …", gezählt über
-Einzelfilter-Treffer **und** SoD-Findings zusammen — bewusst kein gewichteter Einzelwert, damit die
-Herleitung immer nachvollziehbar bleibt). Aufruf auch direkt über **Ergebnisse › Nutzer-Detail** (Suchfeld mit Vorschlägen nach User-ID oder Name).
-Vier Reiter: **Benutzer** (Stammsatz, soweit die USR02-Felder geladen sind), **Rollen & Sammelrollen**
-(direkt zugewiesene Rollen mit Gültigkeit; bei Sammelrollen die enthaltenen Einzelrollen, bei Einzelrollen
-die Sammelrolle, über die sie ebenfalls ankommen), **Einzelfilter** und **SoD**. Die beiden letzten listen die Einzelberechtigungs-
-bzw. **SoD**-Treffer dieses Users mit Kritikalitäts-Badge und je einem „Root-Cause"-Button, der
-direkt zum passenden Query- bzw. Regel-Root-Cause springt. „Zurück" führt zum Root-Cause-Graphen
-zurück (beendet zuvor sauber ein aktives Vollbild, falls offen).
+**User-Detailseite.** Eigenständige Ansicht (kein Overlay). Erreichbar per **Klick auf den User** in den
+Ergebnistabellen, per Rechtsklick auf den User-Knoten im Root-Cause-Graph, über **Ergebnisse › Nutzer-Detail**
+oder über das Feld **Nutzer-Detail** in der linken Filterleiste direkt unter dem User-Dropdown (Suche nach
+User-ID oder Name mit Vorschlägen; bei offener Seite öffnet auch die Auswahl im User-Dropdown direkt die
+Details). Oben stehen **KPI-Kacheln**: Anzahl der Einzelfilter-Treffer, Anzahl der SoD-Verstöße und je
+vorkommender Kritikalitätsstufe die Anzahl (gezählt über Einzelfilter-Treffer **und** SoD-Findings
+zusammen — bewusst kein gewichteter Einzelwert, damit die Herleitung nachvollziehbar bleibt).
+Darunter vier farbige Reiter (der aktive ist höher, wie im Management-Bereich):
+**Benutzer** (Stammsatz: Name, Typ, Benutzergruppe, Status/Sperrgrund, letzter Login, Sleeping,
+Gültigkeitszeitraum, Passwort-Daten; soweit die USR02-Felder im Graphen geladen sind),
+**Rollen & Sammelrollen** (direkt zugewiesene Rollen mit Gültigkeit; bei Sammelrollen die enthaltenen
+Einzelrollen, bei Einzelrollen die Sammelrolle, über die sie ebenfalls ankommen), **Einzelfilter** und
+**SoD**. Die beiden letzten zeigen dieselbe Tabelle wie die Ergebnisansicht (User, Regel, Bezeichnung,
+Kritikalität, Typ, Root-Cause) mit Kritikalitäts-Filter; ein Klick auf die Regel springt in die gefilterte
+Ergebnisliste, der „Root-Cause"-Button zum passenden Query- bzw. Regel-Root-Cause. „Zurück" führt dorthin
+zurück, woher Sie kamen (Ergebnisliste bzw. Root-Cause-Graph, ein aktives Vollbild wird zuvor sauber beendet).
+
+*Initialkennwort:* `PWDINITIAL = 1` zeigt „ja". `2` ist ein Mischfall und erscheint als „vermutlich
+(unsicher)" — jedoch nur, solange das Passwort nicht nachweislich geändert wurde; ist das Änderungsdatum
+gesetzt und vom Vergabedatum verschieden, steht dort „nein" (gleiche Regel im Konsistenzcheck
+„Initialpasswörter").
 
 **Legende + eigene Farben.** Unter dem Graphen zeigt eine Legende alle vorkommenden Knotentypen
 samt Rand-Modifiern (technisch/verwaist). Ein Klick auf einen Farbpunkt öffnet den nativen
